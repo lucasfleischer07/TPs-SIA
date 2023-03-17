@@ -1,7 +1,9 @@
-from src.fillZone import fillZone 
+from src.fillZone import FillZone 
+import arcade
 
 def main():
-    fillZone()
+    game=FillZone()
+    result=arcade.run()
 
 if __name__ == "__main__":
     main()
