@@ -32,7 +32,7 @@ def fill_zone_greedy(x, y, fill_color, grid): #inicializo la grilla
         color_counts = {}
         for dx, dy in [(0, 1), (1, 0), (0, -1), (-1, 0)]: #arriba, derecha, abajo, izquierda
             x, y = current_x + dx, current_y + dy
-            if 0 <= x < len(grid[0]) and 0 <= y < len(grid) and grid[y][x] != fill_color: #ver que este en grilla
+            if(0 <= x < len(grid[0]) and 0 <= y < len(grid) and grid[y][x] != fill_color): #ver que este en grilla
                 color_counts[grid[y][x]] = color_counts.get(grid[y][x], 0) + 1
 
         # selecciona el color que mas aparece
