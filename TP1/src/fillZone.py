@@ -1,34 +1,36 @@
 import arcade
 import random
 
-ROWS = 10
-COLS = 10
 CELL_SIZE = 50
 MARGIN = 25
 GENERAL_OUTLINE = 4
 SQUARE_OUTLINE = 1.5
 COLORS=[arcade.color.PINK, arcade.color.BLUE, arcade.color.RED, arcade.color.YELLOW, arcade.color.GREEN, arcade.color.WHITE]
-def create_grid():
+
+
+def create_grid(num):
     grid = []
-    for row in range(ROWS):
+    for row in range(num):
         grid.append([])
-        for column in range(COLS):
+        for column in range(num):
             grid[row].append(random.randint(0,5))
     return grid
        
+
 class FillZone(arcade.Window):
-    def __init__(self):
-        super().__init__(max((COLS * CELL_SIZE) + (MARGIN * 2),((MARGIN * 2)+len(COLORS)*CELL_SIZE)), (ROWS * CELL_SIZE) + (MARGIN * 3)+CELL_SIZE, "Fill Zone")
+    def __init__(self, num, mode, count_of_colors):
+        super().__init__(max((num * CELL_SIZE) + (MARGIN * 2),((MARGIN * 2)+len(COLORS)*CELL_SIZE)), (num * CELL_SIZE) + (MARGIN * 3)+CELL_SIZE, "Fill Zone")
         arcade.set_background_color(arcade.color.GRAY)
         self.movements=0
-        self.grid = create_grid()
+        self.num = num
+        self.mode = mode
+        self.count_of_colors = count_of_colors
+        self.grid = create_grid(num)
         
 
 
-
-                
     def on_mouse_press(self,x,y,button,modifiers):
-        if(x>MARGIN and y>MARGIN+ROWS*CELL_SIZE+MARGIN and x< len(COLORS)*CELL_SIZE+MARGIN and y<MARGIN+ROWS*CELL_SIZE+MARGIN+CELL_SIZE):
+        if(x>MARGIN and y>MARGIN+self.num*CELL_SIZE+MARGIN and x< len(COLORS)*CELL_SIZE+MARGIN and y<MARGIN+self.num*CELL_SIZE+MARGIN+CELL_SIZE):
             if(button == arcade.MOUSE_BUTTON_LEFT):
                 column=(x-MARGIN)//CELL_SIZE
                 if(column != self.grid[0][0]):
@@ -40,12 +42,14 @@ class FillZone(arcade.Window):
                     
                     
     def check_game_over(self):
-        for row in range(ROWS):
-            for column in range(COLS):
+        for row in range(self.num):
+            for column in range(self.num):
                 if self.grid[row][column] != self.grid[0][0]:
                     return False
         return True
     
+
+
     def on_draw(self):
         arcade.start_render()
         self.draw_grid()
@@ -56,31 +60,32 @@ class FillZone(arcade.Window):
         for square in range(len(COLORS)):
             arcade.draw_rectangle_filled(
                 square * CELL_SIZE+ MARGIN + CELL_SIZE / 2,
-                ROWS * CELL_SIZE + MARGIN*2 + CELL_SIZE / 2,
+                self.num * CELL_SIZE + MARGIN*2 + CELL_SIZE / 2,
                 CELL_SIZE, CELL_SIZE, COLORS[square]
             )
             arcade.draw_rectangle_outline(
                 square * CELL_SIZE + MARGIN + CELL_SIZE / 2,
-                ROWS * CELL_SIZE + MARGIN*2 + CELL_SIZE / 2,
+                self.num * CELL_SIZE + MARGIN*2 + CELL_SIZE / 2,
                 CELL_SIZE, CELL_SIZE, arcade.color.BLACK, SQUARE_OUTLINE)
-        for row in range(ROWS):
-            for column in range(COLS):
+        for row in range(self.num):
+            for column in range(self.num):
                 color=COLORS[self.grid[row][column]]
                 arcade.draw_rectangle_filled(
                     column * CELL_SIZE + MARGIN + CELL_SIZE / 2,
-                    (ROWS-1-row) * CELL_SIZE + MARGIN + CELL_SIZE / 2,
+                    (self.num-1-row) * CELL_SIZE + MARGIN + CELL_SIZE / 2,
                     CELL_SIZE, CELL_SIZE, color)
                 arcade.draw_rectangle_outline(
                     column * CELL_SIZE + MARGIN + CELL_SIZE / 2,
-                    (ROWS-1-row) * CELL_SIZE + MARGIN + CELL_SIZE / 2,
+                    (self.num-1-row) * CELL_SIZE + MARGIN + CELL_SIZE / 2,
                     CELL_SIZE, CELL_SIZE, arcade.color.BLACK, SQUARE_OUTLINE)
         arcade.draw_rectangle_outline(
-            (COLS * CELL_SIZE + MARGIN*2) / 2,
-            (ROWS * CELL_SIZE + MARGIN*2) / 2,
-            COLS * CELL_SIZE, ROWS * CELL_SIZE,
+            (self.num * CELL_SIZE + MARGIN*2) / 2,
+            (self.num * CELL_SIZE + MARGIN*2) / 2,
+            self.num * CELL_SIZE, self.num * CELL_SIZE,
             arcade.color.BLACK, GENERAL_OUTLINE)
 
-    
+
+
     def fill_connected_cells(self,new_color):
             # Get the color of the upper left cell
             old_color = self.grid[0][0]
