@@ -28,8 +28,6 @@ def fill_zone_greedy(grid): #inicializo la grilla
     best_color=COLORS[0]
     best_score=0
     solution=[]
-
-
     # while not_visited:
     #     current_x, current_y = not_visited.pop()
 
@@ -58,7 +56,7 @@ def fill_zone_greedy(grid): #inicializo la grilla
     #         x, y = current_x + dx, current_y + dy
     #         if 0 <= x < len(grid[0]) and 0 <= y < len(grid) and grid[y][x] == best_color:
     #             not_visited.append((x, y))
-    while(check_game_over(grid)):
+    while(check_game_over(grid)==False):
         best_score =0          
         for color in COLORS:
             score=heuristic_1(grid[0][0],color,grid)
@@ -68,6 +66,7 @@ def fill_zone_greedy(grid): #inicializo la grilla
                 
         fill_connected_cells(grid,best_color)
         solution.append(best_color)
+        print ("greedy choose{}",best_color)
     return solution
 
 def fill_connected_cells(grid,new_color):

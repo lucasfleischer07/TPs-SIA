@@ -38,7 +38,7 @@ def heuristic_1(current_color, node_new_color, grid):
 
 
 def non_visited_zone(current_coord, current_color, grid, visited, waiting_list):
-    if waiting_list.len() == 0:
+    if len(waiting_list) == 0:
         return False
     
     current_coord = waiting_list.pop()  # Sacar la siguiente posición de la lista de espera

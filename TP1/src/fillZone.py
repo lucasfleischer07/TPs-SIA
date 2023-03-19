@@ -32,8 +32,9 @@ class FillZone(arcade.Window):
         self.grid = create_grid(num)
         self.index = 0
         if mode == 2:
-            if algorythm == 3:
+            if algorythm == 4:
                 self.solution=fill_zone_greedy(self.grid)
+                
         
 
 
