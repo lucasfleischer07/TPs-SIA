@@ -13,9 +13,12 @@
 #   |       |(0,-1) | |
 
 
-from fillZone import COLORS
-from heuristic import heuristic_1
 
+
+
+
+from src.utils.colorFile import COLORS
+from src.algorithms.heuristic import heuristic_1
 
 
 def fill_zone_greedy(grid): #inicializo la grilla 
@@ -97,8 +100,8 @@ def fill_connected_cells(grid,new_color):
                             queue.append((neighbor_row, neighbor_column))
 
 def check_game_over(grid):
-        for row in range(len[grid]):
-            for column in range(len[grid]):
+        for row in range(len(grid)):
+            for column in range(len(grid)):
                 if grid[row][column] != grid[0][0]:
                     return False
         return True

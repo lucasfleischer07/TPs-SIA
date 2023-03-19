@@ -1,3 +1,5 @@
+from src.utils.colorFile import COLORS
+from src.algorithms.greedy import fill_zone_greedy
 import arcade
 import random
 # from src.algorithms import fill_zone_greedy
@@ -6,7 +8,6 @@ CELL_SIZE = 50
 MARGIN = 25
 GENERAL_OUTLINE = 4
 SQUARE_OUTLINE = 1.5
-COLORS=[arcade.color.PINK, arcade.color.BLUE, arcade.color.RED, arcade.color.YELLOW, arcade.color.GREEN, arcade.color.WHITE]
 
 
 def create_grid(num):
@@ -31,7 +32,7 @@ class FillZone(arcade.Window):
         self.grid = create_grid(num)
         self.index = 0
         if mode == 2:
-            if algorythm == 4:
+            if algorythm == 3:
                 self.solution=fill_zone_greedy(self.grid)
         
 
