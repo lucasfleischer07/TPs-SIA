@@ -1,5 +1,6 @@
 import arcade
 import random
+# from src.algorithms import fill_zone_greedy
 
 CELL_SIZE = 50
 MARGIN = 25
@@ -17,20 +18,26 @@ def create_grid(num):
     return grid
        
 
+
 class FillZone(arcade.Window):
-    def __init__(self, num, mode, count_of_colors):
+    def __init__(self, num, mode, algorythm, count_of_colors):
         super().__init__(max((num * CELL_SIZE) + (MARGIN * 2),((MARGIN * 2)+len(COLORS)*CELL_SIZE)), (num * CELL_SIZE) + (MARGIN * 3)+CELL_SIZE, "Fill Zone")
         arcade.set_background_color(arcade.color.GRAY)
-        self.movements=0
+        self.movements = 0
         self.num = num
         self.mode = mode
+        self.algorythm = algorythm
         self.count_of_colors = count_of_colors
         self.grid = create_grid(num)
+        self.index = 0
+        if mode == 2:
+            if algorythm == 4:
+                self.solution=fill_zone_greedy(self.grid)
         
 
 
     def on_mouse_press(self,x,y,button,modifiers):
-        if(x>MARGIN and y>MARGIN+self.num*CELL_SIZE+MARGIN and x< len(COLORS)*CELL_SIZE+MARGIN and y<MARGIN+self.num*CELL_SIZE+MARGIN+CELL_SIZE):
+        if(self.mode==1 and x>MARGIN and y>MARGIN+self.num*CELL_SIZE+MARGIN and x< len(COLORS)*CELL_SIZE+MARGIN and y<MARGIN+self.num*CELL_SIZE+MARGIN+CELL_SIZE):
             if(button == arcade.MOUSE_BUTTON_LEFT):
                 column=(x-MARGIN)//CELL_SIZE
                 if(column != self.grid[0][0]):
@@ -38,6 +45,11 @@ class FillZone(arcade.Window):
                     self.movements+=1
                     if(self.check_game_over()):
                         self.close()
+        else:
+            self.fill_connected_cells(self.solution[self.index])
+            self.index+=1
+            if(self.index >= len(self.solution)):
+                self.close
                     
                     
                     

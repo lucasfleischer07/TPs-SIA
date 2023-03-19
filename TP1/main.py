@@ -25,7 +25,7 @@ def main():
         COLORS = int(input("El numero ingresado es incorrecto, por favor un numero entre el 2 y el 6: "))
     
 
-    FillZone(NUM, MODE, COLORS)
+    FillZone(NUM, MODE, ALGORYTHM, COLORS)
     arcade.run()
 
 

@@ -3,20 +3,18 @@ Idea para la heuristica 1
 ------
 Debe ser admisible ---> h(n) <= costo a la solucion para todo n
 Desde el color actual, cuantas posiciones van a cambiar con el cambio de color
-Ejeplo:
+Ejemplo:
 
    Dada la siguiente grilla, si se quiere calcular la herustica de un nuevo color verde, en este caso el valor devuelto
    Sera 2, ya que el verde se expandira por el rojo y tomara la celda (0,1) y la celda (2,0)
-      y
-   |  rojo | verde  | rojo   |
-   --------------------------|
-   |  rojo |  rojo  | azul   |
- x --------------------------|  
-   | verde |amarillo| blanco |
+        y
+   x  |  rojo | verde     | rojo   |
+      |  rojo |  rojo     | azul   |  
+      | verde | amarillo  | blanco |
 """
-#Primero lo que quiero obtener son todas las celdas vecinas a la zona tomada
-#Para esto vamos a ir buscando como se expande la zona tomada y agregando a 
-#un contador la cantidad de vecino q sumariamos a la zona nueva
+# Primero lo que quiero obtener son todas las celdas vecinas a la zona tomada
+# Para esto vamos a ir buscando como se expande la zona tomada y agregando a 
+# un contador la cantidad de vecino q sumariamos a la zona nueva
 
 def heuristic_1(current_color, node_new_color, grid):
     visited_coords = set()      # Conjunto de posiciones visitadas
