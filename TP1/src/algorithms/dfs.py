@@ -3,12 +3,16 @@
 import copy
 import time
 
+from src.algorithms.utils.fillFunctions import fill_connected_cells
+from src.algorithms.utils.fillFunctions import check_game_over
+
 
 class Node:
     
-    def __init__(self, grid, parent):
+    def __init__(self, grid, color, parent):
         self.grid = grid
         self.parent = parent
+        self.color = color
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -20,105 +24,79 @@ class Node:
 
     def getParent(self):
         return self.parent
-
-
-#   Funcion recursiva para ir probando todos los caminos en forma dfs, para poder hacer 
-#   backtracking voy a tener que pasar copys 
-#   Una vez se llega a un resultado, se devuelve:
-#    [True, Lista de pasos invertida, cantidad de nodos evaluados en total, cantidad de nodos frontera en total]
-def fill_zone_recursive(grid,colorAmount):
     
-    nodes_eval = 0
-    for color in range(colorAmount):
-        if grid[0][0] != color: 
-            nodes_eval += 1
-            grid_copy = copy.deepcopy(grid)
-            fill_connected_cells(grid,color)
-            if check_game_over(grid) == False:
-                result = fill_zone_recursive(grid_copy,colorAmount)
-                if result == False: 
-                    continue
-                if result[1] == True:
-                    return True, result[1].append(color), result[2] + nodes_eval, result[3] + colorAmount - 1
-            else:
-                return True,[color],nodes_eval,colorAmount - 1
-    return False
-
-
-def fill_zone_dfs(grid,colorAmount): #inicializo la grilla     
-    start_time = time.time()
-    total_time = 0
-    result = fill_zone_recursive(grid,colorAmount)
-    end_time = time.time()
-    total_time = end_time - start_time
-    if result == False:
-        return False
-    return result[1],total_time,result[2],result[3],result[0]
-
-
-def fill_connected_cells(grid, new_color):
-    # Get the color of the upper left cell
-    old_color = grid[0][0]
-    # Create a queue to keep track of cells to be filled
-    queue = [(0, 0)]
-
-    # Fill the upper left cell with the new color
-    grid[0][0] = new_color
-
-    # Continue filling cells until the queue is empty
-    while queue:
-        # Get the next cell to be filled from the queue
-        row, column = queue.pop(0)
-
-        # Check the neighboring cells for the same color as the upper left cell
-        for i, j in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
-            # Calculate the coordinates of the neighboring cell
-            neighbor_row, neighbor_column = row + i, column + j
+    def getGrid(self):
+        return self.grid
+    
+    def getColor(self):
+        return self.color
+    
+    def getNodeScore(self):
+        visited = set()
+        pending = []
+        pending.append((0,0))
+        scoreCounter = 0 
+        while pending:
+            currentCoord = pending.pop()
+            scoreCounter +=1
+            row,column = currentCoord
+            visited.add((row,column))
+            for i, j in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+                neighbor_row, neighbor_column = row + i, column + j
 
             # Check if the neighboring cell is within the bounds of the grid
-            if (0 <= neighbor_row < len(grid)) and (0 <= neighbor_column < len(grid[0])):
-                # Check if the neighboring cell has the same color as the upper left cell
-                if grid[neighbor_row][neighbor_column] == old_color:
-                    # Fill the neighboring cell with the new color
-                    grid[neighbor_row][neighbor_column] = new_color
-
-                    # Add the neighboring cell to the queue to be filled
-                    queue.append((neighbor_row, neighbor_column))
-    return grid
+            if (0 <= neighbor_row < len(grid)) and (0 <= neighbor_column < len(grid[0]) and grid[neighbor_row,neighbor_column] == self.color and (neighbor_row,neighbor_column) not in visited):
+                pending.append((neighbor_row,neighbor_column))
+        return scoreCounter
 
 
-def check_game_over(grid):
-        for row in range(len(grid)):
-            for column in range(len(grid)):
-                if grid[row][column] != grid[0][0]:
-                    return False
-        return True
+#   Funcion que utiliza un tipo de dato Nodo, con registro de su padre y algunas cuestiones mas
+#   permite una vez se haya la solucion, podes hacer backtracking hasta el primer nodo
+#   Una vez se llega a un resultado, se devuelve:
+#    [True, Lista de pasos invertida, cantidad de nodos evaluados en total, cantidad de nodos frontera en total]
 
-"""
-def fill_zone_dfs(grid, x, y, target_color, fill_color, visited): #inicializo la grilla 
+def fill_zone_dfs(grid, colorAmount):
+    # Inicio el tiempo para ver cuanto tarde en procesarlo y hacerlo
+    start_time = time.time()
+    total_time = 0
+    visited = set()
+    pending_nodes = [ Node(grid, grid[0][0],None)]
+    done = False
+    nodes_expanded_amount = 0
+    nodes_border_amount = 0
+    solution = []
+    while not done:
+        current_node = pending_nodes.pop()
+        nodes_expanded_amount += 1
+        visited.add(current_node)
+        if check_game_over:
+            rebuildSolution(current_node,solution)
+            done = True
+        else:
+            nodes_border_amount += colorAmount -1
+            get_node_succesors(current_node,current_node.getColor(),colorAmount,visited,pending_nodes)
     
-    
-    
-    
-    
-    
-    if not (0 <= x < len(grid) and 0 <= y < len(grid[0])): #chequeos en grilla q este todo ok
-        return
-    
-    if (x, y) in visited: # se fija q no haya sido visitada previamente
-        return
-    
-    if grid[x][y] != target_color: # se fija si el color de la posicion en la que estoy es igual al color inicial
-        return
-    
-    visited.add((x, y))
-    grid[x][y] = fill_color #cambia al color que quiero
-    
-    fill_zone_dfs(grid, x-1, y, target_color, fill_color, visited) # up
-    fill_zone_dfs(grid, x+1, y, target_color, fill_color, visited) # down
-    fill_zone_dfs(grid, x, y-1, target_color, fill_color, visited) # left
-    fill_zone_dfs(grid, x, y+1, target_color, fill_color, visited) # right
+    end_time = time.time()
+    total_time = end_time - start_time
+    return solution, total_time, nodes_expanded_amount, nodes_border_amount , True
 
-    # de esta manera va a explorar los caminos mas profundos
-"""
+
+
+
+def rebuildSolution(final_node,solution):
+    current_node = final_node
+    while current_node != None:
+        solution.append(current_node.getColor())
+        current_node = current_node.getParent()
+    solution.reverse()
+
+def get_node_succesors(parent_node,currentColor,colorAmount,visited,pending_nodes):
+    
+    for color in range(colorAmount):
+        if color != currentColor:
+            gridCopy = copy.deepcopy(parent_node.getGrid)
+            newNode = Node(fill_connected_cells(gridCopy,color),color,parent_node)
+            if parent_node.getNodeScore < newNode.getNodeScore and newNode not in visited:
+                pending_nodes.append(newNode)
+
 
