@@ -16,7 +16,7 @@ def fill_zone_bfs(grid,colors): # esta funcion nos genera la grilla inicial, def
     nodes_expanded_amount = 0
     nodes_border_amount = 0
     
-    # pdb.set_trace()
+    pdb.set_trace()
     print(grid)
     
     while(1):
@@ -35,7 +35,7 @@ def fill_zone_bfs(grid,colors): # esta funcion nos genera la grilla inicial, def
             for color in solution:
                 if color!=gridAux[0][0]:
                     gridAux = fill_connected_cells(gridAux,color)
-            if(check_game_over(grid)):
+            if(check_game_over(gridAux)):
                 end_time = time.time()
                 total_time = end_time - start_time
                 return solution, total_time, nodes_expanded_amount, nodes_border_amount
