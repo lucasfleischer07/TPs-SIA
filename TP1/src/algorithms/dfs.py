@@ -20,7 +20,7 @@ class Node:
         return self.grid == other.grid
 
     def __hash__(self):
-        return hash(self.grid)
+        return hash(str(self.grid))
 
     def getParent(self):
         return self.parent
