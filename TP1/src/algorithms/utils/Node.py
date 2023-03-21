@@ -9,6 +9,7 @@ class Node:
         self.parent = parent
         self.color = color
         self.cost=cost
+        self.heuristic=0
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -31,6 +32,10 @@ class Node:
 
     def getCost(self):
         return self.cost
+    def setHeuristic(self,n):
+        self.heuristic=n
+    def getHeuristic(self):
+        return self.heuristic
     
     def getNodeScore(self):
         visited = set()

@@ -25,21 +25,27 @@ def fill_zone_aStar(grid,colorAmount):
     nodes_expanded_amount = 0
     nodes_border_amount = 0
     state = Node(grid,grid[0][0],None)
-    pending_nodes=set()
+    pending_nodes=[]
+    pending_nodes.append(state)
+    state.setHeuristic(heuristic_1(state.getColor(),state.getGrid(),colorAmount))
+    best_heuristic=0
     heuristic=0
     solution=[]
     while(check_game_over(state.getGrid())==False):
         nodes_border_amount += (colorAmount - 1)
-        best_score = MAX_SCORE        
+        best_score = MAX_SCORE 
+        best_heuristic = MAX_SCORE       
         visited.add(state)
+        pending_nodes.remove(state)
         nodes_expanded_amount += 1
         get_node_succesors(state,state.getColor(),colorAmount,visited,pending_nodes)
         for node in pending_nodes:
-            heuristic=heuristic_1(node.getColor(),node.getGrid(),colorAmount)
-            if(heuristic+node.getCost() < best_score):
-                state=node
-                best_score=heuristic+node.getCost()
-        pending_nodes.remove(state)
+            heuristic=node.getHeuristic()
+            if(heuristic+node.getCost() <= best_score):
+                if(heuristic < best_heuristic):
+                    state=node
+                    best_score=heuristic+node.getCost()
+                    best_heuristic=node.getHeuristic()
     rebuildSolution(state,solution)
     end_time = time.time()
     total_time = end_time - start_time
@@ -51,7 +57,9 @@ def get_node_succesors(parent_node,currentColor,colorAmount,visited,pending_node
             gridCopy = copy.deepcopy(parent_node.getGrid())
             newNode = Node(fill_connected_cells(gridCopy,color),color,parent_node,parent_node.getCost()+1)
             if  newNode not in visited:
-                pending_nodes.add(newNode)
+                newNode.setHeuristic(heuristic_1(newNode.getColor(),newNode.getGrid(),colorAmount))
+                pending_nodes.append(newNode)
+
 
 def rebuildSolution(final_node,solution):
     current_node = final_node
@@ -59,4 +67,3 @@ def rebuildSolution(final_node,solution):
         solution.append(current_node.getColor())
         current_node = current_node.getParent()
     solution.reverse()
-    print(solution)
