@@ -1,54 +1,87 @@
 """
-Idea para la heuristica 1
+Idea para la heuristica 3
 ------
-Debe ser admisible ---> h(n) <= costo a la solucion para todo n
-Desde el color actual, cuantas posiciones van a cambiar con el cambio de color
-Ejemplo:
-
-   Dada la siguiente grilla, si se quiere calcular la herustica de un nuevo color verde, en este caso el valor devuelto
-   Sera 2, ya que el verde se expandira por el rojo y tomara la celda (0,1) y la celda (2,0)
-        y
-   x  |  rojo | verde     | rojo   |
-      |  rojo |  rojo     | azul   |  
-      | verde | amarillo  | blanco |
+Se estima cuantos pasos van a faltar para llegar a la ubicacion mas lejana del 
 """
-# Primero lo que quiero obtener son todas las celdas vecinas a la zona tomada
-# Para esto vamos a ir buscando como se expande la zona tomada y agregando a 
-# un contador la cantidad de vecino q sumariamos a la zona nueva
+import networkx as nx
 
-
-def heuristic_1(current_color, node_new_color, grid):
-    visited_coords = set()            # Conjunto de posiciones visitadas
-    current_coord = [0, 0]            # Coordenada inicial como lista en lugar de tupla
-    waiting_list = [(0, 0)]           # Lista de espera, del current color que faltan por analizar
-    extention_counter = 0             # Contador de extensiones
-
-    # Búsqueda en anchura
-    while non_visited_zone(current_coord, current_color, grid, visited_coords, waiting_list):
-        current_x, current_y = current_coord
+def get_user_positions(user_owner_positions,color,grid):
+    pending_nodes = [(0,0)]
+    while pending_nodes:
+        current = pending_nodes.pop()
+        current_x, current_y = current
+        user_owner_positions.add((current_x,current_y))
         for dx, dy in [(0, 1), (1, 0), (0, -1), (-1, 0)]: # Arriba, derecha, abajo, izquierda
             x, y = current_x + dx, current_y + dy
-            if(0 <= x < len(grid[0]) and 0 <= y < len(grid)  and ((x,y) not in visited_coords) and (grid[x][y] != current_color)): # Ver que este en grilla
-                visited_coords.add((x,y))
-                if (grid[x][y] == node_new_color):
-                    extention_counter += 1
-
-    return extention_counter
+            if(0 <= x < len(grid[0]) and 0 <= y < len(grid) and grid[x][y] == color and ((x,y) not in pending_nodes) and tuple([x,y]) not in user_owner_positions ): # Ver que este en grilla
+                pending_nodes.append((x, y))
 
 
+def heuristic_1(node_new_color, grid, colorAmount):
+    playerPosition = (len(grid)+1, len(grid)+1)
+    graph = GraphGenerator(grid,playerPosition)
+    SCORE = 0
+    optionsDict = dict(nx.all_pairs_dijkstra(graph))
+    maxValue = 0
+    for key in optionsDict[playerPosition][SCORE]:
+        if optionsDict[playerPosition][SCORE][key] > maxValue:
+            maxValue = optionsDict[playerPosition][SCORE][key]
+    return maxValue
 
-def non_visited_zone(current_coord, current_color, grid, visited, waiting_list):
-    if len(waiting_list) == 0:
-        return False
+
+
+
+
+def GraphGenerator(grid, playerPosition):
+    graph = nx.Graph()
+    graph.add_node(playerPosition)
+    user_owner_positions = set()
     
-    current_coord[:] = waiting_list.pop()   # Modificar los valores de current_coord usando la notación [:]
-    visited.add(tuple(current_coord))      # Convertir la lista de coordenadas en una tupla antes de agregarla a visited
-    current_x, current_y = current_coord
-    
-    # Agregar a la lista de espera todas las posiciones adyacentes que tengan el mismo color que la posición actual
-    for dx, dy in [(0, 1), (1, 0), (0, -1), (-1, 0)]: # Arriba, derecha, abajo, izquierda
-            x, y = current_x + dx, current_y + dy
-            if(0 <= x < len(grid[0]) and 0 <= y < len(grid) and grid[x][y] == current_color and ((x,y) not in waiting_list) and tuple([x,y]) not in visited ): # Ver que este en grilla
-                waiting_list.append((x, y))
+    get_user_positions(user_owner_positions, grid[0][0], grid)
 
-    return True
+    for i in range(len(grid)):
+        for j in range(len(grid)):
+            currPosition = (i,j)
+            if currPosition not in user_owner_positions:
+                graph.add_node(currPosition)
+                if i > 0:
+                    top = (i - 1 ,j)
+                    graph.add_node(top)
+                    if top in user_owner_positions:
+                        graph.add_edge(playerPosition, currPosition, weight=1)
+                    elif grid[i][j] == grid[i - 1 ][j] :
+                        graph.add_edge(currPosition, top, weight=0)
+                    else:
+                        graph.add_edge(currPosition, top, weight=1)
+
+                if j > 0:
+                    left = (i,j - 1) 
+                    graph.add_node(left)
+                    if left in user_owner_positions:
+                        graph.add_edge(playerPosition, currPosition, weight=1)
+                    elif grid[i][j] == grid[i][j - 1] : 
+                        graph.add_edge(currPosition, left, weight=0)
+                    else:
+                        graph.add_edge(currPosition, left, weight=1)
+
+                if j < len(grid[i]) - 1 :
+                    right = (i,j + 1) 
+                    graph.add_node(right)
+                    if right in user_owner_positions:
+                        graph.add_edge(playerPosition, currPosition, weight=1)
+                    elif grid[i][j] == grid[i][j + 1] :  
+                        graph.add_edge(currPosition, right, weight=0)
+                    else:
+                        graph.add_edge(currPosition, right, weight=1)
+
+                if i < len(grid) - 1:
+                    down = (i + 1 ,j) 
+                    graph.add_node(down)
+                    if down in user_owner_positions:
+                        graph.add_edge(playerPosition, currPosition, weight=1)
+                    elif grid[i][j] == grid[i + 1 ][j] :
+                        graph.add_edge(currPosition, down, weight=0)
+                    else:
+                        graph.add_edge(currPosition, down, weight=1)
+    return graph
+

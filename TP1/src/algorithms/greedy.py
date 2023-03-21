@@ -13,37 +13,46 @@
 #   |       |(0,-1) | |
 
 import time
+import copy
+
+
 
 from src.utils.colorFile import COLORS
 from src.heuristics.heuristic1 import heuristic_1
 from src.heuristics.heuristic2 import heuristic_2
+from src.heuristics.heurisitic3 import heuristic_3
 from src.algorithms.utils.fillFunctions import fill_connected_cells
 from src.algorithms.utils.fillFunctions import check_game_over
+from src.algorithms.utils.Node import Node
 
 # Inicializo la grilla 
 def fill_zone_greedy(grid,colorAmount): 
     # Inicio el tiempo para ver cuanto tarde en procesarlo y hacerlo
     start_time = time.time()
-    
+    used_nodes= set()
     best_color=0
     best_score=0
     solution=[]
-
+    MAX_SCORE = colorAmount
     total_time = 0
     nodes_expanded_amount = 0
     nodes_border_amount = 0
-
-    while(check_game_over(grid)==False):
+    state = Node(grid,grid[0][0],None)
+    while(check_game_over(state.getGrid())==False):
         nodes_border_amount += (colorAmount - 1)
-        best_score = 0          
-
+        best_score = MAX_SCORE        
+        used_nodes.add(state)
         for color in range(colorAmount):
-            if(color!=grid[0][0]):
-                score = heuristic_1(grid[0][0],color,grid)
-                if(score>best_score):
+            if(color!=state.getColor()):
+                
+                auxState = state.getSon(color) 
+                score = heuristic_1(color,auxState.getGrid(),colorAmount)
+                #score = heuristic_2(color,auxState.getGrid(),colorAmount)
+                #score = heuristic_3(color,auxState.getGrid(),colorAmount)
+                if score<=best_score and auxState not in used_nodes:
                     best_score = score
                     best_color = color        
-        grid=fill_connected_cells(grid,best_color)
+        state = state.getSon(best_color) 
         solution.append(best_color)
         nodes_expanded_amount += 1
     
