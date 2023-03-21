@@ -78,9 +78,7 @@ def fill_zone_dfs(grid, colorAmount):
     
     end_time = time.time()
     total_time = end_time - start_time
-    print("El grid final es: " + str(current_node.getGrid()))
 
-    print(str(solution) + " " + str(total_time) + " " + str(nodes_expanded_amount) + " " + str(nodes_border_amount))
     return solution, total_time, nodes_expanded_amount, nodes_border_amount , True
 
 
