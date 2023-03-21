@@ -46,7 +46,7 @@ def fill_zone_dfs(grid, colorAmount):
 
 def rebuildSolution(final_node,solution):
     current_node = final_node
-    while current_node != None:
+    while current_node.getParent() != None:
         solution.append(current_node.getColor())
         current_node = current_node.getParent()
     solution.reverse()
