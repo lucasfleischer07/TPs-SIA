@@ -20,7 +20,7 @@ class Node:
         return self.grid == other.grid
 
     def __hash__(self):
-        return hash(self.grid)
+        return hash(str(self.grid))
 
     def getParent(self):
         return self.parent
@@ -43,10 +43,10 @@ class Node:
             visited.add((row,column))
             for i, j in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
                 neighbor_row, neighbor_column = row + i, column + j
-
-            # Check if the neighboring cell is within the bounds of the grid
-            if (0 <= neighbor_row < len(grid)) and (0 <= neighbor_column < len(grid[0]) and grid[neighbor_row,neighbor_column] == self.color and (neighbor_row,neighbor_column) not in visited):
-                pending.append((neighbor_row,neighbor_column))
+                # Check if the neighboring cell is within the bounds of the grid
+                if (0 <= neighbor_row < len(self.grid)) and (0 <= neighbor_column < len(self.grid[0]) and self.grid[neighbor_row][neighbor_column] == self.color and (neighbor_row,neighbor_column) not in visited):
+                    pending.append((neighbor_row,neighbor_column))
+                
         return scoreCounter
 
 
@@ -69,7 +69,7 @@ def fill_zone_dfs(grid, colorAmount):
         current_node = pending_nodes.pop()
         nodes_expanded_amount += 1
         visited.add(current_node)
-        if check_game_over:
+        if check_game_over(current_node.getGrid()):
             rebuildSolution(current_node,solution)
             done = True
         else:
@@ -78,6 +78,9 @@ def fill_zone_dfs(grid, colorAmount):
     
     end_time = time.time()
     total_time = end_time - start_time
+    print("El grid final es: " + str(current_node.getGrid()))
+
+    print(str(solution) + " " + str(total_time) + " " + str(nodes_expanded_amount) + " " + str(nodes_border_amount))
     return solution, total_time, nodes_expanded_amount, nodes_border_amount , True
 
 
@@ -94,9 +97,9 @@ def get_node_succesors(parent_node,currentColor,colorAmount,visited,pending_node
     
     for color in range(colorAmount):
         if color != currentColor:
-            gridCopy = copy.deepcopy(parent_node.getGrid)
+            gridCopy = copy.deepcopy(parent_node.getGrid())
             newNode = Node(fill_connected_cells(gridCopy,color),color,parent_node)
-            if parent_node.getNodeScore < newNode.getNodeScore and newNode not in visited:
+            if parent_node.getNodeScore() < newNode.getNodeScore() and newNode not in visited:
                 pending_nodes.append(newNode)
 
 
