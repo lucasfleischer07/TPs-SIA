@@ -3,19 +3,22 @@ from src.algorithms.utils.fillFunctions import fill_connected_cells
 
 
 class Node:
-    
-    def __init__(self, grid, color, parent):
+
+    def __init__(self, grid, color, parent,cost=0):
         self.grid = grid
         self.parent = parent
         self.color = color
+        self.cost=cost
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
             return False
-        return self.grid == other.grid
+        return self.grid == other.grid and self.cost==other.cost
 
     def __hash__(self):
-        return hash(str(self.grid))
+        if(self.cost==0):
+            return hash(str(self.grid))
+        return hash(str(self.grid)+str(self.cost))
 
     def getParent(self):
         return self.parent
@@ -25,6 +28,9 @@ class Node:
     
     def getColor(self):
         return self.color
+
+    def getCost(self):
+        return self.cost
     
     def getNodeScore(self):
         visited = set()
@@ -45,4 +51,6 @@ class Node:
         return scoreCounter
     
     def getSon(self,color):
+        return Node(fill_connected_cells(copy.deepcopy(self.grid),color),color,self)
+    def getSonWithCost(self,color):
         return Node(fill_connected_cells(copy.deepcopy(self.grid),color),color,self)
