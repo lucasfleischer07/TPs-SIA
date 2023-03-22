@@ -6,6 +6,10 @@ name = "pypi"
 [packages]
 arcade = "*"
 networkx = "*"
+jupyter = "*"
+notebook = "*"
+numpy = "*"
+matplotlib = "*"
 
 [dev-packages]
 

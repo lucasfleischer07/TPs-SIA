@@ -6,6 +6,9 @@ from src.utils.colorFile import COLORS
 from src.algorithms.greedy import fill_zone_greedy
 from src.algorithms.bfs import fill_zone_bfs
 from src.algorithms.dfs import fill_zone_dfs
+from src.algorithms.aAsterisk import fill_zone_aStar
+
+
 
 CELL_SIZE = 50
 MARGIN = 25
@@ -38,8 +41,12 @@ class FillZone(arcade.Window):
         gridAux=copy.deepcopy(self.grid)
         if mode == 2:
             # Este es el A*
-            # if algorythm == 1:
-            #     self.solution = fill_zone_greedy(self.grid)
+            if algorythm == 1:
+                results=fill_zone_aStar(self.grid,count_of_colors)
+                self.solution = results[0]
+                self.total_time = results[1]
+                self.nodes_expanded = results[2]
+                self.nodes_border = results[3]
             # Este es el BFS
             if algorythm == 2:
                 results = fill_zone_bfs(gridAux, count_of_colors)

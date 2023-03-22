@@ -33,7 +33,7 @@ def fill_zone_greedy(grid,colorAmount):
     best_color=0
     best_score=0
     solution=[]
-    MAX_SCORE = 100
+    MAX_SCORE = len(grid)*len(grid)
     total_time = 0
     nodes_expanded_amount = 0
     nodes_border_amount = 0

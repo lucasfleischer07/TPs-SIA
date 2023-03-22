@@ -13,9 +13,7 @@ def main():
     while MODE != 1 and MODE != 2:
         MODE = int(input("El numero ingresado es incorrecto, por favor ingrese la opcion 1 o 2: "))
 
-# TODO: Falta meter esto del Algoritmo en algun lado
     if(MODE == 2):
-        ALGORYTHM = 0
         ALGORYTHM = int(input("\nSeleccione que algoritmo quieres que te lo resuelva\n\t1. A*.\n\t2. BFS.\n\t3. DFS.\n\t4. Greedy.\nAlgoritmo: "))
         while ALGORYTHM != 1 and ALGORYTHM != 2 and ALGORYTHM != 3 and ALGORYTHM != 4:
             ALGORYTHM = int(input("El numero ingresado es incorrecto, por favor ingrese un numero entre el 1 y el 4: "))
@@ -29,29 +27,6 @@ def main():
     FillZone(NUM, MODE, ALGORYTHM, COLORS)
     arcade.run()
 
-"""
-MAIN AUTOMATIZADO
-def main():
-    run_times = 100
-    color_amout = 4
-    rows_amount = 4
-    mode = 2
-    victory_array = []
-    time_array = []
-    nodes_expanded_array = []
-    nodes_border_array = []
-    for algorithm in range(1,5)
-        victory_array = []
-        time_array = []
-        nodes_expanded_array = []
-        nodes_border_array = []
-        for run_time in range(run_times):
-            result = FillZone(rows_amount,mode,algorithm,color_amout)
-            victory_array.append(result[4])
-            time_array.append(result[1])
-            nodes_expanded_array.append(result[2])
-            nodes_border_array.append(result[3])
-        
-"""
+
 if __name__ == "__main__":
     main()
