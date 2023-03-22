@@ -27,7 +27,7 @@ def create_grid(num,count_of_colors):
 
 
 class FillZone(arcade.Window):
-    def __init__(self, num, mode, algorythm, count_of_colors):
+    def __init__(self, num, mode, algorythm, count_of_colors, heuristic):
         super().__init__(max((num * CELL_SIZE) + (MARGIN * 2),((MARGIN * 2)+count_of_colors*CELL_SIZE)), (num * CELL_SIZE) + (MARGIN * 3)+CELL_SIZE, "Fill Zone")
         arcade.set_background_color(arcade.color.GRAY)
         self.movements = 0
@@ -42,7 +42,7 @@ class FillZone(arcade.Window):
         if mode == 2:
             # Este es el A*
             if algorythm == 1:
-                results=fill_zone_aStar(self.grid,count_of_colors)
+                results=fill_zone_aStar(self.grid, count_of_colors, heuristic)
                 self.solution = results[0]
                 self.total_time = results[1]
                 self.nodes_expanded = results[2]
@@ -66,7 +66,7 @@ class FillZone(arcade.Window):
                     self.nodes_border = results[3]
             # Este es el GREEDY
             elif algorythm == 4:
-                results = fill_zone_greedy(gridAux, count_of_colors)
+                results = fill_zone_greedy(gridAux, count_of_colors, heuristic)
                 self.solution = results[0]
                 self.total_time = results[1]
                 self.nodes_expanded = results[2]

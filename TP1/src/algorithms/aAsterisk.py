@@ -14,7 +14,7 @@ from src.algorithms.utils.fillFunctions import check_game_over
 from src.algorithms.utils.Node import Node
 
 # Inicializo la grilla 
-def fill_zone_aStar(grid,colorAmount): 
+def fill_zone_aStar(grid, colorAmount, heuristic_type): 
     # Inicio el tiempo para ver cuanto tarde en procesarlo y hacerlo
     start_time = time.time()
     visited= set()
@@ -27,10 +27,19 @@ def fill_zone_aStar(grid,colorAmount):
     state = Node(grid,grid[0][0],None)
     pending_nodes=[]
     pending_nodes.append(state)
-    state.setHeuristic(heuristic_1(state.getColor(),state.getGrid(),colorAmount))
     best_heuristic=0
     heuristic=0
     solution=[]
+
+    if(heuristic_type == 1):
+        state.setHeuristic(heuristic_1(state.getColor(),state.getGrid(),colorAmount))
+    elif(heuristic_type == 2):
+        state.setHeuristic(heuristic_2(state.getColor(),state.getGrid(),colorAmount))
+    else:
+        state.setHeuristic(heuristic_3(state.getColor(),state.getGrid(),colorAmount))
+
+
+
     while(check_game_over(state.getGrid())==False):
         nodes_border_amount += (colorAmount - 1)
         best_score = MAX_SCORE 
@@ -38,7 +47,7 @@ def fill_zone_aStar(grid,colorAmount):
         visited.add(state)
         pending_nodes.remove(state)
         nodes_expanded_amount += 1
-        get_node_succesors(state,state.getColor(),colorAmount,visited,pending_nodes)
+        get_node_succesors(state, state.getColor(), colorAmount, visited, pending_nodes, heuristic_type)
         for node in pending_nodes:
             heuristic=node.getHeuristic()
             if(heuristic+node.getCost() <= best_score):
@@ -51,13 +60,19 @@ def fill_zone_aStar(grid,colorAmount):
     total_time = end_time - start_time
     return solution, total_time, nodes_expanded_amount, nodes_border_amount , True
 
-def get_node_succesors(parent_node,currentColor,colorAmount,visited,pending_nodes):
+def get_node_succesors(parent_node, currentColor, colorAmount, visited, pending_nodes, heuristic_type):
     for color in range(colorAmount):
         if color != currentColor:
             gridCopy = copy.deepcopy(parent_node.getGrid())
             newNode = Node(fill_connected_cells(gridCopy,color),color,parent_node,parent_node.getCost()+1)
             if  newNode not in visited:
-                newNode.setHeuristic(heuristic_1(newNode.getColor(),newNode.getGrid(),colorAmount))
+                if(heuristic_type == 1):
+                    newNode.setHeuristic(heuristic_1(newNode.getColor(),newNode.getGrid(),colorAmount))
+                elif(heuristic_type == 2):
+                    newNode.setHeuristic(heuristic_2(newNode.getColor(),newNode.getGrid(),colorAmount))
+                else:
+                    newNode.setHeuristic(heuristic_3(newNode.getColor(),newNode.getGrid(),colorAmount))
+
                 pending_nodes.append(newNode)
 
 

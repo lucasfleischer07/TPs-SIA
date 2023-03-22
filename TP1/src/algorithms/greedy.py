@@ -26,7 +26,7 @@ from src.algorithms.utils.fillFunctions import check_game_over
 from src.algorithms.utils.Node import Node
 
 # Inicializo la grilla 
-def fill_zone_greedy(grid,colorAmount): 
+def fill_zone_greedy(grid, colorAmount, heuristic_type): 
     # Inicio el tiempo para ver cuanto tarde en procesarlo y hacerlo
     start_time = time.time()
     used_nodes= set()
@@ -46,9 +46,14 @@ def fill_zone_greedy(grid,colorAmount):
             if(color!=state.getColor()):
                 
                 auxState = state.getSon(color) 
-                #score = heuristic_1(color,auxState.getGrid(),colorAmount)
-                score = heuristic_2(color,auxState.getGrid(),colorAmount)
-                #score = heuristic_3(color,auxState.getGrid(),colorAmount)
+                if(heuristic_type == 1):
+                    score = heuristic_1(color,auxState.getGrid(),colorAmount)
+                elif(heuristic_type == 2):
+                    score = heuristic_2(color,auxState.getGrid(),colorAmount)
+                else:
+                    score = heuristic_3(color,auxState.getGrid(),colorAmount)
+
+                
                 if score<=best_score and auxState not in used_nodes:
                     best_score = score
                     best_color = color        
