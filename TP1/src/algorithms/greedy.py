@@ -33,7 +33,7 @@ def fill_zone_greedy(grid,colorAmount):
     best_color=0
     best_score=0
     solution=[]
-    MAX_SCORE = colorAmount
+    MAX_SCORE = 100
     total_time = 0
     nodes_expanded_amount = 0
     nodes_border_amount = 0
@@ -46,8 +46,8 @@ def fill_zone_greedy(grid,colorAmount):
             if(color!=state.getColor()):
                 
                 auxState = state.getSon(color) 
-                score = heuristic_1(color,auxState.getGrid(),colorAmount)
-                #score = heuristic_2(color,auxState.getGrid(),colorAmount)
+                #score = heuristic_1(color,auxState.getGrid(),colorAmount)
+                score = heuristic_2(color,auxState.getGrid(),colorAmount)
                 #score = heuristic_3(color,auxState.getGrid(),colorAmount)
                 if score<=best_score and auxState not in used_nodes:
                     best_score = score

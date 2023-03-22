@@ -7,6 +7,7 @@ Ejemplo:
 
    Dada la siguiente grilla, si se quiere calcular la herustica de un nuevo color verde, en este caso el valor devuelto
    Sera 2, ya que el verde se expandira por el rojo y tomara la celda (0,1) y la celda (2,0)
+   El valor devuelto son las ubicaciones restantes
         y
    x  |  rojo | verde     | rojo   |
       |  rojo |  rojo     | azul   |  
@@ -23,8 +24,10 @@ def heuristic_3(node_new_color, grid, colorAmoun):
     waiting_list = [(0, 0)]           # Lista de espera, del current color que faltan por analizar
     extention_counter = 0             # Contador de extensiones
     current_color = grid[0][0]
+    total_covered_spaces = 0
     # Búsqueda en anchura
     while non_visited_zone(current_coord, current_color, grid, visited_coords, waiting_list):
+        total_covered_spaces += 1
         current_x, current_y = current_coord
         for dx, dy in [(0, 1), (1, 0), (0, -1), (-1, 0)]: # Arriba, derecha, abajo, izquierda
             x, y = current_x + dx, current_y + dy
@@ -32,9 +35,8 @@ def heuristic_3(node_new_color, grid, colorAmoun):
                 visited_coords.add((x,y))
                 if (grid[x][y] == node_new_color):
                     extention_counter += 1
-    if extention_counter == 0:
-        return 1.5
-    return 1/extention_counter
+    total_covered_spaces += extention_counter
+    return (len(grid) * len(grid[0])) - total_covered_spaces
 
 
 

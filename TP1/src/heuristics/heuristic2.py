@@ -36,5 +36,4 @@ def heuristic_2(node_new_color, grid, colorAmount):
                  
         if len(colorsFound) == colorAmount:
             break
-    print(str(colorsFound))
     return len(colorsFound)
