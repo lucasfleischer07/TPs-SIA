@@ -1,6 +1,4 @@
 
-<!-- TODO: TERMINAR -->
-
 # TP1 SIA - Metodos de Busqueda
 
 ## Introducción
