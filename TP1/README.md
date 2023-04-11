@@ -5,8 +5,8 @@
 Trabajo práctico orientativo para la materia Sistemas de Inteligencia Artificial con el
 objetivo de evaluar distintas soluciones utilizando 4 metodos de busqueda para resolver el juego [Fill Zone](http://www.mygamesworld.com/game/7682/Fill_Zone.html).
 
-[Enunciado](docs/SIA_TP1.pdf)
-[Presentacion](docs/SIA_TP1_Presentacion.pdf)
+- [Enunciado](docs/SIA_TP1.pdf)
+- [Presentacion](docs/SIA_TP1_Presentacion.pdf)
 
 
 ### Requisitos

@@ -2,11 +2,10 @@
 
 ## Introducción
 
-Trabajo práctico orientativo para la materia Sistemas de Inteligencia Artificial con el
-objetivo de implementar un programa que tome una imágen cuadrada y trate de representar de la mejormanera posible dicha imágen en un mapa de NxN caractéres ASCII e implementar un sistema que, mediante Algoritmos Genéticos, logre encontrar la forma de mezclar proporciones de los diferentes colores de su paleta paralograr el color que más se le acerque al color deseado
+Trabajo práctico orientativo para la materia Sistemas de Inteligencia Artificial con el objetivo de implementar un programa que tome una imágen cuadrada y trate de representar de la mejormanera posible dicha imágen en un mapa de NxN caractéres ASCII e implementar un sistema que, mediante Algoritmos Genéticos, logre encontrar la forma de mezclar proporciones de los diferentes colores de su paleta paralograr el color que más se le acerque al color deseado
 
-[Enunciado](docs/SIA_TP2.pdf)
-[Presentacion](docs/SIA_TP2_Presentacion.pdf)
+- [Enunciado](docs/SIA_TP2.pdf)
+- [Presentacion](docs/SIA_TP2_Presentacion.pdf)
 
 
 ### Requisitos
