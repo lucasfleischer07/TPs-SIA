@@ -1,80 +1,83 @@
 import csv
-from src.generic_algorithm import generate_population, calculate_fitness, roulette_selection, uniform_crossover, mutation
+from src.generic_algorithm import generate_population, calculate_fitness, roulette_selection, uniform_crossover, mutation,elite_selection,rank_selection,probabilistic_tournament_selection,generate_couples
+import copy
+import random
+import numpy as np
+
 
 if __name__ == "__main__":
+
     # Leer colores de archivo csv
     with open('colors.csv', 'r') as file:
         reader = csv.reader(file)
         palette = [list(map(int, row)) for row in reader]
         
     palette_size = len(palette)
-    print(palette)
 
-    # Obtener parámetros de input
-    target_color = list(map(int, input("Ingrese el color objetivo (R,G,B): ").split(",")))
-    population_size = int(input("Ingrese el tamaño de la población: "))
-    mutation_probability = float(input("Ingrese la probabilidad de mutación (entre 0 y 1): "))
-    max_generations = int(input("Ingrese el número máximo de generaciones: "))
+    # Obtengo el color objetivo
+    TARGET_COLOR = list(map(int, input("Ingrese el color objetivo (R,G,B): ").split(",")))
+    while len(TARGET_COLOR) != 3 or all(color > 255 or color < 0 for color in TARGET_COLOR):
+        TARGET_COLOR = list(map(int, input("Por favor ingrese 3 numero separados por "," para el color objetivo y que los valores no sean menores a 0 ni mayores a 255 (R,G,B): ").split(",")))
+
+    # Obtengo el tamaño de la poblacion
+    POPULATION_SIZE = int(input("Ingrese el tamaño de la población: "))
+    while POPULATION_SIZE < 0:
+        POPULATION_SIZE = int(input("Por favor ingrese un numeor positivo para el tamaño de la población: "))
+    
+    # Obtengo la porbabilidad de mutacion
+    MUTATION_PROBABILITY = float(input("Ingrese la probabilidad de mutación (entre 0 y 1): "))
+    while (MUTATION_PROBABILITY > 1.0 or MUTATION_PROBABILITY < 0.0):
+        MUTATION_PROBABILITY = float(input("Por favor, ingrese la probabilidad de mutación (entre 0 y 1): "))
+
+    # Obtengo el número máximo de generaciones
+    MAX_GENERATIONS = int(input("Ingrese el número máximo de generaciones: "))
+    while MAX_GENERATIONS < 0:
+        MAX_GENERATIONS = int(input("Por favor ingrese un numeor positivo para el máximo de generaciones: "))
+
+    # Obtengo el algoritmo de seleccion
+    GENERIC_ALGORITHM = int(input("\nSeleccione que algoritmo de seleccion que quieres que te lo resuelva\n\t1. Roulette.\n\t2. Elite.\n\t3. Probabilistic Tournament.\n\t4. Rank."))
+    while GENERIC_ALGORITHM != 1 and GENERIC_ALGORITHM != 2 and GENERIC_ALGORITHM != 3 and GENERIC_ALGORITHM != 4:
+            GENERIC_ALGORITHM = int(input("El numero ingresado es incorrecto, por favor ingrese un numero del 1 al 4: "))
     
     # Generar población inicial
-    population = generate_population(population_size, palette_size)
+    population = generate_population(POPULATION_SIZE, palette_size)
+
 
     # Ejecutar algoritmo genético
     generation = 0
-    while generation < max_generations:
+    while generation < MAX_GENERATIONS:
         
-        fitness_values = [calculate_fitness(chromosome, palette, target_color) for chromosome in population]
+        fitness_values = np.array([calculate_fitness(chromosome, palette, TARGET_COLOR) for chromosome in population])
         
-
-        # Seleccionar padres por ruleta
-        parent1 = roulette_selection(population, fitness_values)
-        parent2 = roulette_selection(population, fitness_values)
-
-        # Realizar cruzamiento
-        child = uniform_crossover(parent1, parent2)
+        parents = elite_selection(copy.deepcopy(population),fitness_values)
+        result = generate_couples(parents)
+        couples = result[0]
+        childs = []
+        
+        for couple in couples:
+            childs.append(uniform_crossover(couple[0],couple[1]))    
 
         # Realizar mutación
-        mutated_child = mutation(child, palette_size, mutation_probability)
+        for child in childs:
+            child = mutation(child, palette_size, MUTATION_PROBABILITY)
 
         # Reemplazar peor cromosoma en población con el hijo mutado
-        worst_index = fitness_values.index(max(fitness_values))
-        population[worst_index] = mutated_child
+        newPopultaion=childs
+        if(len(newPopultaion)<len(population)):
+            random_numbers = random.sample(range(0, len(population)), len(population)-len(newPopultaion))
+            for number in random_numbers:
+                newPopultaion.append(population[number])
+        population=np.array(newPopultaion)
+        print(population)
 
         generation += 1
 
     # Obtener mejor cromosoma y su aptitud
-    fitness_values = [calculate_fitness(chromosome,palette, target_color) for chromosome in population]
-    best_index = fitness_values.index(min(fitness_values))
+    fitness_values = [calculate_fitness(chromosome,palette, TARGET_COLOR) for chromosome in population]
+    best_index = fitness_values.index(max(fitness_values))
     best_chromosome = population[best_index]
     best_fitness = fitness_values[best_index]
 
     # Imprimir resultado
     print("El mejor cromosoma encontrado es:", best_chromosome)
     print("Su aptitud es:", best_fitness)
-
-
-
-# import csv
-# from src.generic_algorithm import genetic_algorithm
-
-# if __name__ == "__main__":
-#     # Leer colores de archivo csv
-#     with open('colors.csv', 'r') as file:
-#         reader = csv.reader(file)
-#         palette = [list(map(int, row)) for row in reader]
-
-#     palette_size = len(palette)
-#     print(palette)
-
-#     # Obtener parámetros de input
-#     target_color = list(map(int, input("Ingrese el color objetivo (R,G,B): ").split(",")))
-#     population_size = int(input("Ingrese el tamaño de la población: "))
-#     mutation_probability = float(input("Ingrese la probabilidad de mutación (entre 0 y 1): "))
-#     max_generations = int(input("Ingrese el número máximo de generaciones: "))
-
-#     # Ejecutar algoritmo genético
-#     best_chromosome, best_fitness = genetic_algorithm(palette, target_color, population_size, mutation_probability, max_generations)
-
-#     # Imprimir resultado
-#     print("El mejor cromosoma encontrado es:", best_chromosome)
-#     print("Su aptitud es:", best_fitness)
