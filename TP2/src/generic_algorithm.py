@@ -1,6 +1,8 @@
 import random
 import math
 import numpy as np
+import pdb
+
 
 PROBABILISTIC_TOURNAMENT_VALUE = 0.75
 
@@ -20,15 +22,23 @@ def calculate_fitness(chromosome, palette, target_color):
     g /= len(chromosome)
     b /= len(chromosome)
     distance = math.sqrt((target_color[0]-r)**2 + (target_color[1]-g)**2 + (target_color[2]-b)**2)
-    return 1 / (1 + distance)
+    return distance
+
+# Función para realizar la selección de padres por ruleta pero devuelve solo 1 individuo
+# def roulette_selection(population, fitness_values):
+#     total_fitness = sum(fitness_values)
+#     selection_probabilities = np.array([fitness/total_fitness for fitness in fitness_values])
+#     selected_index = random.choices(range(len(population)), weights=selection_probabilities, k=1)[0]
+#     return population[selected_index]
 
 
 # Función para realizar la selección de padres por ruleta
 def roulette_selection(population, fitness_values):
     total_fitness = sum(fitness_values)
     selection_probabilities = np.array([fitness/total_fitness for fitness in fitness_values])
-    selected_index = random.choices(range(len(population)), weights=selection_probabilities, k=1)[0]
-    return population[selected_index]
+    selected_indices = random.choices(range(len(population)), weights=selection_probabilities, k=len(population)//2)
+    selected_population = [population[i] for i in selected_indices]
+    return selected_population
 
 
 def elite_selection(population,fitness_values):
@@ -64,18 +74,18 @@ def probabilistic_tournament_selection(population,fitness_values):
     return population
             
     
-#asigno un rango dependiendo del fitness value de cada individuo, y a partir de ese rango calculo la probabilidad de seleccion (es una alternativa a ruleta)
+# Asigno un rango dependiendo del fitness value de cada individuo, y a partir de ese rango calculo la probabilidad de seleccion (es una alternativa a ruleta)
 def rank_selection(population, fitness_values):
 
     n = len(population)
-    #ordeno dependiendo del fitness value a la population de mayor a menor
+    # Ordeno dependiendo del fitness value a la population de mayor a menor
     sorted_pairs = sorted(zip(fitness_values, population), reverse=True)
     # sorted_fitness=[pair[0] for pair in sorted_pairs]
     sorted_population = [pair[1] for pair in sorted_pairs]
    
     ranks = np.array([n - i for i in range(n)])
 
-    #divido cada valor sobre la suma total
+    # Divido cada valor sobre la suma total
     selection_probs = ranks / np.sum(ranks)
     selected_individuals = np.random.choice(sorted_population, size=n//2, replace=True, p=selection_probs)
     return list(selected_individuals)
@@ -105,91 +115,47 @@ def generate_population(population_size, palette_size):
     population = np.array([generate_chromosome(palette_size) for i in range(population_size)])
     return population
 
+
 def generate_couples(array):
-    # permutar aleatoriamente los índices del array
-    null_element=None
-    permutation = np.random.permutation(array.shape[0])
-    #if len(array) % 2 != 0:
-    #    null_element=array[permutation[len(array)-1]]
-    #    array=np.delete(array,array[permutation[len(array)-1]])
-    #    permutation=np.delete(permutation,permutation[len(array)-1])
-    #    print(null_element)
+    # Permutar aleatoriamente los índices del array
+    null_element = None
+    permutation = random.sample(range(len(array)), len(array))
+    random.shuffle(permutation)
+
+    # Verificar si la longitud del array es impar
+    if len(array) % 2 != 0:
+        null_element = array[-1]
+        array = array[:-1]
+
+    # Dividir el array permutado en parejas consecutivas de elementos
+    pairs = []
+    for i in range(0, len(pairs), 2):
+        if i+1 < len(array):
+            pair = (array[permutation[i]], array[permutation[i+1]])
+            pairs.append(pair)
+
+    # Devolver las parejas y el elemento nulo
+    return pairs, null_element
+
+
+
+
+
+
+# def generate_couples(array):
+#     # Permutar aleatoriamente los índices del array
+#     null_element=None
+#     permutation = np.random.permutation(array.shape[0])
+#     #if len(array) % 2 != 0:
+#     #    null_element=array[permutation[len(array)-1]]
+#     #    array=np.delete(array,array[permutation[len(array)-1]])
+#     #    permutation=np.delete(permutation,permutation[len(array)-1])
+#     #    print(null_element)
                 
-    # dividir el array permutado en parejas consecutivas de elementos
-    pairs = np.array(list(zip(array[permutation[::2]], array[permutation[1::2]])))
+#     # Dividir el array permutado en parejas consecutivas de elementos
+#     pairs = np.array(list(zip(array[permutation[::2]], array[permutation[1::2]])))
     
     
-    # devolver las parejas y el elemento nulo
-    return pairs, np.array(null_element)
-
-
-# import random
-# import math
-# import numpy as np
-
-# def generate_chromosome(palette_size):
-#     return [random.randint(0, palette_size-1) for i in range(palette_size)]
-
-# def calculate_fitness(chromosome, palette, target_color):
-#     # Se calculan todas las componentes R, G, B a la vez en una sola iteración
-#     r, g, b = 0, 0, 0
-#     for index in chromosome:
-#         r += palette[index][0]
-#         g += palette[index][1]
-#         b += palette[index][2]
-#     r /= len(chromosome)
-#     g /= len(chromosome)
-#     b /= len(chromosome)
-#     return math.sqrt((target_color[0]-r)**2 + (target_color[1]-g)**2 + (target_color[2]-b)**2)
-
-# def roulette_selection(population, fitness_values):
-#     # Se utiliza la función de numpy para normalizar la lista de aptitudes
-#     selection_probabilities = np.array(fitness_values) / np.sum(fitness_values)
-#     selected_index = np.random.choice(range(len(population)), p=selection_probabilities)
-#     return population[selected_index]
-
-# def uniform_crossover(parent1, parent2):
-#     # Se utiliza la función de numpy para hacer el muestreo aleatorio de los bits
-#     mask = np.random.randint(0, 2, len(parent1), dtype=bool)
-#     child = parent1.copy()
-#     child[mask] = parent2[mask]
-#     return child
-
-# def mutation(chromosome, palette_size, mutation_probability):
-#     # Se utiliza la función de numpy para hacer el muestreo aleatorio de los bits
-#     mask = np.random.random(size=len(chromosome)) < mutation_probability
-#     chromosome[mask] = np.random.randint(0, palette_size, size=np.sum(mask))
-#     return chromosome
-
-# def generate_population(population_size, palette_size):
-#     # Se utiliza la función de numpy para generar toda la población de una vez
-#     return np.random.randint(0, palette_size, size=(population_size, palette_size))
-
-
-# def genetic_algorithm(palette, target_color, population_size=100, num_generations=100, mutation_probability=0.01):
-#     palette_size = len(palette)
-#     population = generate_population(population_size, palette_size)
-#     fitness_values = [calculate_fitness(chromosome, palette, target_color) for chromosome in population]
-
-#     for i in range(num_generations):
-#         new_population = []
-
-#         while len(new_population) < population_size:
-#             parent1 = roulette_selection(population, fitness_values)
-#             parent2 = roulette_selection(population, fitness_values)
-#             child = uniform_crossover(parent1, parent2)
-#             child = mutation(child, palette_size, mutation_probability)
-#             new_population.append(child)
-
-#         population = new_population
-#         fitness_values = [calculate_fitness(chromosome, palette, target_color) for chromosome in population]
-
-#         best_fitness = min(fitness_values)
-#         best_index = fitness_values.index(best_fitness)
-#         best_chromosome = population[best_index]
-
-#         if i % 10 == 0:
-#             print(f"Generation {i}: Best fitness = {best_fitness:.3f}, Best chromosome = {best_chromosome}")
-    
-#     return best_chromosome
+#     # Devolver las parejas y el elemento nulo
+#     return pairs, np.array(null_element)
 

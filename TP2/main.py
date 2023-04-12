@@ -1,8 +1,9 @@
 import csv
-from src.generic_algorithm import generate_population, calculate_fitness, roulette_selection, uniform_crossover, mutation,elite_selection,rank_selection,probabilistic_tournament_selection,generate_couples
 import copy
 import random
 import numpy as np
+from src.generic_algorithm import generate_population, calculate_fitness, roulette_selection, uniform_crossover, mutation,elite_selection,rank_selection,probabilistic_tournament_selection,generate_couples
+from src.chromosome_to_rgb import chromosome_to_rgb
 
 
 if __name__ == "__main__":
@@ -35,7 +36,7 @@ if __name__ == "__main__":
         MAX_GENERATIONS = int(input("Por favor ingrese un numeor positivo para el máximo de generaciones: "))
 
     # Obtengo el algoritmo de seleccion
-    GENERIC_ALGORITHM = int(input("\nSeleccione que algoritmo de seleccion que quieres que te lo resuelva\n\t1. Roulette.\n\t2. Elite.\n\t3. Probabilistic Tournament.\n\t4. Rank."))
+    GENERIC_ALGORITHM = int(input("Seleccione que algoritmo de seleccion que quieres que te lo resuelva\n\t1. Roulette.\n\t2. Elite.\n\t3. Probabilistic Tournament.\n\t4. Rank.\n"))
     while GENERIC_ALGORITHM != 1 and GENERIC_ALGORITHM != 2 and GENERIC_ALGORITHM != 3 and GENERIC_ALGORITHM != 4:
             GENERIC_ALGORITHM = int(input("El numero ingresado es incorrecto, por favor ingrese un numero del 1 al 4: "))
     
@@ -49,7 +50,7 @@ if __name__ == "__main__":
         
         fitness_values = np.array([calculate_fitness(chromosome, palette, TARGET_COLOR) for chromosome in population])
         
-        parents = elite_selection(copy.deepcopy(population),fitness_values)
+        parents = roulette_selection(copy.deepcopy(population),fitness_values)
         result = generate_couples(parents)
         couples = result[0]
         childs = []
@@ -74,10 +75,14 @@ if __name__ == "__main__":
 
     # Obtener mejor cromosoma y su aptitud
     fitness_values = [calculate_fitness(chromosome,palette, TARGET_COLOR) for chromosome in population]
-    best_index = fitness_values.index(max(fitness_values))
+    best_index = fitness_values.index(min(fitness_values))
     best_chromosome = population[best_index]
     best_fitness = fitness_values[best_index]
 
+    # Obtengo el color RGB del cromosoma
+    best_rgb_color = chromosome_to_rgb(best_chromosome, 'colors.csv')
+
     # Imprimir resultado
     print("El mejor cromosoma encontrado es:", best_chromosome)
+    print("El mejor color encontrado es: ", best_rgb_color)
     print("Su aptitud es:", best_fitness)
