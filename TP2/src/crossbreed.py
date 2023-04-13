@@ -50,7 +50,7 @@ def uniform_crossbreed_per_color(component1, component2):
     child_bin2 = getbinary(component2, 8)
 
     for i in range(8):
-        if numpy.random.uniform() > 0.5:
+        if np.random.uniform() > 0.5:
             aux = child_bin1[i]
             child_bin1 = child_bin1[:i] + child_bin2[i] + child_bin1[i + 1:]
             child_bin2 = child_bin2[:i] + aux + child_bin2[i + 1:]

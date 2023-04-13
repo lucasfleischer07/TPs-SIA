@@ -3,5 +3,6 @@
     "selection_algorithm": "rank",
     "mutation_rate": 0.2,
     "max_generations": 90,
-    "expected_fitness": 0.95
+    "expected_fitness": 0.95,
+    "population_number": 60
 }
