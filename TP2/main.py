@@ -2,9 +2,9 @@ import json
 import numpy as np
 import sys
 import matplotlib.pyplot as plt
-from color import EachColor
 
-from genetic_algorithm import genetic_algorithm
+from src.each_color import EachColor
+from src.generic_algorithm import genetic_algorithm
 
 
 def read_file():
@@ -13,7 +13,7 @@ def read_file():
      
 
 def set_data_from_file(conf_file):
-    return conf_file['color_palette'], conf_file['selection_algorithm'], conf_file['max_generations'], conf_file['expected_fitness']
+    return conf_file['colors_palette'], conf_file['selection_algorithm'], conf_file['max_generations'], conf_file['expected_fitness']
 
 
 if __name__ == "__main__":

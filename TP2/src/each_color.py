@@ -4,6 +4,7 @@ MAX_INT = 255
 class EachColor:
 
     MAX_DISTANCE = math.sqrt(3 * math.pow(255, 2))
+    
     def __init__(self, red, green, blue):
         self.red = red
         self.green = green

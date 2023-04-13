@@ -1,10 +1,10 @@
 from audioop import reverse
 from hashlib import new
 from operator import ge, ne
-from color import EachColor
-from crossbreed import *
-from selection import selection
-from mutation import *
+from src.each_color import EachColor
+from src.crossbreed import *
+from src.selections_algorithms import selection_method
+from src.mutation import *
 import math
 import random
 import copy
@@ -40,9 +40,8 @@ def genetic_algorithm(population, target, selection_algorithm, max_generations, 
         for c in range(n_iterations):
             parent1 = population[j]
             parent2 = population[j+1]
-            print("population[j] " + str(parent1))
             j = j+2
-            first_child, sec_child = uniform_crossbreed(parent1,parent2)
+            first_child, sec_child = uniform_crossbreed(parent1, parent2)
             
             if numpy.random.uniform() > 0.5:
                 new_pop.append(first_child)
@@ -68,7 +67,7 @@ def genetic_algorithm(population, target, selection_algorithm, max_generations, 
             new_pop.append(population[c * 2])
 
         
-        selection(new_pop, target, selection_algorithm)
+        selection_method(new_pop, target, selection_algorithm)
 
         max = new_pop[0]
 

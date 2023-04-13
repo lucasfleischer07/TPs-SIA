@@ -1,5 +1,5 @@
 {
-    "color_palette" :"color_palette.txt",
+    "colors_palette" :"colors_palette.txt",
     "selection_algorithm": "rank",
     "max_generations": 90,
     "expected_fitness": 0.95
