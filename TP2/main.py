@@ -13,7 +13,7 @@ def read_file():
      
 
 def set_data_from_file(conf_file):
-    return conf_file['colors_palette'], conf_file['selection_algorithm'], conf_file['max_generations'], conf_file['expected_fitness']
+    return conf_file['colors_palette'], conf_file['selection_algorithm'], conf_file['mutation_rate'], conf_file['max_generations'], conf_file['expected_fitness']
 
 
 if __name__ == "__main__":
@@ -21,7 +21,7 @@ if __name__ == "__main__":
     target_color : EachColor
 
     conf_file = read_file()
-    color_palette, selection_algorithm, max_generations, expected_fitness = set_data_from_file(conf_file)
+    color_palette, selection_algorithm, mutation_rate, max_generations, expected_fitness = set_data_from_file(conf_file)
     
     with open(color_palette, 'r') as file:
         first_line_is_target_color = file.readline()
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     file.close()
 
 
-    result = genetic_algorithm(colors_from_palette, target_color, selection_algorithm, max_generations, expected_fitness)
+    result = genetic_algorithm(colors_from_palette, target_color, selection_algorithm, mutation_rate, max_generations, expected_fitness)
 
     print("El color que se obtuvo como resultado es (R G B): " + str(result))
     print("El fitness obtenido fue de: " + str(round(result.get_fitness(target_color), 4)))

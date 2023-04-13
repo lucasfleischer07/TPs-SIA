@@ -13,9 +13,9 @@ def in_population(pop, candidate):
     return False
 
 
-def uniform_mutation(new_population, population, target):
+def uniform_mutation(new_population, target, mutation_rate):
     old_color : EachColor
-    for individual in population:
-        if np.random.uniform() < 0.5:
+    for individual in new_population:
+        if np.random.uniform() < mutation_rate:
             individual.mutate()
             

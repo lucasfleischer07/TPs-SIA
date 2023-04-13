@@ -1,5 +1,8 @@
 import math
+
+import numpy as np
 MAX_INT = 255
+DELTA = 50
 
 class EachColor:
 
@@ -23,8 +26,26 @@ class EachColor:
     def equals(self, color):
         return (self.red == color.red) and (self.green == color.green) and (self.blue == color.blue)
     
+    def __selectMutationAmount(self,value):
+        if np.random.uniform() > 0.5 :
+            if value <= 205 :
+                return value + DELTA
+            else:
+                return value - DELTA
+        else:
+            if value >= 50 :
+                return value - DELTA
+            else:
+                return value + DELTA
+
 
     def mutate(self):
-        self.red = MAX_INT - self.red
-        self.green = MAX_INT - self.green
-        self.blue = MAX_INT - self.blue
+        color_random = np.random.uniform()
+        if color_random <= 0.33 :
+            self.red = self.__selectMutationAmount(self.red) 
+        elif color_random > 0.33 and color_random <= 0.66 :
+            self.green = self.__selectMutationAmount(self.green) 
+        else :
+            self.blue = self.__selectMutationAmount(self.blue) 
+
+        

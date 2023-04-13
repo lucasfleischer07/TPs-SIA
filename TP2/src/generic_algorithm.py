@@ -24,7 +24,7 @@ def validation_fitness(expected_fitness):
 
 # Se generan dos hijos por pareja, de ellos se toma uno random
 # De la poblacion vieja se toma la mitad tambien
-def genetic_algorithm(population, target, selection_algorithm, max_generations, expected_fitness):
+def genetic_algorithm(population, target, selection_algorithm, mutation_rate, max_generations, expected_fitness):
     expected_fitness = validation_fitness(expected_fitness)
     closest_fit = 0
     
@@ -59,7 +59,7 @@ def genetic_algorithm(population, target, selection_algorithm, max_generations, 
 
         # nos quedamos con los mejores de la vieja poblacion 
         # Mutamos de forma uniforme a la antigua generacion 
-        uniform_mutation(new_pop, population, target)
+        uniform_mutation(new_pop, target,mutation_rate)
 
         # De la antigua generacion nos quedamos con la mitad, los que estan en indice par por ejemplo
         # De esta forma tomamos mitad de la poblacion vieja y mitad de la nueva
