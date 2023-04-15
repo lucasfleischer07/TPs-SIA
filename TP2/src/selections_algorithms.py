@@ -1,19 +1,20 @@
 from src.each_color import EachColor
 import numpy as np
 import math
+import copy
+import random
 
 PROBABILISTIC_TOURNAMENT_VALUE = 0.75
 
 def selection_method(population, target, selection_algorithm):
-        match selection_algorithm: 
-            case "elite":
-                elite_selection(population, target)
-            case "roulette":
-                roulette_selection(population, target)
-            case "rank":
-                rank_selection(population, target)
-            # case "probabilistic_tournament":
-            #     probabilistic_tournament_selection(population, target)
+    if selection_algorithm == "elite":
+        elite_selection(population, target)
+    elif selection_algorithm == "roulette":
+        roulette_selection(population, target)
+    elif selection_algorithm == "rank":
+        rank_selection(population, target)
+    elif selection_algorithm=="probabilistic_tournament":
+         probabilistic_tournament_selection(population, target)
 
 
 def elite_selection(population, target):
@@ -44,25 +45,21 @@ def rank_selection(population, target):
 
 
 # TODO AJUSTAR
-# def probabilistic_tournament_selection(population,fitness_values):
-#     newPopulation=np.array([])
-#     while(population.size>0):
-#         if population.size==1:
-#             newPopulation.append(population[0])
-#             population=np.delete(population,0)
-#             fitness_values=np.delete(fitness_values,0)
-#         else:
-#             random_numbers = random.sample(range(0, population.size), 2)
-#             if(random.random()<PROBABILISTIC_TOURNAMENT_VALUE):
-#                 if(fitness_values[random_numbers[0]] > fitness_values[random_numbers[1]]):
-#                     newPopulation.append[population[random_numbers[0]]]
-#                 else: newPopulation.append[population[random_numbers[1]]]
-#             else: 
-#                 if(fitness_values[random_numbers[0]] > fitness_values[random_numbers[1]]):
-#                     newPopulation.append[population[random_numbers[1]]]
-#                 else: newPopulation.append[population[random_numbers[0]]]
-#             population=np.delete(population,max(random_numbers))
-#             fitness_values=np.delete(fitness_values,max(random_numbers))
-#             population=np.delete(population,min(random_numbers))
-#             fitness_values=np.delete(fitness_values,min(random_numbers))
-#     return population
+def probabilistic_tournament_selection(population,target):
+    random.shuffle(population)
+    n=len(population)
+    newPopulation=[]
+    if n % 2 == 1:
+        population.append(copy.deepcopy(population[0]))
+    for i in range(0, n, 2):
+        if population[i].get_fitness(target) > population[i+1].get_fitness(target):
+            best_color=population[i]
+            worst_color=population[i+1]
+        else:
+            best_color=population[i+1]
+            worst_color=population[i]
+        if(random.random()<PROBABILISTIC_TOURNAMENT_VALUE):
+            newPopulation.append(best_color)
+        else:
+            newPopulation.append(worst_color)
+    population=newPopulation

@@ -1,6 +1,6 @@
 {
     "colors_palette" :"colors_palette.txt",
-    "selection_algorithm": "rank",
+    "selection_algorithm": "roulette",
     "mutation_rate": 0.2,
     "max_generations": 90,
     "expected_fitness": 0.95,

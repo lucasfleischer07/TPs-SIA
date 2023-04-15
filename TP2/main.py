@@ -23,27 +23,26 @@ if __name__ == "__main__":
 
     conf_file = read_file()
     colors_palette, selection_algorithm, mutation_rate, max_generations, expected_fitness, population_number, fitness_cut = set_data_from_file(conf_file)
-    if not fitness_cut:
-        expected_fitness = 1.1
+    
 
 
     with open(colors_palette, 'r') as file:
         first_line_is_target_color = file.readline()
         
         red, green, blue = first_line_is_target_color.split()
-        target_color = EachColor(int(red), int(green), int(blue))
+        target_color = EachColor(int(red), int(green), int(blue),mutation_rate)
 
         n = population_number
         random_lines = random.sample(file.readlines(), n)        
 
         for line in random_lines :
             red, green, blue = line.split()
-            current_color = EachColor(int(red), int(green), int(blue))
+            current_color = EachColor(int(red), int(green), int(blue),mutation_rate)
             colors_from_palette.append(current_color)
     file.close()
 
 
-    result, generation_fitnesses, populations = genetic_algorithm(colors_from_palette, target_color, selection_algorithm, mutation_rate, max_generations, expected_fitness, population_number)
+    result, generation_fitnesses, populations = genetic_algorithm(colors_from_palette, target_color, selection_algorithm, mutation_rate, max_generations, expected_fitness, population_number,fitness_cut)
 
     print("El color que se obtuvo como resultado es (R G B): " + str(result))
     print("El fitness obtenido fue de: " + str(round(result.get_fitness(target_color), 4)))
@@ -56,4 +55,6 @@ if __name__ == "__main__":
                 [(target_color.red / 255, target_color.green / 255, target_color.blue / 255)]])
     plt.text(0, 0, 'Color Encontrado', color=complemento_encontrado, ha='center', va='center')
     plt.text(0, 1, 'Color Objetivo', color=complemento_objetivo, ha='center', va='center')
+    plt.axis('off')
+    plt.gca().format_coord = lambda x, y: ''
     plt.show()

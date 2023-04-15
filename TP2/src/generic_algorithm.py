@@ -10,13 +10,7 @@ import random
 import copy
 import numpy
 
-red_coordinates = []
-green_coordinates = []
-blue_coordinates = []
 
-color_fit_coordinates = []
-generation_maxes = []
-closest_color = EachColor(0, 0, 0)
 
 limit_generation = 1000
 
@@ -27,14 +21,14 @@ def validation_fitness(expected_fitness):
 
 # Se generan dos hijos por pareja, de ellos se toma uno random
 # De la poblacion vieja se toma la mitad tambien
-def genetic_algorithm(population, target, selection_algorithm, mutation_rate, max_generations, expected_fitness,population_size):
+def genetic_algorithm(population, target, selection_algorithm, mutation_rate, max_generations, expected_fitness,population_size,fitness_cut):
     expected_fitness = validation_fitness(expected_fitness)
     closest_fit = 0
-    
+    generation_maxes = []
     gen = 0
-    max : float
     populations=[]
     while gen < (limit_generation):
+        max=None
         populations.append(copy.deepcopy(population))
         parents = copy.deepcopy(population)
         selection_method(parents, target, selection_algorithm)
@@ -60,19 +54,20 @@ def genetic_algorithm(population, target, selection_algorithm, mutation_rate, ma
            new_pop.append(parents[i])
 
         max = new_pop[0]
-
         for individual in new_pop:
             if individual.get_fitness(target) > max.get_fitness(target):
-                max = EachColor(individual.red, individual.green, individual.blue)
-        
+                max = EachColor(individual.red, individual.green, individual.blue,mutation_rate)
         generation_maxes.append(max.get_fitness(target))
-        if(max.get_fitness(target) >= expected_fitness):
+
+        if(fitness_cut and max.get_fitness(target) >= expected_fitness):
             print("Encontrado en la generacion numero: " + str(gen))
             return max,generation_maxes,populations
 
 
-        print(max.get_fitness(target))
+        
         population = new_pop
         gen += 1
+        if not fitness_cut and gen >= max_generations:
+            return max, generation_maxes, populations
         
     return max, generation_maxes, populations

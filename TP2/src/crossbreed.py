@@ -41,8 +41,8 @@ def uniform_crossbreed(parent1, parent2):
     child_green1, child_green2 = uniform_crossbreed_per_color(parent1.green, parent2.green)
     child_blue1, child_blue2 = uniform_crossbreed_per_color(parent1.blue, parent2.blue)
 
-    child1 = EachColor(child_red1, child_green1, child_blue1)
-    child2 = EachColor(child_red2, child_green2, child_blue2)
+    child1 = EachColor(child_red1, child_green1, child_blue1,parent1.pm)
+    child2 = EachColor(child_red2, child_green2, child_blue2,parent2.pm)
 
     return child1, child2
 
