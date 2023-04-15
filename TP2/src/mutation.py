@@ -3,8 +3,6 @@ import numpy as np
 
 #TODO IAN SEGUIR HAY PARAMETROS Q NO USAMOS
 
-def mutate(color):
-    return np.random.randint(0,255)
 
 def in_population(pop, candidate):
     for individual in pop:
@@ -13,9 +11,9 @@ def in_population(pop, candidate):
     return False
 
 
-def uniform_mutation(new_population, target, mutation_rate):
-    old_color : EachColor
+def uniform_mutation(new_population, mutation_rate):
     for individual in new_population:
+        individual: EachColor
         if np.random.uniform() < mutation_rate:
             individual.mutate()
             

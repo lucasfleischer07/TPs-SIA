@@ -4,5 +4,6 @@
     "mutation_rate": 0.2,
     "max_generations": 90,
     "expected_fitness": 0.95,
-    "population_number": 60
+    "population_number": 60,
+    "fitness_cut": true
 }

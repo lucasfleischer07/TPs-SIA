@@ -2,6 +2,7 @@ import numpy as np
 from src.each_color import EachColor
 
 # TODO: No esta testeado
+"""
 def uniform_crossbreed(parent1, parent2):
     child1_components = []
     child2_components = []
@@ -28,7 +29,7 @@ def uniform_crossbreed(parent1, parent2):
     child2 = EachColor(child2_components[0], child2_components[1], child2_components[2])
 
     return child1, child2
-
+"""
 
 # def crossbreed(one, two):
 

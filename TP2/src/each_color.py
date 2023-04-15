@@ -38,7 +38,6 @@ class EachColor:
             else:
                 return value + DELTA
 
-
     def mutate(self):
         color_random = np.random.uniform()
         if color_random <= 0.33 :

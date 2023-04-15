@@ -14,7 +14,7 @@ def read_file():
      
 
 def set_data_from_file(conf_file):
-    return conf_file['colors_palette'], conf_file['selection_algorithm'], conf_file['mutation_rate'], conf_file['max_generations'], conf_file['expected_fitness'], conf_file['population_number']
+    return conf_file['colors_palette'], conf_file['selection_algorithm'], conf_file['mutation_rate'], conf_file['max_generations'], conf_file['expected_fitness'], conf_file['population_number'], conf_file['fitness_cut']
 
 
 if __name__ == "__main__":
@@ -22,8 +22,11 @@ if __name__ == "__main__":
     target_color : EachColor
 
     conf_file = read_file()
-    colors_palette, selection_algorithm, mutation_rate, max_generations, expected_fitness, population_number = set_data_from_file(conf_file)
-    
+    colors_palette, selection_algorithm, mutation_rate, max_generations, expected_fitness, population_number, fitness_cut = set_data_from_file(conf_file)
+    if not fitness_cut:
+        expected_fitness = 1.1
+
+
     with open(colors_palette, 'r') as file:
         first_line_is_target_color = file.readline()
         
@@ -40,13 +43,17 @@ if __name__ == "__main__":
     file.close()
 
 
-    result = genetic_algorithm(colors_from_palette, target_color, selection_algorithm, mutation_rate, max_generations, expected_fitness)
+    result, generation_fitnesses, populations = genetic_algorithm(colors_from_palette, target_color, selection_algorithm, mutation_rate, max_generations, expected_fitness, population_number)
 
     print("El color que se obtuvo como resultado es (R G B): " + str(result))
     print("El fitness obtenido fue de: " + str(round(result.get_fitness(target_color), 4)))
     print("Numero de poblacion: " + str(population_number))
 
-    # Grafica el color deseado y el color aproximado
+    complemento_encontrado = (1 - result.red/255, 1 - result.green/255, 1 - result.blue/255)
+    complemento_objetivo = (1 - target_color.red/255, 1 - target_color.green/255, 1 - target_color.blue/255)
+
     plt.imshow([[(result.red / 255, result.green / 255, result.blue / 255)],
                 [(target_color.red / 255, target_color.green / 255, target_color.blue / 255)]])
+    plt.text(0, 0, 'Color Encontrado', color=complemento_encontrado, ha='center', va='center')
+    plt.text(0, 1, 'Color Objetivo', color=complemento_objetivo, ha='center', va='center')
     plt.show()
