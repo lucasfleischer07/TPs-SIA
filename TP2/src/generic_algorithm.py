@@ -11,7 +11,6 @@ import copy
 import numpy
 
 
-
 limit_generation = 1000
 
 def validation_fitness(expected_fitness):

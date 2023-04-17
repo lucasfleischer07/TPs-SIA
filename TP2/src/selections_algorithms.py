@@ -44,7 +44,6 @@ def rank_selection(population, target):
     population = np_array
 
 
-# TODO AJUSTAR
 def probabilistic_tournament_selection(population,target):
     random.shuffle(population)
     n=len(population)

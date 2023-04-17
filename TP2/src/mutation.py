@@ -1,8 +1,6 @@
 from src.each_color import EachColor
 import numpy as np
 
-#TODO IAN SEGUIR HAY PARAMETROS Q NO USAMOS
-
 
 def in_population(pop, candidate):
     for individual in pop:
