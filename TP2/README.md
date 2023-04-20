@@ -12,7 +12,6 @@ Trabajo práctico orientativo para la materia Sistemas de Inteligencia Artificia
 
 - Python3
 - pip3
-- Libreria arcade
 - [pipenv](https://pypi.org/project/pipenv/)
 
 ### Configuracion
