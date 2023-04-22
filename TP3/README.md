@@ -1,11 +1,11 @@
-# TP3 SIA - Perceptrones
+# TP3 SIA - Perceptron Simple y Multicapa
 
 ## Introducción
 
-<!-- Trabajo práctico orientativo para la materia Sistemas de Inteligencia Artificial con el objetivo de implementar un programa que tome una imágen cuadrada y trate de representar de la mejormanera posible dicha imágen en un mapa de NxN caractéres ASCII e implementar un sistema que, mediante Algoritmos Genéticos, logre encontrar la forma de mezclar proporciones de los diferentes colores de su paleta paralograr el color que más se le acerque al color deseado -->
+Trabajo práctico orientativo para la materia Sistemas de Inteligencia Artificial con el objetivo de implementar el algoritmo de perceptrón simple con función de activación escalón y utilizar el mismo para aprender, implementar el algoritmo de perceptrón simple lineal y perceptrón simple no lineal y utilizar elmismo para aprender e implementar el algoritmo de perceptrón multicapa y utilizarlo para aprender 
 
 - [Enunciado](docs/SIA_TP3.pdf)
-- [Presentacion](docs/SIA_TP3_Perceptrones.pdf)
+- [Presentacion](docs/SIA_TP3_Perceptron_Simple_y_Multicapa.pdf)
 
 
 ### Requisitos

@@ -1,0 +1,5 @@
+{
+    "operation": "and",
+    "learning_rate": 0.001,
+    "generation": 1000
+}
