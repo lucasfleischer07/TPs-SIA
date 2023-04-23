@@ -1,10 +1,11 @@
-from src.perceptron import Perceptron
 import numpy as np
+
+from src.perceptron import Perceptron
 
 class StepPerceptron(Perceptron):
 
-    def __init__(self, training, expected_output, learning_rate):
-        super().__init__(training, expected_output, learning_rate, "STEP")
+    def __init__(self, learning_rate, epochs):
+        super().__init__(learning_rate, "STEP", epochs)
 
 
     #  Opcion 1 (Otro TP)

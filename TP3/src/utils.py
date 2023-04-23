@@ -1,4 +1,5 @@
 from matplotlib import pyplot as plt, animation
+
 import numpy as np
 
 # Documentation of pyplot
