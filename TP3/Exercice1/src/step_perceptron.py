@@ -7,15 +7,15 @@ class StepPerceptron(Perceptron):
         super().__init__(training, expected_output, learning_rate, "STEP")
 
 
-    #  Opcion 1
+    #  Opcion 1 (Otro TP)
     # def activation(self, excitation):
     #     return 1.0 if excitation >= 0.0 else -1.0
 
-    #  Opcion 2
+    #  Opcion 2 (Chat)
     def activation(self, x):
-        return np.where(x >= 0, 1, -1)
+        return np.where(x >= 1, 1, -1)
 
-
+    # Otro TP
     def error(self, w):
         error = 0
         for i in range(len(self.training)):

@@ -2,7 +2,7 @@
 
 ## Introducción
 
-Trabajo práctico orientativo para la materia Sistemas de Inteligencia Artificial con el objetivo de implementar el algoritmo de perceptrón simple con función de activación escalón y utilizar el mismo para aprender, implementar el algoritmo de perceptrón simple lineal y perceptrón simple no lineal y utilizar elmismo para aprender e implementar el algoritmo de perceptrón multicapa y utilizarlo para aprender 
+Trabajo práctico orientativo para la materia Sistemas de Inteligencia Artificial con el objetivo de implementar el algoritmo de perceptrón simple con función de activación escalón y utilizar el mismo para aprender, implementar el algoritmo de perceptrón simple lineal y perceptrón simple no lineal y utilizar elmismo para aprender e implementar el algoritmo de perceptrón multicapa y utilizarlo para aprender. 
 
 - [Enunciado](docs/SIA_TP3.pdf)
 - [Presentacion](docs/SIA_TP3_Perceptron_Simple_y_Multicapa.pdf)

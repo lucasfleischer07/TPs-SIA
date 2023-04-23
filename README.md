@@ -18,3 +18,7 @@ En el TP1, se implementa un programa en el lenguaje Python para encontrar soluci
 ## TP2 - [Color Picker](https://github.com/lucasfleischer07/TPs-SIA/tree/main/TP2)
 
 En el TP2, se implementa un programa en Python para implementar un sistema que, mediante algoritmos genéticos, logre encontrar la forma de mezclar proporciones de diferentes colores para lograr el color que más se asemeje al color deseado.
+
+## TP3 - [Multi Layer Perceptrons](https://github.com/lucasfleischer07/TPs-SIA/tree/main/TP3)
+
+En el TP3, seimplementa el algoritmo de perceptrón simple con función de activación escalón, el algoritmo de perceptrón simple lineal y perceptrón simple no lineal y el algoritmo de perceptrón multicapa y utilizarlos para aprender.

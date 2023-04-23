@@ -14,30 +14,23 @@ class Perceptron(ABC):
     
 
     @abstractmethod
-    def error(self, w):
-        pass
-
-    @abstractmethod
     def activation(self, excitation):
         pass
     
-
+    # Del chat
     def train(self, x, y, epochs=100):
+        i = 0
         for epoch in range(epochs):
+            i += 1
             error = 0
             for i in range(len(x)):
-                output = self.activation(np.dot(x[i], self.weights))
+                output = self.activation(np.dot(x[i], self.weights))    
                 delta = self.learning_rate * (y[i] - output)
                 self.weights += delta * x[i]
                 error += int(delta != 0.0)
             if error == 0:
                 break
-    
+        return i,self.weights
 
-    def predict(self, x):
-        return self.activation(np.dot(x, self.weights))
-    
+    def plot(self, X):
 
-
-    def plot(self):
-        print(self.training)
