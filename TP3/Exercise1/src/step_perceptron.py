@@ -14,7 +14,7 @@ class StepPerceptron(Perceptron):
     def train(self, x, y):
         j = 0
         #Agrega un X0=1 a cada entrada
-        x = np.array(list(map(lambda t: np.append(t, [-0.2]), x)), dtype=float)
+        x = np.array(list(map(lambda t: np.append( [1],t), x)), dtype=float)
         error_in_epochs = []
         error = 0
         weights = np.random.rand(len(x[0]))/3
@@ -22,7 +22,7 @@ class StepPerceptron(Perceptron):
             j += 1
             error = 0
             for i in range(len(x)):
-                output = self.activation(np.dot(x[i], weights))    
+                output = self.activation(np.inner(x[i], weights))    
                 delta = self.learning_rate * (y[i] - output)
                 weights += delta * x[i]
                 error += int(delta != 0.0)

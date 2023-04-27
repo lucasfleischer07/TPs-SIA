@@ -28,8 +28,12 @@ def plot_graph(points, output, weight):
        
 
     x = np.linspace(-2, 2, 100)
-    y = -((weight[0] * x + weight[2]) / weight[1])
+    #y = -(weight[0] * x + weight[2] / weight[1])
+    u = weight[0]
+    w = weight[1:]
+    a = -w[0] / w[1]
 
+    y = a * x + (u / w[1])
     ax.plot(x, y, color="black")
     plt.show()
 
