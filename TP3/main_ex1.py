@@ -33,15 +33,10 @@ def main():
         print("Invalid operation")
         return
 
-
     perceptron = StepPerceptron(learning_rate, epochs_amount)
     epochs_taken, final_weights, error_in_epochs, final_error = perceptron.train(training_array, expected_output)
-    print("Epochs: ", epochs_taken)
     print("final_weights: ", final_weights)
-    print("error_in_epochs: ", error_in_epochs)
-    print("final_error: ", final_error)
 
-    
     plot_graph(training_array, expected_output, final_weights)
 
 

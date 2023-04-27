@@ -25,12 +25,14 @@ def plot_graph(points, output, weight):
 
     ax.set_xlim(min_lim, max_lim)
     ax.set_ylim(min_lim, max_lim)
+       
 
     x = np.linspace(-2, 2, 100)
     y = -((weight[0] * x + weight[2]) / weight[1])
 
     ax.plot(x, y, color="black")
     plt.show()
+
 
 def plot_step(inputs, outputs, weights, min_w):
     print("weights len: " + str(len(weights)))

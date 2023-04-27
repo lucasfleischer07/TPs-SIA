@@ -8,19 +8,27 @@ class StepPerceptron(Perceptron):
         super().__init__(learning_rate, "STEP", epochs)
 
 
-    #  Opcion 1 (Otro TP)
-    # def activation(self, excitation):
-    #     return 1.0 if excitation >= 0.0 else -1.0
-
-    #  Opcion 2 (Chat)
     def activation(self, x):
         return np.where(x >= 1, 1, -1)
 
-    # Otro TP
-    def error(self, w):
+    def train(self, x, y):
+        j = 0
+        #Agrega un X0=1 a cada entrada
+        x = np.array(list(map(lambda t: np.append(t, [-0.2]), x)), dtype=float)
+        error_in_epochs = []
         error = 0
-        for i in range(len(self.training)):
-            excitation = np.inner(self.training[i], w)
-            output = self.activation(excitation)
-            error += (self.expected_output[i] - output) ** 2
-        return error / len(self.training)
+        weights = np.random.rand(len(x[0]))/3
+        for epoch in range(self.epochs):
+            j += 1
+            error = 0
+            for i in range(len(x)):
+                output = self.activation(np.dot(x[i], weights))    
+                delta = self.learning_rate * (y[i] - output)
+                weights += delta * x[i]
+                error += int(delta != 0.0)
+            error_in_epochs.append(error)
+        
+            if error == 0:
+                break
+
+        return j,weights,error_in_epochs,error
