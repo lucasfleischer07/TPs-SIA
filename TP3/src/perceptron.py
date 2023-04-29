@@ -31,19 +31,18 @@ class Perceptron(ABC):
         for epoch in range(self.epochs):
             j += 1
             error = 0
+            output=np.array([])
             for i in range(len(x)):
-                # print("X["+str(i)+"]: " + str(x[i]))
-                # print("Y["+str(i)+"]: " + str(y[i]))
-
-                output = self.activation(np.inner(x[i], weights))   
-                delta = self.learning_rate * (y[i] - output) * self.derivative(output)
+                output=np.append(output,self.activation(np.inner(x[i], weights)))   
+            for i in range(len(x)): 
+                delta = self.learning_rate * (y[i] - output[i]) * self.derivative(output[i])
                 
                 #print("DIFERENCIA["+str(i)+"]: " + str(y[i] - output))
                 # print("OUTPUT["+str(i)+"]: " + str(output))
                 #print("DELTA W["+str(i)+"]: " + str(delta * x[i]))
-                print("WEIGHTS PRE CAMBIO "+str(weights))
-                weights += (delta * x[i])
-                print("WEIGHTS POST CAMBIO "+str(weights))
+                # print("WEIGHTS PRE CAMBIO "+str(weights))
+                weights = weights+(delta * x[i])
+                # print("WEIGHTS POST CAMBIO "+str(weights))
             
             error = self.error(x,y,weights)
             error_in_epochs.append(error)
@@ -51,7 +50,7 @@ class Perceptron(ABC):
             if error <= self.error_min:
                 break
 
-            print("NEW WEIGHTS "+str(weights))
+            # print("NEW WEIGHTS "+str(weights))
 
         return j,weights,error_in_epochs,error
 

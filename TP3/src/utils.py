@@ -39,7 +39,7 @@ def plot_graph(points, output, weight):
 
 
 def plot_step(inputs, outputs, weights, min_w):
-    print("weights len: " + str(len(weights)))
+    # print("weights len: " + str(len(weights)))
     fig, ax = plt.subplots()
 
     ax.set_xlabel("x")
