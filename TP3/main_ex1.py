@@ -3,10 +3,10 @@ import json
 
 from Exercise1.src.step_perceptron import StepPerceptron
 from src.utils import plot_graph
+from src.utils import plot_errors
 
 
 def set_initial_data(operation):
-    
     if(operation == "and"):
         training_array = np.array([[-1, 1], [1, -1], [-1, -1], [1, 1]])
         expected_output = np.array([-1, -1, -1, 1])
@@ -35,9 +35,11 @@ def main():
 
     perceptron = StepPerceptron(learning_rate, epochs_amount)
     epochs_taken, final_weights, error_in_epochs, final_error = perceptron.train(training_array, expected_output)
-    print("final_weights: ", final_weights)
 
     plot_graph(training_array, expected_output, final_weights)
+    plot_errors(error_in_epochs)
+    print("Error min: " + str(min(error_in_epochs)))
+    print("Min weight: ", final_weights)
 
 
 if __name__ == "__main__":
