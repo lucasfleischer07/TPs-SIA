@@ -7,6 +7,16 @@ from Exercise2.src.no_linear_perceptron import NoLinearPerceptron
 from src.utils import plot_accuracies
 
 
+def escalate(data):
+    min_expected = min(data)
+    max_expected = max(data)
+
+    data = np.array(data)
+    data = 2 * ((data - min_expected) / (max_expected - min_expected)) - 1
+
+    return data
+
+
 def read_and_load_csv_data():
     with open('Exercise2/docs/TP3-ej2-conjunto.csv', 'r') as csv_file:
         plots = csv.reader(csv_file, delimiter=',')
@@ -33,11 +43,11 @@ def read_and_load_json_data():
     learning_rate = float(data_from_json["learning_rate"])
     perceptron = str(data_from_json["perceptron"])
     epochs_amount = int(data_from_json["epochs"])
-    beta = int(data_from_json["beta"])
-    min_error = int(data_from_json["min_error"])
+    beta = float(data_from_json["beta"])
+    min_error = float(data_from_json["min_error"])
 
     return learning_rate, perceptron, epochs_amount, beta, min_error
-    
+
 
 def main(): 
     data, expected_output = read_and_load_csv_data()
@@ -47,10 +57,21 @@ def main():
         perceptron = LinearPerceptron(learning_rate, epochs_amount, min_error)
         epochs_taken, final_weights, error_in_epochs, final_error = perceptron.train(data[:22], expected_output[:22])
         print("The amount of epochs are: " + str(epochs_taken) + " with errors: " + str(error_in_epochs))
-        print("linear error: " + str(perceptron.evaluate(data[22:],expected_output[22:],final_weights)))
+        print("The evaluate results are: " + str(perceptron.evaluate(data[22:],expected_output[22:],final_weights)))
+        print("The expected results are: " + str(expected_output[22:]))
+        #print("\nLinear Error: " + str(perceptron.evaluate(data[22:],expected_output[22:],final_weights)))
     elif(perceptron == 'NO_LINEAR'):
-        perceptron = NoLinearPerceptron(learning_rate, epochs_amount, beta, min_error, min(expected_output), max(expected_output))
+        
+        expected_output = escalate(expected_output)
+        print("El conjunto de results queda: " + str(expected_output) )
+        perceptron = NoLinearPerceptron(learning_rate, epochs_amount, beta, min_error, (expected_output), (expected_output))
         epochs_taken, final_weights, error_in_epochs, final_error = perceptron.train(data[:22], expected_output[:22])
+        # print("The amount of epochs are: " + str(epochs_taken) + " with errors: " + str(error_in_epochs))
+        print("Los errores fueron: " + str(error_in_epochs) )
+        print("La cantidad de epocas son: " + str(epochs_taken))
+        print("The evaluate results are: " + str(perceptron.evaluate(data[22:],expected_output[22:],final_weights)))
+        print("The expected results are: " + str(expected_output[22:]))
+        # print("\nNo Linear Error: " + str(perceptron.evaluate(data[22:],expected_output[22:],final_weights)))
     else:
         print("Perceptron not found")
         exit(1)
