@@ -3,5 +3,6 @@
     "learning_rate": 0.01,
     "epochs": 500000,
     "beta": 0.8,
-    "min_error": 0.02
+    "min_error": 0.02,
+    "test_size": 22
 }
