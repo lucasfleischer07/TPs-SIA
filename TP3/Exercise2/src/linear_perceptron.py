@@ -12,23 +12,13 @@ class LinearPerceptron(Perceptron):
         return x
 
 
-    def error(self,x,y,w):
+    def error(self, x, y, w):
         error = 0
         for i in range(len(x)):
-            output = np.inner(x[i], w)
-            error = error + ((y[i] - output) ** 2)
+            output = self.activation(np.inner(x[i], w))
+            error += np.power((y[i] - output), 2)
         return  error / 2
 
-
-    # def error(self, x, y, w):
-    #     output = np.dot(x, w)
-    #     error = np.sum(np.square(y - output)) / 2
-    #     return error
-
-    # def error(self, x, y, w):
-    #     output = np.dot(x, w)
-    #     error = np.linalg.norm(y - output) ** 2 / 2
-    #     return error
 
     def derivative(self, exitated_val):
         return 1
