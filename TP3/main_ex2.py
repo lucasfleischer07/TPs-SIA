@@ -45,33 +45,34 @@ def read_and_load_json_data():
     epochs_amount = int(data_from_json["epochs"])
     beta = float(data_from_json["beta"])
     min_error = float(data_from_json["min_error"])
+    test_size = int(data_from_json["test_size"])
 
-    return learning_rate, perceptron, epochs_amount, beta, min_error
+    return learning_rate, perceptron, epochs_amount, beta, min_error, test_size
 
 
 def main(): 
     data, expected_output = read_and_load_csv_data()
-    learning_rate, perceptron, epochs_amount, beta, min_error = read_and_load_json_data()
+    learning_rate, perceptron, epochs_amount, beta, min_error, test_size = read_and_load_json_data()
 
     if(perceptron == 'LINEAR'):
         perceptron = LinearPerceptron(learning_rate, epochs_amount, min_error)
-        epochs_taken, final_weights, error_in_epochs, final_error = perceptron.train(data[:22], expected_output[:22])
+        epochs_taken, final_weights, error_in_epochs, final_error = perceptron.train(data[:test_size], expected_output[:test_size])
         print("The amount of epochs are: " + str(epochs_taken) + " with errors: " + str(error_in_epochs))
-        print("The evaluate results are: " + str(perceptron.evaluate(data[22:],expected_output[22:],final_weights)))
-        print("The expected results are: " + str(expected_output[22:]))
-        #print("\nLinear Error: " + str(perceptron.evaluate(data[22:],expected_output[22:],final_weights)))
+        print("The evaluate results are: " + str(perceptron.evaluate(data[22:],expected_output[test_size:],final_weights)))
+        print("The expected results are: " + str(expected_output[test_size:]))
+        #print("\nLinear Error: " + str(perceptron.evaluate(data[test_size:],expected_output[test_size:],final_weights)))
     elif(perceptron == 'NO_LINEAR'):
         
         expected_output = escalate(expected_output)
         print("El conjunto de results queda: " + str(expected_output) )
         perceptron = NoLinearPerceptron(learning_rate, epochs_amount, beta, min_error, (expected_output), (expected_output))
-        epochs_taken, final_weights, error_in_epochs, final_error = perceptron.train(data[:22], expected_output[:22])
+        epochs_taken, final_weights, error_in_epochs, final_error = perceptron.train(data[:test_size], expected_output[:test_size])
         # print("The amount of epochs are: " + str(epochs_taken) + " with errors: " + str(error_in_epochs))
         print("Los errores fueron: " + str(error_in_epochs) )
         print("La cantidad de epocas son: " + str(epochs_taken))
-        print("The evaluate results are: " + str(perceptron.evaluate(data[22:],expected_output[22:],final_weights)))
-        print("The expected results are: " + str(expected_output[22:]))
-        # print("\nNo Linear Error: " + str(perceptron.evaluate(data[22:],expected_output[22:],final_weights)))
+        print("The evaluate results are: " + str(perceptron.evaluate(data[test_size:],expected_output[test_size:],final_weights)))
+        print("The expected results are: " + str(expected_output[test_size:]))
+        # print("\nNo Linear Error: " + str(perceptron.evaluate(data[test_size:],expected_output[test_size:],final_weights)))
     else:
         print("Perceptron not found")
         exit(1)
