@@ -57,21 +57,27 @@ class MultilayerPerceptron(ABC):
         
 
     def train(self,x,y):
-        print("START WEIGHT")
-        for layer in self.layers:
-            print(layer.weights)
-
-
         for epoch in range(self.epochs):
+            if epoch % 1000 ==0:
+                print("epoch "+str(epoch))
             for i in range(len(x)):
                 propagateResults=self.fowardPropagate(x[i])
                 self.backwardsPropagate(propagateResults,x[i],y[i])
         for i in range(len(x)):
-            print(" input= "+ str(x[i]) +" output= "+ str(self.fowardPropagate(x[i])) + " expected output= " + str(y[i]))
+            results=self.fowardPropagate(x[i])
+            print("input="+str(i)+"output=")
+            for elem in results[len(results)-1]:
+                print("{:.4f}".format(elem))
+            print( " expected output= " + str(y[i]))
+    def test(self,x,y):
+        print("TEST")
+        for i in range(len(x)):
+            results=self.fowardPropagate(x[i])
+            print("input="+str(i)+"output=")
+            for elem in results[len(results)-1]:
+                print("{:.4f}".format(elem))
+            print( " expected output= " + str(y[i]))
 
-        print("END WEIGHT")
-        for layer in self.layers:
-            print(layer.weights)
         
         
 

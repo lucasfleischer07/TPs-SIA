@@ -9,7 +9,7 @@ class ReLuLayer(Layer):
         return max(0,excitation)
     
     def derivative(self, exitated_val):
-        return 1 if exitated_val > 0 else 0
+        return (1 if exitated_val > 0 else 0)
     
     def propagate(self, x):
         return super().propagate(x)

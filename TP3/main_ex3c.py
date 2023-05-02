@@ -5,6 +5,7 @@ from Exercise3.src.reluLayer import ReLuLayer
 from Exercise3.src.sigmoidalLayer import SigmoidalLayer
 
 import numpy as np
+import random
 
 
 def read_and_load_txt_data():
@@ -30,17 +31,43 @@ def read_and_load_txt_data():
         #data = np.concatenate(matriz, axis=1)
         #data = np.transpose(matriz)
     return data
-
+def addNoise(data,prob):
+    for image in data:
+        for pixel in image:
+            if np.random.rand()<prob:
+                print("added noise")
+                print(pixel)
+                if pixel==1:
+                    pixel=0.0
+                else:
+                    pixel=1.0
+                print(pixel)
+    return data
 def main():
     data = read_and_load_txt_data()
-    layer1=ReLuLayer(16,35)
-    layer2=SigmoidalLayer(1,16)
-    layers=np.array([layer1,layer2])
-    perceptron=MultilayerPerceptron(0.01,layers,10000,0.02,0,0)
-    x=data[8:]
-    y=np.array([[1],[-1],[1],[-1],[1],[-1],[1],[-1]])
-    perceptron.train(x,y)
+    layer1=SigmoidalLayer(5,35)
+    layer2=SigmoidalLayer(10,5)
+    layer3=ReLuLayer(10,10)
+    layers=np.array([layer1,layer2,layer3])
+    perceptron=MultilayerPerceptron(0.01,layers,30000,0.02,0,0)
+    data=addNoise(data,0.00)
+    x=data[:8]
+    y=[]
+    
+    for i in range(10):
+        result=[]
+        for j in range(10):
+            if j==i:
+                result.append(1)
+            else:
+                result.append(0)
+        y.append(result)
+
+    perceptron.train(x,y[:8])
+    perceptron.test(data[8:],y[8:])
     
 
 if __name__ == "__main__":
     main()
+
+
