@@ -32,10 +32,10 @@ class MultilayerPerceptron(ABC):
             #get all deltas  
             for j in range(self.layers[i].nodes):
                 if i==len(self.layers)-1:
-                    deltas=np.append(deltas,results[i][j]*(1-results[i][j])*(y[j]-results[i][j]))
-                else:
+                    deltas=np.append(deltas,self.layers[i].derivative(results[i][j])*(y[j]-results[i][j]))
                     
-                    deltas=np.append(deltas,results[i][j]*(1-results[i][j])*(sum(self.layers[i+1].weights[:,j] * prevDeltas)))
+                else:
+                    deltas=np.append(deltas,self.layers[i].derivative(results[i][j])*(sum(self.layers[i+1].weights[:,j] * prevDeltas)))
             
             #update node weights
             for j in range(self.layers[i].nodes):
