@@ -37,7 +37,7 @@ def plot_graph(points, output, weight):
     ax.plot(x, y, color="black")
     plt.show()
 
-def get_accuracy(self, test_set_result, expected_output):
+def get_accuracy(test_set_result, expected_output):
     correct = 0
     print("Results: ", test_set_result)
     print("Expected: ", expected_output)
@@ -104,14 +104,14 @@ def plot_error_in_accuracy(test_results, expected_results):
     ax.scatter(range(results_count), errors, color='b')
     plt.show()
 
-def plot_accuracies(accuracies):
+def plot_accuracies(epochs,accuracies):
     fig, ax = plt.subplots()
 
     ax.set_xlabel('Generation')
     ax.set_ylabel('Accuracy')
     ax.set_title('Evolution of Results\' Accuracy by Generation')
 
-    generations = np.array(range(len(accuracies)))
+    generations = np.array(range(epochs))
 
     ax.set_xlim(0, len(generations))
     ax.set_ylim(0, np.amax(accuracies))
