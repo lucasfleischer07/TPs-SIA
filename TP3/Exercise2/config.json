@@ -4,5 +4,5 @@
     "epochs": 100000,
     "beta": 0.8,
     "min_error": 0.02,
-    "test_size": 4
+    "test_size": 22
 }
