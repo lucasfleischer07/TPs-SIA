@@ -22,7 +22,7 @@ class Layer(ABC):
     def propagate(self,x):
         propagateResults=np.array([])
         for i in range(self.nodes):
-            propagateResults=np.append(propagateResults,self.activation(np.inner(x,self.weights[i])+self.bias[i]))
+           propagateResults=np.append(propagateResults,self.activation(np.inner(x,self.weights[i])+self.bias[i]))
         return propagateResults
 
 

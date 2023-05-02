@@ -1,3 +1,4 @@
+import numpy as np
 import math
 
 from src.layer import Layer
@@ -7,7 +8,8 @@ class SigmoidalLayer(Layer):
         super().__init__(nodes,inputSize)
 
     def activation(self, excitation):
-        s = 1 / (1 + math.exp(-excitation))
+        x = np.clip(excitation, -500, 500)
+        s = 1 / (1 + math.exp(-x))
         return s
     
     def derivative(self, exitated_val):

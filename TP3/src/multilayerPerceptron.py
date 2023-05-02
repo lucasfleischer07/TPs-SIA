@@ -67,7 +67,7 @@ class MultilayerPerceptron(ABC):
                 propagateResults=self.fowardPropagate(x[i])
                 self.backwardsPropagate(propagateResults,x[i],y[i])
         for i in range(len(x)):
-            print("input="+str(x[i])+"output="+ str(self.fowardPropagate(x[i])[1]))
+            print(" input= "+ str(x[i]) +" output= "+ str(self.fowardPropagate(x[i])) + " expected output= " + str(y[i]))
 
         print("END WEIGHT")
         for layer in self.layers:
