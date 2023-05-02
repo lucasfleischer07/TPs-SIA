@@ -27,7 +27,7 @@ class Perceptron(ABC):
         x = np.array(list(map(lambda t: np.append( [1],t), x)), dtype=float)
         error_in_epochs = []
         error = 0
-        weights = np.random.rand(len(x[0]))
+        weights = np.random.rand(len(x[0]))/3
 
         print("weights " + str(weights))
         for epoch in range(self.epochs):
