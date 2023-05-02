@@ -37,6 +37,14 @@ def plot_graph(points, output, weight):
     ax.plot(x, y, color="black")
     plt.show()
 
+def get_accuracy(self, test_set_result, expected_output):
+    correct = 0
+    print("Results: ", test_set_result)
+    print("Expected: ", expected_output)
+    for i in range(len(test_set_result)):
+        if (abs(test_set_result[i] - expected_output[i]) < 0.02):
+            correct += 1
+    return correct / len(test_set_result)
 
 def plot_step(inputs, outputs, weights, min_w):
     # print("weights len: " + str(len(weights)))
