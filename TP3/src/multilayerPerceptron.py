@@ -22,30 +22,39 @@ class MultilayerPerceptron(ABC):
                 propagateResults[i]=self.layers[i].propagate(x)
             else:
                 propagateResults[i]=self.layers[i].propagate(propagateResults[i-1])
+
         return propagateResults
 
     #https://www.youtube.com/watch?v=boP3O89rErA&ab_channel=BitBoss
     def backwardsPropagate(self,results,x,y):
-        deltas=np.array([])
+        deltas=[np.zeros((self.layers[i].nodes)) for i in range(len(self.layers))]
         prevDeltas=np.array([])
         for i in range(len(self.layers)-1, -1, -1):
-            #get all deltas  
+            #get all deltas 
+
             for j in range(self.layers[i].nodes):
+
                 if i==len(self.layers)-1:
-                    deltas=np.append(deltas,self.layers[i].derivative(results[i][j])*(y[j]-results[i][j]))
+                    
+
+                    deltas[i][j]=self.layers[i].derivative(results[i][j])*(y[j]-results[i][j])
                     
                 else:
-                    deltas=np.append(deltas,self.layers[i].derivative(results[i][j])*(sum(self.layers[i+1].weights[:,j] * prevDeltas)))
-            
+
+                    deltas[i][j]=self.layers[i].derivative(results[i][j])*(sum(self.layers[i+1].weights[:,j] * deltas[i+1]))
+
             #update node weights
+        for i in range(len(self.layers)-1, -1, -1):
             for j in range(self.layers[i].nodes):
                 for s in range(len(self.layers[i].weights[j])):
                     if i==0:
-                        self.layers[i].weights[j,s]+=self.learningRate*deltas[j]*x[s]
+
+                        self.layers[i].weights[j,s]+=self.learningRate*deltas[i][j]*x[s]
                     else:
-                        self.layers[i].weights[j,s]+=self.learningRate*deltas[j]*results[i-1][s]
-                self.layers[i].bias[j]+=self.learningRate*deltas[j]
-            prevDeltas=deltas.copy()
+
+                        self.layers[i].weights[j,s]+=self.learningRate*deltas[i][j]*results[i-1][s]
+                self.layers[i].bias[j]+=self.learningRate*deltas[i][j]
+        
 
     def train(self,x,y):
         print("START WEIGHT")
