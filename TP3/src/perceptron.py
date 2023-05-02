@@ -73,22 +73,4 @@ class Perceptron(ABC):
             excitation = np.inner(complete_x[i], train_wheigts)
             results.append(self.activation(excitation))
 
-            # print("train_weights " + str(train_wheigts))
-            print("exitation " + str(excitation))
-            
-        # print("\nRESULTS: " + str(results))
-        # print("\nY: " + str(y))
-        # return (1/len(x)) * sum(abs(np.array(results) - np.array(y)))
-        return results
-    
-
-    #  def test(self, test_set):
-    #     real_input = np.array(list(map(lambda t: np.append(t, [1]), test_set)), dtype=float)
-    #     results = []
-    #     for i in range(len(test_set)):
-    #         excitation = np.inner(real_input[i], self.w_min)
-    #         results.append(self.activation(excitation))
-    #     return results
-       
-       
-    
+        return results   

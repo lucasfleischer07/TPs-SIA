@@ -38,7 +38,7 @@ def main():
 
     plot_graph(training_array, expected_output, final_weights)
     plot_errors(error_in_epochs)
-    print("Error min: " + str(min(error_in_epochs)))
+    print("Error min: " + str(error_in_epochs))
     print("Min weight: ", final_weights)
 
 
