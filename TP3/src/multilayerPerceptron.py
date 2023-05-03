@@ -63,20 +63,26 @@ class MultilayerPerceptron(ABC):
             for i in range(len(x)):
                 propagateResults=self.fowardPropagate(x[i])
                 self.backwardsPropagate(propagateResults,x[i],y[i])
+        allResults=[]
         for i in range(len(x)):
             results=self.fowardPropagate(x[i])
+            allResults.append(results[len(results)-1])
             print("input="+str(i)+"output=")
             for elem in results[len(results)-1]:
                 print("{:.4f}".format(elem))
             print( " expected output= " + str(y[i]))
+        print("error entrenamiento="+str(sum(sum(np.abs(np.subtract(allResults,y))))))
     def test(self,x,y):
         print("TEST")
+        allResults=[]
         for i in range(len(x)):
             results=self.fowardPropagate(x[i])
+            allResults.append(results[len(results)-1])
             print("input="+str(i)+"output=")
             for elem in results[len(results)-1]:
                 print("{:.4f}".format(elem))
             print( " expected output= " + str(y[i]))
+        print("error test="+str(sum(sum(np.abs(np.subtract(allResults,y))))))
 
         
         

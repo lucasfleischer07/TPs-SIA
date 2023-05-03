@@ -37,7 +37,7 @@ def main():
     layer1=SigmoidalLayer(16,35)
     layer2=ReLuLayer(1,16)
     layers=np.array([layer1,layer2])
-    perceptron=MultilayerPerceptron(0.01,layers,5000,0.02,0,0)
+    perceptron=MultilayerPerceptron(0.01,layers,15000,0.02,0,0)
     x=data
     y=np.array([[1],[0],[1],[0],[1],[0],[1],[0],[1],[0]])
     perceptron.train(x[2:],y[2:])

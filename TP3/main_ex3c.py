@@ -35,13 +35,10 @@ def addNoise(data,prob):
     for image in data:
         for pixel in image:
             if np.random.rand()<prob:
-                print("added noise")
-                print(pixel)
                 if pixel==1:
                     pixel=0.0
                 else:
                     pixel=1.0
-                print(pixel)
     return data
 def main():
     data = read_and_load_txt_data()
@@ -50,7 +47,7 @@ def main():
     layer3=ReLuLayer(10,10)
     layers=np.array([layer1,layer2,layer3])
     perceptron=MultilayerPerceptron(0.01,layers,30000,0.02,0,0)
-    data=addNoise(data,0.00)
+    data=addNoise(data,0.15)
     x=data[:8]
     y=[]
     

@@ -8,7 +8,7 @@ def main():
     layer1=TanhLayer(2,2)
     layer2=TanhLayer(1,2)
     layers=np.array([layer1,layer2])
-    perceptron=MultilayerPerceptron(0.01,layers,10000,0.02,0,0)
+    perceptron=MultilayerPerceptron(0.01,layers,20000,0.02,0,0)
     x=np.array([[1,1],[0,0],[1,0],[0,1]])
     y=np.array([[-1],[-1],[1],[1]])
     perceptron.train(x,y)   
