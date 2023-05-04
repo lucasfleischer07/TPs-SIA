@@ -3,7 +3,7 @@ import copy
 from abc import ABC, abstractmethod
 
 class MultilayerPerceptron(ABC):
-    def __init__(self, learning_rate, layers, epochs, error_min,beta1,beta2):
+    def __init__(self, learning_rate, layers, epochs, error_min,beta1,beta2,optimization_method,momentum):
         self.learningRate = learning_rate
         self.error_min = error_min
         self.w_min = None
@@ -13,6 +13,8 @@ class MultilayerPerceptron(ABC):
         self.prevSecondMomentum=0
         self.beta1=beta1
         self.beta2=beta2
+        self.optimization_method = optimization_method
+        self.momentum = momentum
         
 
     def fowardPropagate(self,x):
@@ -35,10 +37,7 @@ class MultilayerPerceptron(ABC):
             for j in range(self.layers[i].nodes):
 
                 if i==len(self.layers)-1:
-                    
-
-                    deltas[i][j]=self.layers[i].derivative(results[i][j])*(y[j]-results[i][j])
-                    
+                    deltas[i][j]= self.layers[i].derivative(results[i][j])*(y[j]-results[i][j])
                 else:
 
                     deltas[i][j]=self.layers[i].derivative(results[i][j])*(sum(self.layers[i+1].weights[:,j] * deltas[i+1]))
@@ -48,11 +47,17 @@ class MultilayerPerceptron(ABC):
             for j in range(self.layers[i].nodes):
                 for s in range(len(self.layers[i].weights[j])):
                     if i==0:
-
-                        self.layers[i].weights[j,s]+=self.learningRate*deltas[i][j]*x[s]
+                        if self.optimization_method == "momentum":
+                            self.layers[i].velocity[j,s] = self.momentum * self.layers[i].velocity[j,s] + self.learningRate*deltas[i][j]*x[s]
+                            self.layers[i].weights[j,s] += self.layers[i].velocity[j,s]
+                        else:
+                            self.layers[i].weights[j,s]+=self.learningRate*deltas[i][j]*x[s]
                     else:
-
-                        self.layers[i].weights[j,s]+=self.learningRate*deltas[i][j]*results[i-1][s]
+                        if self.optimization_method == "momentum":
+                            self.layers[i].velocity[j,s] = self.momentum * self.layers[i].velocity[j,s] + self.learningRate*deltas[i][j]*results[i-1][s]
+                            self.layers[i].weights[j,s] += self.layers[i].velocity[j,s]
+                        else:
+                            self.layers[i].weights[j,s]+=self.learningRate*deltas[i][j]*results[i-1][s]
                 self.layers[i].bias[j]+=self.learningRate*deltas[i][j]
         
 
@@ -73,11 +78,14 @@ class MultilayerPerceptron(ABC):
         for i in range(len(x)):
             results=self.fowardPropagate(x[i])
             allResults.append(results[len(results)-1])
-            print("input="+str(i)+"output=")
-            for elem in results[len(results)-1]:
-                print("{:.4f}".format(elem))
-            print( " expected output= " + str(y[i]))
-        print("error entrenamiento="+str(sum(sum(np.abs(np.subtract(allResults,y))))))
+            #print("input="+str(i)+"output=")
+            #for elem in results[len(results)-1]:
+                #print("{:.4f}".format(elem))
+            #print( " expected output= " + str(y[i]))
+        #print("error entrenamiento="+str(sum(sum(np.abs(np.subtract(allResults,y))))))
+        return errors
+
+
     def test(self,x,y):
         print("TEST")
         allResults=[]
@@ -89,6 +97,7 @@ class MultilayerPerceptron(ABC):
                 print("{:.4f}".format(elem))
             print( " expected output= " + str(y[i]))
         print("error test="+str(sum(sum(np.abs(np.subtract(allResults,y))))))
+        return allResults
 
         
         

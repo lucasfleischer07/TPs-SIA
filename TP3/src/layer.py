@@ -6,6 +6,7 @@ class Layer(ABC):
         self.nodes=nodes
         self.inputSize=inputSize
         self.weights=(np.random.rand(nodes, inputSize))/3
+        self.velocity = np.zeros((nodes, inputSize))
         self.firstMomentums=np.zeros(nodes)
         self.secondMomentums=np.zeros(nodes)
         self.bias=(np.random.rand(nodes))/3

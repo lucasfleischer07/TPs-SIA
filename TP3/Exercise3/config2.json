@@ -1,0 +1,9 @@
+{
+    "learning_rate": 0.01,
+    "epochs": 15000,
+    "beta1": 0,
+    "beta2": 0,
+    "min_error": 0.02,
+    "optimisation_method": "NONE", 
+    "momentum": 0.2
+}

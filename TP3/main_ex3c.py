@@ -3,7 +3,10 @@ from Exercise3.src.stepLayer import StepLayer
 from Exercise3.src.linearLayer import LinearLayer
 from Exercise3.src.reluLayer import ReLuLayer
 from Exercise3.src.sigmoidalLayer import SigmoidalLayer
+from src.utils import get_accuracy_numbers
+from src.utils import plot_errors
 
+import json
 import numpy as np
 import random
 
@@ -31,6 +34,22 @@ def read_and_load_txt_data():
         #data = np.concatenate(matriz, axis=1)
         #data = np.transpose(matriz)
     return data
+
+def read_and_load_json_data():
+    with open('./Exercise3/config2.json', 'r') as config_file:
+        data_from_json = json.load(config_file)
+        config_file.close()
+
+    learning_rate = float(data_from_json["learning_rate"])
+    epochs_amount = int(data_from_json["epochs"])
+    beta1 = float(data_from_json["beta1"])
+    beta2 = float(data_from_json["beta2"])
+    min_error = float(data_from_json["min_error"])
+    optimization_method = str(data_from_json["optimisation_method"] )
+    momentum = float(data_from_json["momentum"] )
+
+    return learning_rate, epochs_amount, beta1, beta2, min_error,optimization_method,momentum
+
 def addNoise(data,prob):
     for image in data:
         for pixel in image:
@@ -40,13 +59,15 @@ def addNoise(data,prob):
                 else:
                     pixel=1.0
     return data
+
 def main():
     data = read_and_load_txt_data()
+    learning_rate, epochs_amount, beta1, beta2, min_error,optimization_method,momentum = read_and_load_json_data()
     layer1=SigmoidalLayer(5,35)
     layer2=SigmoidalLayer(10,5)
     layer3=ReLuLayer(10,10)
     layers=np.array([layer1,layer2,layer3])
-    perceptron=MultilayerPerceptron(0.01,layers,30000,0.02,0,0)
+    perceptron=MultilayerPerceptron(learning_rate,layers,epochs_amount,min_error,beta1, beta2,optimization_method,momentum)
     data=addNoise(data,0.15)
     x=data[:8]
     y=[]
@@ -59,10 +80,12 @@ def main():
             else:
                 result.append(0)
         y.append(result)
-
-    perceptron.train(x,y[:8])
-    perceptron.test(data[8:],y[8:])
-    
+    expected_result = np.array([0,1,2,3,4,5,6,7,8,9])
+    error_in_epochs = perceptron.train(x[:8],y[:8])
+    result = perceptron.test(data[8:],y[8:])
+    plot_errors(error_in_epochs,"MultiLayer Perceptron c")
+    print("results son:" + str(result))
+    print("Linear Accuracy: " + str(get_accuracy_numbers(result,expected_result[8:])))
 
 if __name__ == "__main__":
     main()

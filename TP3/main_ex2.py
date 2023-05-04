@@ -6,10 +6,11 @@ from Exercise2.src.linear_perceptron import LinearPerceptron
 from Exercise2.src.no_linear_perceptron import NoLinearPerceptron
 from src.utils import plot_errors
 from src.utils import get_accuracy
+from src.utils import get_accuracy_non_lineal
 from src.utils import escalate
 
 def read_and_load_csv_data():
-    with open('Exercise2/docs/TP3-ej2-conjunto.csv', 'r') as csv_file:
+    with open('Exercise2/docs/TP3-ej2-conjunto-pruebas.csv', 'r') as csv_file:
         plots = csv.reader(csv_file, delimiter=',')
         next(plots)   # Para skipear la linea de x1,x2,x3 e y
 
@@ -17,12 +18,12 @@ def read_and_load_csv_data():
         expected_output = []
 
         for row in plots:
-            data.append([float(row[0]), float(row[1]), float(row[2])])
-            expected_output.append(float(row[3]))
+            # data.append([float(row[0]), float(row[1]), float(row[2])])
+            # expected_output.append(float(row[3]))
         
             # Para el de pruebas
-            # data.append([float(row[0])])
-            # expected_output.append(float(row[1]))
+            data.append([float(row[0])])
+            expected_output.append(float(row[1]))
 
         csv_file.close()
 
@@ -51,21 +52,22 @@ def main():
     if(perceptron == 'LINEAR'):
         perceptron = LinearPerceptron(learning_rate, epochs_amount, min_error)
         epochs_taken, final_weights, error_in_epochs, final_error = perceptron.train(data[:test_size], expected_output[:test_size])
-        accuracy = get_accuracy(expected_output[test_size:], perceptron.evaluate(data[test_size:],expected_output[test_size:],final_weights))
         print("error in epochs " + str(error_in_epochs))
-        plot_errors(error_in_epochs)
+        accuracy = get_accuracy(expected_output[test_size:], perceptron.evaluate(data[test_size:],expected_output[test_size:],final_weights))
         print("Linear Accuracy: " + str(accuracy))
         print("The evaluate results are: " + str(perceptron.evaluate(data[test_size:],expected_output[test_size:],final_weights)))
         print("The expected results are: " + str(expected_output[test_size:]))
+        plot_errors(error_in_epochs, "Linear Perceptron")
     elif(perceptron == 'NO_LINEAR'):
         expected_output = escalate(expected_output)
         perceptron = NoLinearPerceptron(learning_rate, epochs_amount, beta, min_error, (expected_output), (expected_output))
         epochs_taken, final_weights, error_in_epochs, final_error = perceptron.train(data[:test_size], expected_output[:test_size])
-        accuracy = get_accuracy(expected_output[test_size:], perceptron.evaluate(data[test_size:],expected_output[test_size:],final_weights))
-        plot_errors(error_in_epochs)
+        print("error in epochs " + str(error_in_epochs))
+        accuracy = get_accuracy_non_lineal(expected_output[test_size:], perceptron.evaluate(data[test_size:],expected_output[test_size:],final_weights))
         print("No linear Accuracy: " + str(accuracy))
         print("The evaluate results are: " + str(perceptron.evaluate(data[test_size:],expected_output[test_size:],final_weights)))
         print("The expected results are: " + str(expected_output[test_size:]))
+        plot_errors(error_in_epochs,"Non Linear Perceptron")
     else:
         print("Perceptron not found")
         exit(1)

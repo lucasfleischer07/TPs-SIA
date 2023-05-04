@@ -7,8 +7,9 @@ import numpy as np
 
 # TODO: Transform function to use all weights obtained from training
 def plot_graph(points, output, weight):
+    print("Los pesos quedaron: " + str(weight))
     fig, ax = plt.subplots()
-    fig.suptitle('Step Perceptron Graph')
+    fig.suptitle(graph_name)
 
     ax.set_xlabel('x')
     ax.set_ylabel('y')
@@ -42,7 +43,52 @@ def get_accuracy(test_set_result, expected_output):
     print("Results: ", test_set_result)
     print("Expected: ", expected_output)
     for i in range(len(test_set_result)):
-        if (abs(test_set_result[i] - expected_output[i]) < 0.02):
+        print("La resta de valores es: " + str(abs(test_set_result[i] - expected_output[i])))
+        if (abs(test_set_result[i] - expected_output[i]) < 0.5):
+            correct += 1
+    return correct / len(test_set_result)
+
+def get_accuracy_xor(test_set_result, expected_output):
+    correct = 0
+    print("Results: ", test_set_result)
+    print("Expected: ", expected_output)
+    for i in range(len(test_set_result)):
+        if (( test_set_result[i] >= 0.5 and expected_output[i] == 1 ) or ( test_set_result[i] < 0.5 and expected_output[i] == -1 )):
+            correct += 1
+    return correct / len(test_set_result)
+
+
+def get_accuracy_non_lineal(test_set_result, expected_output):
+    correct = 0
+    print("Results: ", test_set_result)
+    print("Expected: ", expected_output)
+    for i in range(len(test_set_result)):
+        if (abs(test_set_result[i] - expected_output[i]) < 0.05):
+            correct += 1
+    return correct / len(test_set_result)
+
+def get_accuracy_even(test_set_result, expected_output):
+    correct = 0
+    print("Results: ", test_set_result)
+    print("Expected: ", expected_output)
+    for i in range(len(test_set_result)):
+        if (( test_set_result[i] >= 0.5 and expected_output[i] == 1 ) or ( test_set_result[i] < 0.5 and expected_output[i] == 0 )):
+            correct += 1
+    return correct / len(test_set_result)
+
+def get_accuracy_numbers(test_set_result, expected_output):
+    correct = 0
+    print("Results: ", test_set_result)
+    print("Expected: ", expected_output)
+    for i in range(len(test_set_result)):
+        max_num = -1
+        max_ponderancia = -1
+        for j in range(len(test_set_result[i])):
+            if test_set_result[i][j] > max_ponderancia:
+                max_num = j
+                max_ponderancia = test_set_result[i][j]
+        
+        if max_num == expected_output[i] :
             correct += 1
     return correct / len(test_set_result)
 
@@ -74,17 +120,17 @@ def plot_step(inputs, outputs, weights, min_w):
     anim.save("step_graph.gif", writer=pillow_writer)
     plt.close()
 
-def plot_errors(errors):
+def plot_errors(errors, name):
     fig, ax = plt.subplots()
 
     ax.set_xlabel('Generation')
     ax.set_ylabel('Error')
-    ax.set_title('Step Perceptron Error')
+    ax.set_title(name)
 
     generations = np.array(range(len(errors)))
 
-    ax.set_xlim(0, len(generations))
-    ax.set_ylim(0, np.amax(errors))
+    ax.set_xlim(0, 20000)
+    ax.set_ylim(0, 4)
 
     ax.plot(generations, errors, color='b')
     plt.show()
