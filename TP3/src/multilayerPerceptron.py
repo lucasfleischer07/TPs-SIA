@@ -57,15 +57,18 @@ class MultilayerPerceptron(ABC):
         
 
     def train(self,x,y):
-        errors=[0]
+        errors=[]
+        
         for epoch in range(self.epochs):
-            if epoch % 1000 ==0:
+            epochErrors=[]
+            if epoch % 1000 ==0 and epoch !=0:
                 print("epoch "+str(epoch))
-                print(errors[epoch])
+                print(errors[epoch-1])
             for i in range(len(x)):
                 propagateResults=self.fowardPropagate(x[i])
-                errors.append(sum(np.abs(np.subtract(propagateResults[len(propagateResults)-1],y[i]))))
+                epochErrors.append(sum(np.abs(np.subtract(propagateResults[len(propagateResults)-1],y[i]))))
                 self.backwardsPropagate(propagateResults,x[i],y[i])
+            errors.append(sum(epochErrors))
         allResults=[]
         for i in range(len(x)):
             results=self.fowardPropagate(x[i])
