@@ -229,49 +229,49 @@ def read_and_load_json_data():
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------
-def main(): 
-    data, expected_output = read_and_load_csv_data()
+# def main(): 
+#     data, expected_output = read_and_load_csv_data()
 
-    learning_rate = 0.0001
-    perceptron = "NO_LINEAL"
-    epochs_amount1 = 30000
-    epochs_amount2 = 50000
-    epochs_amount3 = 100000
-    epochs_amount4 = 500000
-    beta = 0.2
+#     learning_rate = 0.0001
+#     perceptron = "NO_LINEAL"
+#     epochs_amount1 = 30000
+#     epochs_amount2 = 50000
+#     epochs_amount3 = 100000
+#     epochs_amount4 = 500000
+#     beta = 0.2
 
-    min_error = 0.02
-    test_size= 23
+#     min_error = 0.02
+#     test_size= 23
 
-    expected_output1 = escalate(expected_output)
-    expected_output2 = escalate(expected_output)
-    expected_output3 = escalate(expected_output)
-    expected_output4 = escalate(expected_output)
+#     expected_output1 = escalate(expected_output)
+#     expected_output2 = escalate(expected_output)
+#     expected_output3 = escalate(expected_output)
+#     expected_output4 = escalate(expected_output)
 
-    perceptron1 = NoLinearPerceptron(learning_rate, epochs_amount1, beta, min_error, (expected_output1), (expected_output1))
-    epochs_taken1, final_weights1, error_in_epochs1, final_error1 = perceptron1.train(data[:test_size], expected_output1[:test_size])
-    results1 = perceptron1.evaluate(data[test_size:],expected_output1[test_size:],final_weights1)
+#     perceptron1 = NoLinearPerceptron(learning_rate, epochs_amount1, beta, min_error, (expected_output1), (expected_output1))
+#     epochs_taken1, final_weights1, error_in_epochs1, final_error1 = perceptron1.train(data[:test_size], expected_output1[:test_size])
+#     results1 = perceptron1.evaluate(data[test_size:],expected_output1[test_size:],final_weights1)
 
-    perceptron2 = NoLinearPerceptron(learning_rate, epochs_amount2, beta, min_error, (expected_output2), (expected_output2))
-    epochs_taken2, final_weights2, error_in_epochs2, final_error2 = perceptron2.train(data[:test_size], expected_output2[:test_size])
-    results2 = perceptron2.evaluate(data[test_size:],expected_output3[test_size:],final_weights2)
+#     perceptron2 = NoLinearPerceptron(learning_rate, epochs_amount2, beta, min_error, (expected_output2), (expected_output2))
+#     epochs_taken2, final_weights2, error_in_epochs2, final_error2 = perceptron2.train(data[:test_size], expected_output2[:test_size])
+#     results2 = perceptron2.evaluate(data[test_size:],expected_output3[test_size:],final_weights2)
 
-    perceptron3 = NoLinearPerceptron(learning_rate, epochs_amount3, beta, min_error, (expected_output3), (expected_output3))
-    epochs_taken3, final_weights3, error_in_epochs3, final_error3 = perceptron3.train(data[:test_size], expected_output3[:test_size])
-    results3 = perceptron3.evaluate(data[test_size:],expected_output3[test_size:],final_weights3)
+#     perceptron3 = NoLinearPerceptron(learning_rate, epochs_amount3, beta, min_error, (expected_output3), (expected_output3))
+#     epochs_taken3, final_weights3, error_in_epochs3, final_error3 = perceptron3.train(data[:test_size], expected_output3[:test_size])
+#     results3 = perceptron3.evaluate(data[test_size:],expected_output3[test_size:],final_weights3)
 
-    perceptron4 = NoLinearPerceptron(learning_rate, epochs_amount4, beta, min_error, (expected_output4), (expected_output4))
-    epochs_taken4, final_weights4, error_in_epochs4, final_error4 = perceptron4.train(data[:test_size], expected_output4[:test_size])
-    results4 = perceptron3.evaluate(data[test_size:],expected_output3[test_size:],final_weights4)
+#     perceptron4 = NoLinearPerceptron(learning_rate, epochs_amount4, beta, min_error, (expected_output4), (expected_output4))
+#     epochs_taken4, final_weights4, error_in_epochs4, final_error4 = perceptron4.train(data[:test_size], expected_output4[:test_size])
+#     results4 = perceptron3.evaluate(data[test_size:],expected_output3[test_size:],final_weights4)
     
-    error1 = mae(results1, expected_output1[test_size:])
-    error2 = mae(results2, expected_output2[test_size:])
-    error3 = mae(results3, expected_output3[test_size:])
-    error4 = mae(results4, expected_output4[test_size:])
+#     error1 = mae(results1, expected_output1[test_size:])
+#     error2 = mae(results2, expected_output2[test_size:])
+#     error3 = mae(results3, expected_output3[test_size:])
+#     error4 = mae(results4, expected_output4[test_size:])
 
-    error_name = [str(epochs_amount1), str(epochs_amount2), str(epochs_amount3), str(epochs_amount4)]
-    errors = [error1, error2, error3, error4]
-    plot_the_error(errors, error_name)
+#     error_name = [str(epochs_amount1), str(epochs_amount2), str(epochs_amount3), str(epochs_amount4)]
+#     errors = [error1, error2, error3, error4]
+#     plot_the_error(errors, error_name)
 
     # errors = [(error_in_epochs1, 'Geenration='+str(epochs_amount1)), (error_in_epochs2, 'Geenration='+str(epochs_amount2)), (error_in_epochs3, 'Geenration='+str(epochs_amount3)), (error_in_epochs4, 'Geenration='+str(epochs_amount4))]
     # plot_errors(errors,"Non Linear Perceptron")
@@ -279,32 +279,32 @@ def main():
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------
-# def main():
-#     data, expected_output = read_and_load_csv_data()
-#     learning_rate, perceptron, epochs_amount, beta, min_error, test_size = read_and_load_json_data()
+def main():
+    data, expected_output = read_and_load_csv_data()
+    learning_rate, perceptron, epochs_amount, beta, min_error, test_size = read_and_load_json_data()
 
-#     if(perceptron == 'LINEAR'):
-#         perceptron = LinearPerceptron(learning_rate, epochs_amount, min_error)
-#         epochs_taken, final_weights, error_in_epochs, final_error = perceptron.train(data[:test_size], expected_output[:test_size])
-#         print("error in epochs " + str(error_in_epochs))
-#         accuracy = get_accuracy(expected_output[test_size:], perceptron.evaluate(data[test_size:],expected_output[test_size:],final_weights))
-#         print("Linear Accuracy: " + str(accuracy))
-#         print("The evaluate results are: " + str(perceptron.evaluate(data[test_size:],expected_output[test_size:],final_weights)))
-#         print("The expected results are: " + str(expected_output[test_size:]))
-#         plot_errors(error_in_epochs, "Linear Perceptron")
-#     elif(perceptron == 'NO_LINEAR'):
-#         expected_output = escalate(expected_output)
-#         perceptron = NoLinearPerceptron(learning_rate, epochs_amount, beta, min_error, (expected_output), (expected_output))
-#         epochs_taken, final_weights, error_in_epochs, final_error = perceptron.train(data[:test_size], expected_output[:test_size])
-#         print("error in epochs " + str(error_in_epochs))
-#         accuracy = get_accuracy_non_lineal(expected_output[test_size:], perceptron.evaluate(data[test_size:],expected_output[test_size:],final_weights))
-#         print("No linear Accuracy: " + str(accuracy))
-#         print("The evaluate results are: " + str(perceptron.evaluate(data[test_size:],expected_output[test_size:],final_weights)))
-#         print("The expected results are: " + str(expected_output[test_size:]))
-#         plot_errors(error_in_epochs,"Non Linear Perceptron")
-#     else:
-#         print("Perceptron not found")
-#         exit(1)
+    if(perceptron == 'LINEAR'):
+        perceptron = LinearPerceptron(learning_rate, epochs_amount, min_error)
+        epochs_taken, final_weights, error_in_epochs, final_error = perceptron.train(data[:test_size], expected_output[:test_size])
+        print("error in epochs " + str(error_in_epochs))
+        accuracy = get_accuracy(expected_output[test_size:], perceptron.evaluate(data[test_size:],expected_output[test_size:],final_weights))
+        print("Linear Accuracy: " + str(accuracy))
+        print("The evaluate results are: " + str(perceptron.evaluate(data[test_size:],expected_output[test_size:],final_weights)))
+        print("The expected results are: " + str(expected_output[test_size:]))
+        plot_errors(error_in_epochs, "Linear Perceptron")
+    elif(perceptron == 'NO_LINEAR'):
+        expected_output = escalate(expected_output)
+        perceptron = NoLinearPerceptron(learning_rate, epochs_amount, beta, min_error, (expected_output), (expected_output))
+        epochs_taken, final_weights, error_in_epochs, final_error = perceptron.train(data[:test_size], expected_output[:test_size])
+        print("error in epochs " + str(error_in_epochs))
+        accuracy = get_accuracy_non_lineal(expected_output[test_size:], perceptron.evaluate(data[test_size:],expected_output[test_size:],final_weights))
+        print("No linear Accuracy: " + str(accuracy))
+        print("The evaluate results are: " + str(perceptron.evaluate(data[test_size:],expected_output[test_size:],final_weights)))
+        print("The expected results are: " + str(expected_output[test_size:]))
+        plot_errors(error_in_epochs,"Non Linear Perceptron")
+    else:
+        print("Perceptron not found")
+        exit(1)
 
 
 if __name__ == "__main__":
