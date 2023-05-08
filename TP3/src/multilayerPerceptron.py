@@ -3,7 +3,7 @@ import copy
 from abc import ABC, abstractmethod
 
 class MultilayerPerceptron(ABC):
-    def __init__(self, learning_rate, layers, epochs, error_min,beta1,beta2,optimization_method,momentum):
+    def __init__(self, learning_rate, layers, epochs, error_min,optimization_method,momentum):
         self.learningRate = learning_rate
         self.error_min = error_min
         self.w_min = None

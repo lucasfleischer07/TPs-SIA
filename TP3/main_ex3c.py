@@ -42,13 +42,11 @@ def read_and_load_json_data():
 
     learning_rate = float(data_from_json["learning_rate"])
     epochs_amount = int(data_from_json["epochs"])
-    beta1 = float(data_from_json["beta1"])
-    beta2 = float(data_from_json["beta2"])
     min_error = float(data_from_json["min_error"])
     optimization_method = str(data_from_json["optimisation_method"] )
     momentum = float(data_from_json["momentum"] )
 
-    return learning_rate, epochs_amount, beta1, beta2, min_error,optimization_method,momentum
+    return learning_rate, epochs_amount, min_error,optimization_method,momentum
 
 def addNoise(data,prob):
     for image in data:
@@ -62,12 +60,12 @@ def addNoise(data,prob):
 
 def main():
     data = read_and_load_txt_data()
-    learning_rate, epochs_amount, beta1, beta2, min_error,optimization_method,momentum = read_and_load_json_data()
+    learning_rate, epochs_amount, min_error,optimization_method,momentum = read_and_load_json_data()
     layer1=SigmoidalLayer(5,35)
     layer2=SigmoidalLayer(10,5)
     layer3=ReLuLayer(10,10)
     layers=np.array([layer1,layer2,layer3])
-    perceptron=MultilayerPerceptron(learning_rate,layers,epochs_amount,min_error,beta1, beta2,optimization_method,momentum)
+    perceptron=MultilayerPerceptron(learning_rate,layers,epochs_amount,min_error,optimization_method,momentum)
     data=addNoise(data,0.15)
     x=data[:8]
     y=[]

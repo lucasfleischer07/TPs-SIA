@@ -6,6 +6,10 @@ import numpy as np
 # https://matplotlib.org/stable/api/pyplot_summary.html?highlight=pyplot
 
 # TODO: Transform function to use all weights obtained from training
+def mae(y_true, predictions):
+    return np.mean(np.abs(y_true - predictions))
+
+
 def plot_graph(points, output, weight):
     print("Los pesos quedaron: " + str(weight))
     fig, ax = plt.subplots()
@@ -142,8 +146,8 @@ def plot_errors(error_configs, name):
     ax.set_ylabel('Error')
     ax.set_title(name)
 
-    ax.set_xlim(0, 1000)
-    ax.set_ylim(0, 1)
+    ax.set_xlim(0, 70000)
+    ax.set_ylim(0, 2.5)
 
     for error, name in error_configs:
         generations = np.array(range(len(error)))
@@ -152,6 +156,20 @@ def plot_errors(error_configs, name):
     ax.legend(loc='upper right')
     plt.show()
 
+def plot_the_error(mae_list, name):
+    # Crear una figura y un eje
+    fig, ax = plt.subplots()
+
+    # Crear el gráfico de barras
+    ax.bar(name, mae_list)
+
+    # Establecer título y etiquetas de los ejes
+    ax.set_title('MAE tests')
+    ax.set_xlabel('Generations')
+    ax.set_ylabel('MAE')
+
+    # Mostrar el gráfico
+    plt.show()
 
 def plot_error_in_accuracy(test_results, expected_results):
     fig, ax = plt.subplots()
