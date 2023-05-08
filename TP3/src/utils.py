@@ -120,20 +120,38 @@ def plot_step(inputs, outputs, weights, min_w):
     anim.save("step_graph.gif", writer=pillow_writer)
     plt.close()
 
-def plot_errors(errors, name):
+# def plot_errors(errors, name):
+#     fig, ax = plt.subplots()
+
+#     ax.set_xlabel('Generation')
+#     ax.set_ylabel('Error')
+#     ax.set_title(name)
+
+#     generations = np.array(range(len(errors)))
+
+#     ax.set_xlim(0, 20000)
+#     ax.set_ylim(0, 4)
+
+#     ax.plot(generations, errors, color='b')
+#     plt.show()
+
+def plot_errors(error_configs, name):
     fig, ax = plt.subplots()
 
     ax.set_xlabel('Generation')
     ax.set_ylabel('Error')
     ax.set_title(name)
 
-    generations = np.array(range(len(errors)))
+    ax.set_xlim(0, 1000)
+    ax.set_ylim(0, 1)
 
-    ax.set_xlim(0, 20000)
-    ax.set_ylim(0, 4)
+    for error, name in error_configs:
+        generations = np.array(range(len(error)))
+        ax.plot(generations, error, label=name)
 
-    ax.plot(generations, errors, color='b')
+    ax.legend(loc='upper right')
     plt.show()
+
 
 def plot_error_in_accuracy(test_results, expected_results):
     fig, ax = plt.subplots()
