@@ -1,0 +1,47 @@
+import json
+import csv
+
+from src.kohonen import train_kohonen
+
+def read_and_load_csv_data():
+    with open('docs/europe.csv', 'r') as csv_file:
+        plots = csv.reader(csv_file, delimiter=',')
+        next(plots)   # Para skipear la linea de Contry, Area y eso
+
+        data = []
+
+        for row in plots:
+            data.append([str(row[0]), int(row[1]), int(row[2]), float(row[3]), float(row[4]), float(row[5]), float(row[6]), float(row[7])])
+
+        csv_file.close()
+
+    return data
+
+
+def read_and_load_json_data(alg_name):
+    with open('./config.json', 'r') as config_file:
+        data_from_json = json.load(config_file)
+        config_file.close()
+
+    if(alg_name in data_from_json):
+        config = data_from_json[alg_name]
+        learning_rate = float(config["learning_rate"])
+        initial_radius = int(config["initial_radius"])
+        final_radius = int(config["final_radius"])
+        max_iterations = int(config["max_iterations"])
+        k = int(config["k"])
+
+    return learning_rate, initial_radius, final_radius, max_iterations, k
+
+
+def main():
+    alg_name = "kohonen"
+    data = read_and_load_csv_data()
+
+    learning_rate, initial_radius, final_radius, max_iterations, k = read_and_load_json_data(alg_name)
+
+    train_kohonen(data, k, max_iterations, learning_rate, initial_radius, final_radius)
+
+
+if __name__ == "__main__":
+    main()

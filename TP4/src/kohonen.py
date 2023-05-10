@@ -24,11 +24,11 @@ def estandarizeData(data):
     return data
         
 
-def train_kohonen(data, size, iterations, learning_rate,initialRadius,finalRadius):
+def train_kohonen(data, size, iterations, learning_rate, initial_radius, final_radius):
     estandarizedData=estandarizeData(data)
     weights = init_weights(size, estandarizedData)
-    radius=initialRadius
-    decay=iterations / np.log(initialRadius / finalRadius)
+    radius=initial_radius
+    decay=iterations / np.log(initial_radius / final_radius)
     for i in range(iterations):
         x = data[np.random.choice(estandarizeData.shape[0])]
         winner = find_winner(weights, x)
@@ -36,5 +36,5 @@ def train_kohonen(data, size, iterations, learning_rate,initialRadius,finalRadiu
             if j!=winner:
                 if np.abs(weights[winner] - weights[j]) < radius:
                     weights[j]=weights[j]+learning_rate*(x-weights[j])
-        radius = initialRadius / (1 + i/decay)
+        radius = initial_radius / (1 + i/decay)
     return weights
