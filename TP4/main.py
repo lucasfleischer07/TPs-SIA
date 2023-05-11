@@ -1,5 +1,6 @@
 import json
 import csv
+import numpy as np
 
 from src.kohonen import train_kohonen
 
@@ -9,13 +10,15 @@ def read_and_load_csv_data():
         next(plots)   # Para skipear la linea de Contry, Area y eso
 
         data = []
+        countries=[]
 
         for row in plots:
-            data.append([str(row[0]), int(row[1]), int(row[2]), float(row[3]), float(row[4]), float(row[5]), float(row[6]), float(row[7])])
+            countries.append(str(row[0]))
+            data.append([int(row[1]), int(row[2]), float(row[3]), float(row[4]), float(row[5]), float(row[6]), float(row[7])])
 
         csv_file.close()
 
-    return data
+    return data,countries
 
 
 def read_and_load_json_data(alg_name):
@@ -36,11 +39,10 @@ def read_and_load_json_data(alg_name):
 
 def main():
     alg_name = "kohonen"
-    data = read_and_load_csv_data()
-
+    data,countries =read_and_load_csv_data()
+    data=np.array(data)
     learning_rate, initial_radius, final_radius, max_iterations, k = read_and_load_json_data(alg_name)
-
-    train_kohonen(data, k, max_iterations, learning_rate, initial_radius, final_radius)
+    weights,choices=train_kohonen(data, k, max_iterations, learning_rate, initial_radius, final_radius)
 
 
 if __name__ == "__main__":

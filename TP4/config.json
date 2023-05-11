@@ -1,8 +1,8 @@
 {
     "kohonen": {
         "learning_rate": 0.01,
-        "initial_radius": 4,
-        "final_radius": 8,
+        "initial_radius": 7,
+        "final_radius": 2,
         "max_iterations": 50,
         "k": 5
     }
