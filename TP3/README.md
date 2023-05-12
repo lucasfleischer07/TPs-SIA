@@ -14,12 +14,6 @@ Trabajo práctico orientativo para la materia Sistemas de Inteligencia Artificia
 - pip3
 - [pipenv](https://pypi.org/project/pipenv/)
 
-<!-- ### Configuracion -->
-
-<!-- - Los nombres validos para selection_algorithm son: "elite", "roulette", "rank" o "probabilistic_tournament"
-- expected_fitness y mutation_rate son numeros entre 0 y 1
-- population_number tiene como maximo el numero 100 -->
-
 ### Instalación
 
 Parado en la carpeta del TP3 ejecutar

@@ -21,4 +21,8 @@ En el TP2, se implementa un programa en Python para implementar un sistema que, 
 
 ## TP3 - [Multi Layer Perceptrons](https://github.com/lucasfleischer07/TPs-SIA/tree/main/TP3)
 
-En el TP3, seimplementa el algoritmo de perceptrón simple con función de activación escalón, el algoritmo de perceptrón simple lineal y perceptrón simple no lineal y el algoritmo de perceptrón multicapa y utilizarlos para aprender.
+En el TP3, se implementa el algoritmo de perceptrón simple con función de activación escalón, el algoritmo de perceptrón simple lineal y perceptrón simple no lineal y el algoritmo de perceptrón multicapa y utilizarlos para aprender.
+
+## TP4 - [Unsupervised Learning](https://github.com/lucasfleischer07/TPs-SIA/tree/main/TP4)
+
+En el TP4, se implementa los modelos de redes neuronales de aprendizaje no supervisado de Kohonen, regla de Oja y modelo de Hopfield.
