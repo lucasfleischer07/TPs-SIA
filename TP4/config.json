@@ -4,6 +4,6 @@
         "initial_radius": 7,
         "final_radius": 2,
         "max_iterations": 50,
-        "k": 5
+        "k": 3
     }
 }

@@ -42,7 +42,10 @@ def main():
     data,countries =read_and_load_csv_data()
     data=np.array(data)
     learning_rate, initial_radius, final_radius, max_iterations, k = read_and_load_json_data(alg_name)
-    weights,choices=train_kohonen(data, k, max_iterations, learning_rate, initial_radius, final_radius)
+    weights,choices,results=train_kohonen(data, k, max_iterations, learning_rate, initial_radius, final_radius,countries)
+    print(weights)
+    print(choices)
+    print(results)
 
 
 if __name__ == "__main__":

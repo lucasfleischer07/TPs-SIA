@@ -23,11 +23,10 @@ def estandarizeData(data,dataSize,ParametersSize):
         s=stdev(data[:,i])
         for j in range(dataSize):
             data[j][i]=(data[j][i]-m)/s
-    print(data)
     return data
         
 
-def train_kohonen(data, size, iterations, learning_rate, initial_radius, final_radius):
+def train_kohonen(data, size, iterations, learning_rate, initial_radius, final_radius,countries):
     dataSize=len(data)
     parametersSize=(len(data[0]))
     estandarizedData=estandarizeData(data,dataSize,parametersSize)
@@ -44,4 +43,11 @@ def train_kohonen(data, size, iterations, learning_rate, initial_radius, final_r
                     weights[j]=weights[j]+learning_rate*(x-weights[j])
         weights[winner]=weights[winner]+learning_rate*(x-weights[winner])
         radius = initial_radius / (1 + i/decay)
-    return weights,choices
+    results= [[] for _ in range(size**2)]
+
+    
+    for i in range(len(estandarizedData)):
+        winner=find_winner(weights,estandarizedData[i])
+        results[winner].append(countries[i])
+        
+    return weights,choices,results
