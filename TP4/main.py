@@ -3,6 +3,8 @@ import csv
 import numpy as np
 
 from src.kohonen import train_kohonen
+from src.kohonen import plot_heatmap
+
 
 def read_and_load_csv_data():
     with open('docs/europe.csv', 'r') as csv_file:
@@ -39,13 +41,17 @@ def read_and_load_json_data(alg_name):
 
 def main():
     alg_name = "kohonen"
-    data,countries =read_and_load_csv_data()
-    data=np.array(data)
+    data, countries = read_and_load_csv_data()
+    data = np.array(data)
     learning_rate, initial_radius, final_radius, max_iterations, k = read_and_load_json_data(alg_name)
     weights,choices,results=train_kohonen(data, k, max_iterations, learning_rate, initial_radius, final_radius,countries)
+    print("\n\n")
     print(weights)
+    print("\n\n")
     print(choices)
+    print("\n\n")
     print(results)
+    plot_heatmap(results, k, learning_rate)
 
 
 if __name__ == "__main__":
