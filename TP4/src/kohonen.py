@@ -62,7 +62,7 @@ def train_kohonen(data, size, iterations, learning_rate, initial_radius, final_r
     return weights, choices, results
 
 
-def plot_heatmap(results, k, learn_rate):
+def plot_heatmap_kohonen(results, k, learn_rate):
     matrix = np.zeros((k, k))
 
     # Iteramos sobre los elementos del array 'results'

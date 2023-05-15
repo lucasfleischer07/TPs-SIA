@@ -3,7 +3,7 @@ import csv
 import numpy as np
 
 from src.kohonen import train_kohonen
-from src.kohonen import plot_heatmap
+from src.kohonen import plot_heatmap_kohonen
 
 
 def read_and_load_csv_data():
@@ -51,7 +51,7 @@ def main():
     print(choices)
     print("\n\n")
     print(results)
-    plot_heatmap(results, k, learning_rate)
+    plot_heatmap_kohonen(results, k, learning_rate)
 
 
 if __name__ == "__main__":
