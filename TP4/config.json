@@ -5,5 +5,13 @@
         "final_radius": 2,
         "max_iterations": 1000,
         "k": 3
+    },
+
+    "hopfield": {
+        "learning_rate": 0.1,
+        "initial_radius": 7,
+        "final_radius": 2,
+        "max_iterations": 1000,
+        "k": 3
     }
 }
