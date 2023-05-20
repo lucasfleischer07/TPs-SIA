@@ -7,6 +7,7 @@ name = "pypi"
 numpy = "*"
 matplotlib = "*"
 seaborn = "*"
+pca = "*"
 
 [dev-packages]
 
