@@ -53,11 +53,39 @@ def main():
         plt.arrow(0, 0, np.transpose(pca.components_[0:2, :])[i, 0], np.transpose(pca.components_[0:2, :])[i, 1], color='r', alpha=0.5)
         plt.text(np.transpose(pca.components_[0:2, :])[i, 0] * 1.15, np.transpose(pca.components_[0:2, :])[i, 1] * 1.15, categories[i], color='g', ha='center', va='center')
     for i in range(len(countries_principal_components[:, 0:2][:,0])):
-        plt.text(countries_principal_components[:, 0:2][:,0][i] * x_scale, countries_principal_components[:, 0:2][:,1][i] * (y_scale + 0.015), countries[i], color='b', ha='center', va='center', fontsize=4)
+        plt.text(countries_principal_components[:, 0:2][:,0][i] * x_scale, countries_principal_components[:, 0:2][:,1][i] * (y_scale + 0.015), countries[i], color='b', ha='center', va='center', fontsize=8)
 
     plt.xlabel("PC1")
     plt.ylabel("PC2")
     plt.grid()
+    plt.show()
+
+    #print("Los componentes principales son: " + str(pca.components_))
+    countries_principal_components_value = []
+    for country in countries_principal_components:
+        value = np.sum(country)
+        countries_principal_components_value.append(value)
+
+
+    #print("Los valores por pais son:" + str(countries_principal_components_value))
+
+    # Datos
+    x = countries
+    y = countries_principal_components_value
+
+    plt.ylim(np.amin(countries_principal_components_value), np.amax(countries_principal_components_value))
+
+    # Plot
+    plt.bar(x, y)
+
+    # Etiquetas y título
+    plt.xlabel('Countries')
+    plt.ylabel('PCA1')
+    plt.title('PCA1 per country')
+
+    plt.xticks(rotation='vertical')
+
+    # Mostrar el gráfico
     plt.show()
 
 
