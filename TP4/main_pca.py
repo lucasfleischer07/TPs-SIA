@@ -25,24 +25,29 @@ def read_and_load_csv_data():
     return data, countries
 
 
+def boxplot_graph(data, categories, title_name):
+    # plt.figure(figsize=(8, 6))  # Creo el plt con un tamaio determinado
+    colors = ['red', 'green', 'blue', 'orange', 'purple', 'yellow', 'cyan'] # Defino los colores que uso para cada categoria
 
-def main():
-    categories =  ['Area', 'GDP', 'Inflation', 'Life.expect', 'Military', 'Pop.growth', 'Unemployment']
-    data, countries = read_and_load_csv_data()
-    data = np.array(data)
-    standarized_data = estandarize_data_func(data,len(data),len(data[0]))
-    pca = PCA()
-    countries_principal_components = pca.fit_transform(standarized_data)
-    #print('Los componentes principales son: ' + str(countries_principal_components))
+    bp = plt.boxplot(data, patch_artist=True) # Datos NO Estandarizados
+
+    # Personalizar el color de cada caja
+    for box, flier, color in zip(bp['boxes'], bp['fliers'], colors):
+        box.set(facecolor=color)  # Asignar el color a cada caja
+        flier.set(markerfacecolor=color, marker='o', markersize=5)  # Asignar el color a los puntos atípicos
+
+    # Etiquetas para los ejes y Título del gráfico
+    plt.xlabel('Componentes Principales')
+    plt.ylabel('Valores')
+    plt.title(title_name)
+    
+    # Pongo en el eje x el nombre de las categorias
+    plt.xticks(range(1, len(categories) + 1), categories, rotation=45, ha='right')
+    
+    plt.show()
 
 
-
-    principal_df = pd.DataFrame(data=countries_principal_components, columns=['principal component ' + str(i) for i in range(7)])
-    print(principal_df)
-    np.set_printoptions(precision=6,suppress=True)
-    print(pca.components_)
-
-    # BIPLOT
+def biplot_graph(principal_df, countries_principal_components, pca, categories, countries):
     x_country = principal_df.values[:, 0]
     y_country = principal_df.values[:, 1]
     x_scale = 1.0 / (x_country.max() - x_country.min())
@@ -57,19 +62,18 @@ def main():
 
     plt.xlabel("PC1")
     plt.ylabel("PC2")
+    plt.title('Valores de las Componentes Principales 1 y 2')
+
     plt.grid()
     plt.show()
 
-    #print("Los componentes principales son: " + str(pca.components_))
+
+def bar_graph(countries_principal_components, countries): 
     countries_principal_components_value = []
     for country in countries_principal_components:
         value = np.sum(country)
         countries_principal_components_value.append(value)
 
-
-    #print("Los valores por pais son:" + str(countries_principal_components_value))
-
-    # Datos
     x = countries
     y = countries_principal_components_value
 
@@ -82,11 +86,35 @@ def main():
     plt.xlabel('Countries')
     plt.ylabel('PCA1')
     plt.title('PCA1 per country')
+    plt.xticks(rotation=45, ha='right')
 
-    plt.xticks(rotation='vertical')
-
-    # Mostrar el gráfico
     plt.show()
+
+
+def main():
+    categories =  ['Area', 'GDP', 'Inflation', 'Life.expect', 'Military', 'Pop.growth', 'Unemployment']
+    data, countries = read_and_load_csv_data()
+    data = np.array(data)
+    boxplot_graph(data, categories, 'Diagrama de las características de los países sin estandarizadas')
+    
+    standarized_data = estandarize_data_func(data,len(data),len(data[0]))
+    pca = PCA()
+    
+    countries_principal_components = pca.fit_transform(standarized_data)
+
+    principal_df = pd.DataFrame(data=countries_principal_components, columns=['principal component ' + str(i) for i in range(7)])
+    print(principal_df)
+    np.set_printoptions(precision=6,suppress=True)
+    print(pca.components_)
+
+
+    boxplot_graph(data, categories, 'Diagrama de las características de los países estandarizadas')
+    biplot_graph(principal_df, countries_principal_components, pca, categories, countries)
+    bar_graph(countries_principal_components, countries)
+    
+    
+    
+
 
 
 if __name__ == "__main__":
