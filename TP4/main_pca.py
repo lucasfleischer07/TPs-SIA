@@ -68,7 +68,7 @@ def biplot_graph(principal_df, countries_principal_components, pca, categories, 
     plt.show()
 
 
-def bar_graph(countries_principal_components, countries): 
+def bar_graph(countries_principal_components, countries, title): 
     countries_principal_components_value = []
     for country in countries_principal_components:
         value = np.sum(country)
@@ -83,9 +83,8 @@ def bar_graph(countries_principal_components, countries):
     plt.bar(x, y)
 
     # Etiquetas y título
-    plt.xlabel('Countries')
     plt.ylabel('PCA1')
-    plt.title('PCA1 per country')
+    plt.title(title)
     plt.xticks(rotation=45, ha='right')
 
     plt.show()
@@ -110,7 +109,7 @@ def main():
 
     boxplot_graph(data, categories, 'Diagrama de las características de los países estandarizadas')
     biplot_graph(principal_df, countries_principal_components, pca, categories, countries)
-    bar_graph(countries_principal_components, countries)
+    bar_graph(countries_principal_components, countries, 'PCA1 per country')
     
     
     
