@@ -47,24 +47,57 @@ def boxplot_graph(data, categories, title_name):
     plt.show()
 
 
-def biplot_graph(principal_df, countries_principal_components, pca, categories, countries):
-    x_country = principal_df.values[:, 0]
-    y_country = principal_df.values[:, 1]
-    x_scale = 1.0 / (x_country.max() - x_country.min())
-    y_scale = 1.0 / (y_country.max() - y_country.min())
-    plt.scatter(countries_principal_components[:, 0:2][:,0] * x_scale, countries_principal_components[:, 0:2][:,1] * y_scale, s=3)
+#ESTE NOS DA ESCALA DE PAISES MAS CHICOS
+# def biplot_graph(principal_df, countries_principal_components, pca, categories, countries):
+#     x_country = principal_df.values[:, 0]
+#     y_country = principal_df.values[:, 1]
+#     x_scale = 1.0 / (x_country.max() - x_country.min())
+#     y_scale = 1.0 / (y_country.max() - y_country.min())
+#     plt.scatter(countries_principal_components[:, 0:2][:,0] * x_scale, countries_principal_components[:, 0:2][:,1] * y_scale, s=1)
 
-    for i in range(np.transpose(pca.components_[0:2, :]).shape[0]):
-        plt.arrow(0, 0, np.transpose(pca.components_[0:2, :])[i, 0], np.transpose(pca.components_[0:2, :])[i, 1], color='r', alpha=0.5)
-        plt.text(np.transpose(pca.components_[0:2, :])[i, 0] * 1.15, np.transpose(pca.components_[0:2, :])[i, 1] * 1.15, categories[i], color='g', ha='center', va='center')
-    for i in range(len(countries_principal_components[:, 0:2][:,0])):
-        plt.text(countries_principal_components[:, 0:2][:,0][i] * x_scale, countries_principal_components[:, 0:2][:,1][i] * (y_scale + 0.015), countries[i], color='b', ha='center', va='center', fontsize=8)
+#     for i in range(np.transpose(pca.components_[0:2, :]).shape[0]):
+#         plt.arrow(0, 0, np.transpose(pca.components_[0:2, :])[i, 0], np.transpose(pca.components_[0:2, :])[i, 1], color='r', alpha=0.5, head_width=0.05, head_length=0.05)
+#         plt.text(np.transpose(pca.components_[0:2, :])[i, 0] * 1.15, np.transpose(pca.components_[0:2, :])[i, 1] * 1.15, categories[i], color='g', ha='center', va='center')
+#     for i in range(len(countries_principal_components[:, 0:2][:,0])):
+#         plt.text(countries_principal_components[:, 0:2][:,0][i] * x_scale, countries_principal_components[:, 0:2][:,1][i] * (y_scale + 0.015), countries[i], color='b', ha='center', va='center', fontsize=8)
 
-    plt.xlabel("PC1")
-    plt.ylabel("PC2")
-    plt.title('Valores de las Componentes Principales 1 y 2')
+#     plt.xlabel("PC1")
+#     plt.ylabel("PC2")
+#     plt.title('Valores de las Componentes Principales 1 y 2')
 
-    plt.grid()
+#     plt.grid()
+#     plt.show()
+
+
+#ESTE NOS DA ESCALA DE PAISES MAS GRANDE
+def biplot_graph(pca, principal_components, loadings, countries, labels):
+    fig, ax = plt.subplots()
+    ax.scatter(principal_components[:, 0], principal_components[:, 1])
+    
+    for i in range(len(principal_components[0])):
+        ax.arrow(0, 0, loadings[i, 0], loadings[i, 1], head_width=0.05, head_length=0.05, fc='red', ec='red')
+        ax.text(loadings[i, 0]*1.2, loadings[i, 1]*1.2, f'{labels[i]}', color='red')
+
+    for i in range(len(principal_components)):
+        ax.text(principal_components[i, 0], principal_components[i, 1], f'{countries[i]}', color='blue')
+    
+
+    ax.axhline(0, color='black', linestyle='--')
+    ax.axvline(0, color='black', linestyle='--')
+    ax.set_xlabel(f'PCA 1 ({pca.explained_variance_ratio_[0] * 100:.2f}% varianza)')
+    ax.set_ylabel(f'PCA 2 ({pca.explained_variance_ratio_[1] * 100:.2f}% varianza)')
+    ax.set_title('Biplot con valores de componentes principales 1 y 2')
+
+    '''
+    zoom_factor = 0.34
+    x_center = principal_components[:, 0].mean() 
+    y_center = principal_components[:, 1].mean() 
+    x_range = principal_components[:, 0].max() - principal_components[:, 0].min()  
+    y_range = principal_components[:, 1].max() - principal_components[:, 1].min()  
+
+    ax.set_xlim(x_center - zoom_factor * x_range, x_center + zoom_factor * x_range)
+    ax.set_ylim(y_center - zoom_factor * y_range, y_center + zoom_factor * y_range)
+    '''
     plt.show()
 
 
@@ -126,16 +159,18 @@ def main():
     pca = PCA()
     
     countries_principal_components = pca.fit_transform(standarized_data)
+    loadings = pca.components_.T * np.sqrt(pca.explained_variance_)
+
 
     principal_df = pd.DataFrame(data=countries_principal_components, columns=['principal component ' + str(i) for i in range(7)])
     print(principal_df)
     np.set_printoptions(precision=6,suppress=True)
     print(pca.components_)
 
-
     boxplot_graph(data, categories, 'Diagrama de las características de los países estandarizadas')
-    biplot_graph(principal_df, countries_principal_components, pca, categories, countries)
-   
+
+    biplot_graph(pca, countries_principal_components, loadings, countries, categories)
+
     bar_graph(countries_principal_components[:, 0], countries, 'PCA1 per country')
     #este tiene colores en rojo negativos, azules positivos.
     # plot_pca(countries_principal_components[:, 0], countries, "PCA1 per country")
