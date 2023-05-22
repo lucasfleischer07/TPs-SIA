@@ -21,7 +21,7 @@ Trabajo práctico orientativo para la materia Sistemas de Inteligencia Artificia
 
 ### Instalación
 
-Parado en la carpeta del TP3 ejecutar
+Parado en la carpeta del TP4 ejecutar
 
 ```sh
 pipenv install

@@ -76,28 +76,63 @@ def biplot_graph(pca, principal_components, loadings, countries, labels):
     
     for i in range(len(principal_components[0])):
         ax.arrow(0, 0, loadings[i, 0], loadings[i, 1], head_width=0.05, head_length=0.05, fc='red', ec='red')
-        ax.text(loadings[i, 0]*1.2, loadings[i, 1]*1.2, f'{labels[i]}', color='red')
+        ax.text(loadings[i, 0]*1.2, loadings[i, 1]*1.2, f'{labels[i]}', color='purple')
+
+    colors = [
+    'blue', 'green', 'red', 'orange', 'purple', 'brown', 'pink', 'gray',
+    'olive', 'cyan', 'magenta', 'lime', 'teal', 'lavender', 'maroon',
+    'navy', 'yellow', 'aqua', 'salmon', 'gold', 'indigo', 'tan', 'coral',
+    'peru', 'plum', 'slategray', 'darkgreen', 'sienna'
+    ]
+
+    country_colors = dict(zip(countries, colors))  # Diccionario de país-color
 
     for i in range(len(principal_components)):
-        ax.text(principal_components[i, 0], principal_components[i, 1], f'{countries[i]}', color='blue')
-    
+        # ax.text(principal_components[i, 0], principal_components[i, 1], f'{countries[i]}', color='blue')
+        ax.scatter(principal_components[i, 0], principal_components[i, 1], color=colors[i])
+
+    print("colors" + str(country_colors))
+
 
     ax.axhline(0, color='black', linestyle='--')
     ax.axvline(0, color='black', linestyle='--')
-    ax.set_xlabel(f'PCA 1 ({pca.explained_variance_ratio_[0] * 100:.2f}% varianza)')
-    ax.set_ylabel(f'PCA 2 ({pca.explained_variance_ratio_[1] * 100:.2f}% varianza)')
+    ax.set_xlabel(f'PCA 1')
+    ax.set_ylabel(f'PCA 2')
     ax.set_title('Biplot con valores de componentes principales 1 y 2')
 
-    '''
-    zoom_factor = 0.34
-    x_center = principal_components[:, 0].mean() 
-    y_center = principal_components[:, 1].mean() 
-    x_range = principal_components[:, 0].max() - principal_components[:, 0].min()  
-    y_range = principal_components[:, 1].max() - principal_components[:, 1].min()  
+    plt.show()
 
-    ax.set_xlim(x_center - zoom_factor * x_range, x_center + zoom_factor * x_range)
-    ax.set_ylim(y_center - zoom_factor * y_range, y_center + zoom_factor * y_range)
-    '''
+
+    data = {
+        '  Austria': 'blue', '  Belgium': 'green', '  Bulgaria': 'red', '  Croatia': 'orange',
+        '  Czech Republic': 'purple', '  Denmark': 'brown', '  Estonia': 'pink', '  Finland': 'gray',
+        '  Germany': 'olive', '  Greece': 'cyan', '  Hungary': 'magenta', '  Iceland': 'lime',
+        '  Ireland': 'teal', '  Italy': 'lavender', '  Latvia': 'maroon', '  Lithuania': 'navy',
+        '  Luxembourg': 'yellow', '  Netherlands': 'aqua', '  Norway': 'salmon', '  Poland': 'gold',
+        '  Portugal': 'indigo', '  Slovakia': 'tan', '  Slovenia': 'coral', '  Spain': 'peru',
+        '  Sweden': 'plum', '  Switzerland': 'slategray', '  Ukraine': 'darkgreen',
+        '  United Kingdom': 'sienna'
+    }
+
+    # Crear listas separadas para los nombres de los países y los colores
+    countries = list(data.keys())
+    colors = list(data.values())
+
+    for i in range(len(countries)):
+        x = 1      # Coordenada x del punto
+        y = i + 1  # Coordenada y del punto
+        color = colors[i]   # Color del punto
+        country = countries[i]   # Nombre del país
+        
+        plt.scatter(x, y, color=color)   # Graficar el punto
+
+        plt.text(x, y, country, color='black', fontsize=8, ha='left', va='center')   # Agregar el nombre del país
+
+    # Ajustar los límites del gráfico
+    plt.xlim(0, 2)
+    plt.ylim(0, len(countries) + 1)
+
+    # Mostrar el gráfico
     plt.show()
 
 
