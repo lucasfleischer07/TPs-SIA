@@ -89,12 +89,38 @@ def bar_graph(countries_principal_components, countries, title):
 
     plt.show()
 
+def plot_pca(vec, labels, descr):
+    x = list(labels)
+    y = list(vec)
+    plt.rc('font', size=10)
+
+    fig, ax = plt.subplots(figsize=(10, 8))
+    width = 0.5
+    ind = np.arange(len(y))  
+
+    cc = ['colors'] * len(y)
+    for n, val in enumerate(y):
+        if val < 0:
+            cc[n] = 'red'
+        elif val >= 0:
+            cc[n] = 'blue'
+
+    ax.bar(ind, y, width, color=cc)
+    ax.set_xticks(ind + width / 100)
+    ax.set_xticklabels(x, minor=False)
+    plt.xticks(rotation=90)
+    ax.set_ylabel('PCA1')
+    ax.set_xlabel('Paises')
+    plt.title(descr)
+    plt.show()
+
+
 
 def main():
     categories =  ['Area', 'GDP', 'Inflation', 'Life.expect', 'Military', 'Pop.growth', 'Unemployment']
     data, countries = read_and_load_csv_data()
     data = np.array(data)
-    boxplot_graph(data, categories, 'Diagrama de las características de los países sin estandarizadas')
+    # boxplot_graph(data, categories, 'Diagrama de las características de los países sin estandarizadas')
     
     standarized_data = estandarize_data_func(data,len(data),len(data[0]))
     pca = PCA()
@@ -109,7 +135,10 @@ def main():
 
     boxplot_graph(data, categories, 'Diagrama de las características de los países estandarizadas')
     biplot_graph(principal_df, countries_principal_components, pca, categories, countries)
-    bar_graph(countries_principal_components, countries, 'PCA1 per country')
+   
+    bar_graph(countries_principal_components[:, 0], countries, 'PCA1 per country')
+    #este tiene colores en rojo negativos, azules positivos.
+    # plot_pca(countries_principal_components[:, 0], countries, "PCA1 per country")
     
     
     
