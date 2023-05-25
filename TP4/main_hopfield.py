@@ -33,7 +33,7 @@ def parse_file():
 def main():
     alg_name = "hopfield"
     letters = parse_file()
-    train_letters = np.array([letters[0], letters[11], letters[12], letters[25]]) #A, L, M, Z
+    train_letters = np.array([letters[17], letters[19], letters[21], letters[22]]) #R,T,V,W
 
     print("\nInput letters: \n")
     for input in train_letters:
@@ -42,7 +42,7 @@ def main():
 
     print("\n ------------------------- \n")
 
-    letter_with_noise = mutate(letters[0], 0.4)
+    letter_with_noise = mutate(letters[22], 0.4)
     # predict_letter = letters[6]
     
     letter_solved, iterations = train_hopfield(np.array(letter_with_noise), train_letters)

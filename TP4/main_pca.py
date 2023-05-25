@@ -136,28 +136,7 @@ def biplot_graph(pca, principal_components, loadings, countries, labels):
     plt.show()
 
 
-def bar_graph(countries_principal_components, countries, title): 
-    countries_principal_components_value = []
-    for country in countries_principal_components:
-        value = np.sum(country)
-        countries_principal_components_value.append(value)
-
-    x = countries
-    y = countries_principal_components_value
-
-    plt.ylim(np.amin(countries_principal_components_value), np.amax(countries_principal_components_value))
-
-    # Plot
-    plt.bar(x, y)
-
-    # Etiquetas y título
-    plt.ylabel('PCA1')
-    plt.title(title)
-    plt.xticks(rotation=45, ha='right')
-
-    plt.show()
-
-def plot_pca(vec, labels, descr):
+def bar_graph(vec, labels, descr):
     x = list(labels)
     y = list(vec)
     plt.rc('font', size=10)
@@ -206,9 +185,8 @@ def main():
 
     biplot_graph(pca, countries_principal_components, loadings, countries, categories)
 
-    bar_graph(countries_principal_components[:, 0], countries, 'PCA1 per country')
     #este tiene colores en rojo negativos, azules positivos.
-    # plot_pca(countries_principal_components[:, 0], countries, "PCA1 per country")
+    bar_graph(countries_principal_components[:, 0], countries, "PCA1 per country")
     
     
     
