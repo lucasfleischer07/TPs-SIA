@@ -58,11 +58,6 @@ def main():
     # la transformación lineal definida por los pesos aprendidos a los datos estandarizados, lo que permite obtener
     # la representación de los datos en el espacio de las componentes principales.
     pca = np.matmul(data_standarized, weights)
-    
-    # print("Approximated Eigenvector - First Component")
-    # print(weights)
-    # print("Approximated PCA1")
-    # print(pca)
 
     bar_graph(weights, labels, 'PCA1 con Oja')
     bar_graph(pca, countries, 'PCA1 por pais con Oja')
@@ -70,18 +65,8 @@ def main():
     pca = PCA()
     principal_components = pca.fit_transform(data_standarized)
 
-    # print("Eigenvector - First Component")
-    # print(pca.components_.T[:, 0])
-    # print("PCA 1")
-    # print(principal_components[:, 0])
-
     bar_graph(pca.components_[0], labels, "PCA1 con Sklearn")
     bar_graph(principal_components[:, 0], countries, "PCA1 por pais con Sklearn")
-
-    error = 0
-    for i in range(len(weights)):
-        error = np.abs(weights[i] - principal_components[0][i])
-    print("\nError: " + str(error))
 
 
 if __name__ == "__main__":
