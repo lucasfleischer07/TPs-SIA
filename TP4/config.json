@@ -8,7 +8,7 @@
     },
 
     "oja": {
-        "learning_rate": 0.01,
-        "max_epochs": 15000
+        "learning_rate": 0.00001,
+        "max_epochs": 150000
     }
 }
