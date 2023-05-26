@@ -49,7 +49,7 @@ def getNeighbours(winner,k,radius):
 def train_kohonen(data, size, iterations, learning_rate, initial_radius, final_radius,countries):
     dataSize=len(data)
     parametersSize=(len(data[0]))
-    estandarize_data = estandarize_data_func(data, dataSize, parametersSize)
+    estandarize_data = estandarize_data_func(np.copy(data), dataSize, parametersSize)
     weights, choices = init_weights(size, estandarize_data)
     radius = initial_radius
     decay = iterations / np.log(initial_radius / final_radius)
@@ -76,7 +76,7 @@ def train_kohonen(data, size, iterations, learning_rate, initial_radius, final_r
         for j in range (len(neighbours)):
             aux.append(euclidean_distance(weights[i],weights[neighbours[j]]))
         distances.append(mean(aux))
-    return weights, choices, results,distances
+    return weights, choices, results,distances,estandarize_data
 
 
 def plot_heatmap_kohonen(results, k, learn_rate):
@@ -93,7 +93,29 @@ def plot_heatmap_kohonen(results, k, learn_rate):
             matrix[row][col] += len(results[i])
 
     plt.title(f"Classification heatmap. Learn_rate: {learn_rate}")
-    sn.heatmap(matrix, cmap='YlGnBu', annot=True)
+    sn.heatmap(matrix, cmap='YlGnBu',annot=True)
+    plt.show()
+
+def plot_heatmap_kohonenNames(results, k, learn_rate):
+    matrix = np.zeros((k, k))
+
+    # Iteramos sobre los elementos del array 'results'
+    for i in range(len(results)):
+        # Si el array interno no está vacío
+        if results[i]:
+            # Obtenemos la posición en la matriz correspondiente
+            row = i // k
+            col = i % k
+            # Agregamos la cantidad de elementos en la posición correspondiente
+            matrix[row][col] += len(results[i])
+
+    for i in range(k):
+        for j in range(k):
+            plt.text(j, i,'\n'.join(results[j % k+k*i]), ha='center', va='center', color='black')
+    plt.title(f"Classification heatmap. Learn_rate: {learn_rate}")
+    plt.imshow(matrix, cmap='YlGnBu',interpolation='nearest')
+    plt.xticks([])
+    plt.yticks([])
     plt.show()
 
 
@@ -178,4 +200,30 @@ def plot_countries_in_nodes(results, k, learn_rate):
             text = matrix_countries_per_node[i][j]
             text_wrapped = textwrap.fill(text, width=22)  # Ajusta el ancho de las líneas según tus necesidades
             ax.text(j + 0.5, i + 0.70, text_wrapped, ha='center', va='center', color='black', fontsize=8)
+    plt.show()
+    
+def plot_boxplot(data, box_plot_title):
+    areas = []
+    GDP = []
+    inflations = []
+    life_expectations = []
+    militaries = []
+    pop_growth = []
+    unemployment = []
+    for i in range(len(data)):
+        areas.append(data[i][0])
+        GDP.append(data[i][1])
+        inflations.append(data[i][2])
+        life_expectations.append(data[i][3])
+        militaries.append(data[i][4])
+        pop_growth.append(data[i][5])
+        unemployment.append(data[i][6])
+
+    fig = plt.figure(figsize=(10, 7))
+    ax = fig.add_subplot(111)
+    x = np.array(['Areas', 'GDP',
+                'Inflations', 'Life_expectations', 'Military', 'Pop_growth', 'Unemployment'])
+    ax.set_xticklabels(x)
+    plt.title(box_plot_title)
+    plt.boxplot([areas, GDP, inflations, life_expectations, militaries, pop_growth, unemployment])
     plt.show()
