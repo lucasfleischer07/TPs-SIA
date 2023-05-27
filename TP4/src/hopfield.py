@@ -1,30 +1,46 @@
 import numpy as np
+import matplotlib.pyplot as plt
 from copy import deepcopy
 
 
-def train_hopfield(query, initial_letters): #le pasa la letra q quiere llegar, y las 4 letras de input
-        # Estimating weights
-        n, columns = initial_letters.shape #devuelve filas y columnas de inputs
-        k = np.zeros((n, columns))
-        for i in range(len(initial_letters)): #crea una matriz con las letras iniciales en las filas
-            k[i, :] = initial_letters[i]
-        
-        weights = (1 / n) * (np.matmul(k.T, k))
-        np.fill_diagonal(weights, 0)
+def calculate_energy(weights, states):
+    energy = -0.5 * np.dot(states.T, np.dot(weights, states))
+    return energy
 
-        iterations = 0
-        S = query #patron de consulta, S es el vector de estados
-        old_S = None
+def train_hopfield(query, initial_letters):
+    # Estimating weights
+    n, columns = initial_letters.shape
+    k = np.zeros((n, columns))
+    for i in range(len(initial_letters)):
+        k[i, :] = initial_letters[i]
 
-        while not np.array_equal(S, old_S):
-            if(iterations != 0):
-                print("\nIteration: " + str(iterations) + "\n") 
-                print_letter(S)
-            old_S = S
-            S = np.sign(np.dot(weights, S)) 
-            iterations += 1 #iteraciones
+    weights = (1 / n) * (np.matmul(k.T, k))
+    np.fill_diagonal(weights, 0)
 
-        return S, iterations
+    iterations = 0
+    S = np.where(query >= 0, 1, -1)  # Cambiar -1 por 1 en la inicialización de S
+    results = []
+    energy_list = []
+    results.append(S)
+
+
+    while True:
+        if iterations != 0:
+            print("\nIteration: " + str(iterations) + "\n") 
+            print_letter(S)
+        prev_state = np.sign(np.dot(weights, S))
+        prev_state = np.where(prev_state == 0, -1, prev_state)
+        results.append(prev_state)
+        energy = calculate_energy(weights, prev_state)
+        energy_list.append(energy)
+
+        if np.array_equal(prev_state, S) and iterations != 0:
+            break
+
+        S = prev_state
+        iterations += 1
+
+    return S, iterations, energy_list
 
 
 def print_letter(letter):
@@ -40,12 +56,12 @@ def print_letter(letter):
         print(edited[i*5], edited[(i*5)+1], edited[(i*5)+2], edited[(i*5)+3], edited[(i*5)+4])
 
 
-def mutate(letter, prob): #funciona como que 0.1 es menor que 0.9.
-    mutated_letter = np.copy(letter)
-    for i in range(mutated_letter.size):
-        if np.random.random() < prob:
-            mutated_letter[i] *= -1
-    return mutated_letter
+# def mutate(letter, prob): #funciona como que 0.1 es menor que 0.9.
+#     mutated_letter = np.copy(letter)
+#     for i in range(mutated_letter.size):
+#         if np.random.random() < prob:
+#             mutated_letter[i] *= -1
+#     return mutated_letter
 
 
 def mutate_pattern(pattern, bytes_to_change):
@@ -55,3 +71,11 @@ def mutate_pattern(pattern, bytes_to_change):
         p[i] = 1 if p[i] == -1 else -1
 
     return p
+
+
+def energy_plot(energy_list):
+    plt.plot(range(1, len(energy_list[:-1]) + 1), energy_list[:-1], 'o-', color='green')
+    plt.ylabel('Energía')
+    plt.xlabel('Iteraciones')
+    plt.title('Función de energía')
+    plt.show()
