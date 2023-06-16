@@ -30,9 +30,10 @@ def main():
     letters = parse_file() 
     print(len(letters))
 
-    train_letters = np.array([letters[0], letters[5], letters[15], letters[17]]) #A,L,T,V.
-    # train_letters = np.array([letters[5], letters[12], letters[21], letters[25]]) #A,L,T,V. fmvz y ajlx
-    # train_letters = np.array([letters[0], letters[9], letters[11], letters[23]]) #A,L,T,V. fmvz y ajlx (mejor)
+    # train_letters = np.array([letters[0], letters[11], letters[19], letters[21]]) #ALTV
+    train_letters = np.array([letters[5], letters[12], letters[21], letters[25]]) #FMVZ. 
+
+    # train_letters = np.array([letters[0], letters[9], letters[11], letters[23]]) #A,j,l,x 
 
     print("\nInput letters: \n")
     for input in train_letters:
@@ -43,22 +44,16 @@ def main():
 
     # letter_with_noise = mutate(letters[0], 0.1)
 
-    noise = 6
-    letter_with_noise = mutate_pattern(letters[0], noise)
+    noise = 8
+    letter_with_noise = mutate_pattern(letters[25], noise)
 
-    # predict_letter = letters[0]
-
-    # print("Letter to predict with noise in iteration 0: \n")
-    # print_letter(letter_with_noise)
+    # predict_letter = letters[12]
 
     # print("Letter to predict: \n")
     # print_letter(predict_letter)
     print("Letter to predict with noise: " + str(noise) + "\n")
     print_letter(letter_with_noise)
     
-    #forma 1 sin energia q anda
-    # letter_solved, iterations = train_hopfield(np.array(letter_with_noise), train_letters)
-    # letter_solved, iterations = train_hopfield(predict_letter, train_letters)
 
     #forma 2 con energia
     result, iterations, energy_list = train_hopfield(np.array(letter_with_noise), train_letters)
@@ -70,7 +65,7 @@ def main():
     print_letter(result)
     print("\n")
 
-    # energy_plot(energy_list)
+    energy_plot(energy_list)
 
 
 if __name__ == "__main__":

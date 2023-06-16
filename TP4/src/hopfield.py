@@ -25,9 +25,9 @@ def train_hopfield(query, initial_letters):
 
 
     while True:
-        if iterations != 0:
-            print("\nIteration: " + str(iterations) + "\n") 
-            print_letter(S)
+        # if iterations != 0:
+        #     print("\nIteration: " + str(iterations) + "\n") 
+        #     print_letter(S)
         prev_state = np.sign(np.dot(weights, S))
         prev_state = np.where(prev_state == 0, -1, prev_state)
         results.append(prev_state)
