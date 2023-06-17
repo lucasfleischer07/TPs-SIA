@@ -1,0 +1,13 @@
+{
+  "learning_rate": "0.001",
+  "betha": "0.8",
+  "function": "logistic",
+  "layers": [
+    35,
+    15,
+    10,
+    5
+  ],
+  "max_iter": "200",
+  "min_error": "0.01"
+}

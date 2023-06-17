@@ -8,6 +8,8 @@ notebook = "*"
 seaborn = "*"
 numpy = "*"
 matplotlib = "*"
+scipy = "*"
+qiskit = "*"
 
 [dev-packages]
 
