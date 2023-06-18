@@ -1,7 +1,7 @@
 import numpy as np
 from numpy import mean, sum as npsum
 
-from src.utils import hexa_to_bin_array, add_noise
+from src.utils import hexa_to_bin_array, mutate_pattern
 from src.include.font import font
 from src.algorithms.Autoencoder import Autoencoder
 from src.JsonConfig import JsonConfig
@@ -30,13 +30,15 @@ def __main__():
 
     letters_patterns_mutated_to_train = []
     data_to_train = []
-    for i in range(0, 10):
-        letters_patterns_mutated_to_train.extend(add_noise(data, num_bytes_to_change))
+    for i in range(0, 2):
+        letters_patterns_mutated_to_train.extend(mutate_pattern(data, num_bytes_to_change))
         data_to_train.extend(data)
     autoencoder.train(letters_patterns_mutated_to_train, data_to_train)
 
     # ! Si anda mal esto, descomentar el for de arriba y probar de 0 a 5 o sino de 0 a 10
-    # autoencoder.train(add_noise(data, num_bytes_to_change), data)
+    # letters_patterns_mutated_to_train = mutate_pattern(data, num_bytes_to_change)
+    # data_to_train = data
+    # autoencoder.train(mutate_pattern(data, num_bytes_to_change), data)
 
     patterns = []
     for i in range(len(data)):
@@ -53,7 +55,7 @@ def __main__():
     print("Train error with mutated trained patterns: " + str(error))
 
     # generate a new set
-    letters_patterns_mutated = add_noise(data, num_bytes_to_change)
+    letters_patterns_mutated = mutate_pattern(data, num_bytes_to_change)
 
     patterns_new_set = []
     for i in range(len(data)):

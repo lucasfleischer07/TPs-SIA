@@ -106,7 +106,6 @@ class Autoencoder:
         weights = self.weights_resize(x)
         output = np.array([self.get_output(data, weights) for data in x_data])
         error = np.mean(np.sum((y_expected - output) ** 2, axis=1) / 2)
-        print('The error is: ' + str(error))
         return error
 
     
