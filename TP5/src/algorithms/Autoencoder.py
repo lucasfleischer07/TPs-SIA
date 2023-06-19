@@ -68,6 +68,7 @@ class Autoencoder:
         X = self.array_resize(self.weights)
         #data_trained = minimize(self.calculate_error, X, method='L-BFGS-B',
         #            args=(input_x, input_y),
+        #            jac=None, bounds=None,tol=None,callback=self.print_step,
         #            options={'disp': False, 'gtol': self.config.min_error, 'maxiter': self.config.max_iter})
         data_trained = minimize(self.calculate_error, X, method='Powell',
                           args=(input_x, input_y),
@@ -106,7 +107,7 @@ class Autoencoder:
         weights = self.weights_resize(x)
         output = np.array([self.get_output(data, weights) for data in x_data])
         error = np.mean(np.sum((y_expected - output) ** 2, axis=1) / 2)
-        print('The error is: ' + str(error))
+        #print('The error is: ' + str(error))
         return error
 
     
@@ -120,17 +121,6 @@ class Autoencoder:
             weights.append(weights_array[start_idx:end_idx].reshape(dim))
             start_idx = end_idx
         return weights
-
-#   def weights_resize(self, weights_array):
-
-#         weights = []
-#         idx = 0
-#         for dim in self.dimensions:
-#             flattened_dim = dim[0] * dim[1]
-#             weights.append(weights_array[idx:idx + flattened_dim].reshape(dim))
-#             idx += flattened_dim
-
-#         return weights
 
     def get_output(self, input, weights):
         output_value = input.reshape((len(input), 1))

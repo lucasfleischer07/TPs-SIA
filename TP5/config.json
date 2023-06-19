@@ -1,12 +1,12 @@
 {
-  "learning_rate": "0.001",
-  "betha": "0.8",
-  "function": "logistic",
+  "learning_rate": "0.00045",
+  "betha": "1",
+  "function": "tanh",
   "layers": [
-    35,
+    25,
+    20,
     15,
-    10,
-    5
+    10
   ],
   "max_iter": "200",
   "min_error": "0.01"
