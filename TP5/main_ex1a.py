@@ -33,20 +33,22 @@ def __main__():
     autoencoder.train(data, data)
 
 
-
     # ----------------- item a    -----------------------
 
     # Datos
-    valores_x = ['25x20x15x10x2x10x15x20x25', '35x10x5x2x5x10x35', '35x10x2x10x35']
-    valores_y = [0.3426486939323965, 1.2562263415389, 1.546197772768]
+    # valores_x = ['25x20x15x10x2x10x15x20x25', '35x10x5x2x5x10x35', '35x10x2x10x35']
+    # valores_y = [0.3426486939323965, 1.2562263415389, 1.546197772768]
+
+    valores_x = ['0.8', '1']
+    valores_y = [0.25323952864768273 ,0.3426486939323965]
 
     colors = ['green', 'red', 'red']
     # Crear el gráfico de barras
     plt.bar(valores_x, valores_y, color = colors)
 
     # Personalizar el gráfico
-    plt.title('Evaluacion de error para distintas arquitecturas')
-    plt.xlabel('Arquitecturas')
+    plt.title('Evaluacion de beta para 25x20x15x10')
+    plt.xlabel('Beta')
     plt.ylabel('Error obtenido')
 
     # Mostrar el gráfico

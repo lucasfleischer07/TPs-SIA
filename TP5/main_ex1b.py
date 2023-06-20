@@ -16,7 +16,7 @@ def __main__():
     data = []
     letters_patterns = []
     letters = ['`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~', 'DEL']
-    num_bytes_to_change = 10
+    num_bytes_to_change = 5
 
     for letter in font:
         aux = hexa_to_bin_array(letter)
@@ -29,23 +29,29 @@ def __main__():
     autoencoder = Autoencoder(config, config.layers, len(data[0]))
 
 
+# ---------- aca muto la data con la que voy a entrenar --------
     letters_patterns_mutated_to_train = []
     data_to_train = []
-    for i in range(0, 2):
-        letters_patterns_mutated_to_train.extend(mutate_pattern(data[:10], num_bytes_to_change))
-        data_to_train.extend(data[:10])
+    # for i in range(0, 1):
+    letters_patterns_mutated_to_train.extend(mutate_pattern(data[:10], num_bytes_to_change))
+    data_to_train.extend(data[:10])
 
+# ----------------- entrno al autoencoder con la data que mute arriba --------
     plot_letters_patterns_with_noise(letters_patterns_mutated_to_train)
     autoencoder.train(letters_patterns_mutated_to_train, data_to_train)
 
-    
+
+# ------------------ muto data nueva y se la paso al autoencoder ------------
     letters_patterns_mutated_to_train2 = []
-    for i in range(0, 2):
-        letters_patterns_mutated_to_train2.extend(mutate_pattern(data[:10], num_bytes_to_change))
-        data_to_train.extend(data[:10])
+    # for i in range(0, 1):
+    letters_patterns_mutated_to_train2.extend(mutate_pattern(data[:10], num_bytes_to_change))
+    data_to_train.extend(data[:10])
+
+    print(str(letters_patterns_mutated_to_train2))
 
     plot_letters_patterns_with_noise(letters_patterns_mutated_to_train2)
 
+# -------------- veo que me devuelve el autoencoder
     patterns = []
     for i in range(len(data[:10])):
         patterns.append(autoencoder.complete_get_output(letters_patterns_mutated_to_train2[i])) 
@@ -53,8 +59,6 @@ def __main__():
     plot_letters_patterns_with_noise(patterns)
     error = mean((npsum((data[:10] - patterns) ** 2, axis=1) / 2))
     print("Train error with mutated trained patterns: " + str(error))
-
-    
 
 
 if __name__ == "__main__":
