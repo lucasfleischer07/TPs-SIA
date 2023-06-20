@@ -64,6 +64,8 @@ def __main__():
     error = mean((npsum((data - patterns_new_set) ** 2, axis=1) / 2))
     print("Train error with new mutated patterns: " + str(error))
 
+    
+
 
 if __name__ == "__main__":
     __main__()

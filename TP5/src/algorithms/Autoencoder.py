@@ -110,8 +110,6 @@ class Autoencoder:
         #print('The error is: ' + str(error))
         return error
 
-    
-
     def weights_resize(self, weights_array):
         weights = []
         start_idx = 0
