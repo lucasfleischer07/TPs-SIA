@@ -5,6 +5,7 @@ from src.utils import hexa_to_bin_array, mutate_pattern
 from src.include.font import font
 from src.algorithms.Autoencoder import Autoencoder
 from src.JsonConfig import JsonConfig
+from src.plots import plot_letters_patterns_with_noise
 
 
 def __main__():
@@ -31,38 +32,27 @@ def __main__():
     letters_patterns_mutated_to_train = []
     data_to_train = []
     for i in range(0, 2):
-        letters_patterns_mutated_to_train.extend(mutate_pattern(data, num_bytes_to_change))
-        data_to_train.extend(data)
+        letters_patterns_mutated_to_train.extend(mutate_pattern(data[:10], num_bytes_to_change))
+        data_to_train.extend(data[:10])
+
+    plot_letters_patterns_with_noise(letters_patterns_mutated_to_train)
     autoencoder.train(letters_patterns_mutated_to_train, data_to_train)
 
-    # ! Si anda mal esto, descomentar el for de arriba y probar de 0 a 5 o sino de 0 a 10
-    # letters_patterns_mutated_to_train = mutate_pattern(data, num_bytes_to_change)
-    # data_to_train = data
-    # autoencoder.train(mutate_pattern(data, num_bytes_to_change), data)
+    
+    letters_patterns_mutated_to_train2 = []
+    for i in range(0, 2):
+        letters_patterns_mutated_to_train2.extend(mutate_pattern(data[:10], num_bytes_to_change))
+        data_to_train.extend(data[:10])
+
+    plot_letters_patterns_with_noise(letters_patterns_mutated_to_train2)
 
     patterns = []
-    for i in range(len(data)):
-        patterns.append(autoencoder.complete_get_output(data[i])) 
+    for i in range(len(data[:10])):
+        patterns.append(autoencoder.complete_get_output(letters_patterns_mutated_to_train2[i])) 
     patterns = np.array(patterns)
-    error = mean((npsum((data - patterns) ** 2, axis=1) / 2))
-    print("Train error with original patterns: " + str(error))
-
-    patterns_trained = []
-    for i in range(len(data)):
-        patterns_trained.append(autoencoder.complete_get_output(letters_patterns_mutated_to_train[i]))
-    patterns_trained = np.array(patterns_trained)
-    error = mean((npsum((data - patterns_trained) ** 2, axis=1) / 2))
+    plot_letters_patterns_with_noise(patterns)
+    error = mean((npsum((data[:10] - patterns) ** 2, axis=1) / 2))
     print("Train error with mutated trained patterns: " + str(error))
-
-    # generate a new set
-    letters_patterns_mutated = mutate_pattern(data, num_bytes_to_change)
-
-    patterns_new_set = []
-    for i in range(len(data)):
-        patterns_new_set.append(autoencoder.complete_get_output(letters_patterns_mutated[i])) 
-    patterns_new_set = np.array(patterns_new_set)
-    error = mean((npsum((data - patterns_new_set) ** 2, axis=1) / 2))
-    print("Train error with new mutated patterns: " + str(error))
 
     
 
