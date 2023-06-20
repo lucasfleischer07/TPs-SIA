@@ -29,3 +29,10 @@ def mutate_pattern(pattern, bytes_to_change):
             mutated_sub_pattern[i] = 1 if mutated_sub_pattern[i] == 0 else 0
         mutated_pattern.append(mutated_sub_pattern)
     return mutated_pattern
+
+def adapt_pattern(pattern):
+    for i in range(len(pattern)):
+        if pattern[i] < 0:
+            pattern[i] = 0
+        else:
+            pattern[i] = 1

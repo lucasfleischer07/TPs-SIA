@@ -1,3 +1,5 @@
+from src.plots import plot_one_letter_patterns
+from src.utils import adapt_pattern
 import numpy as np
 from numpy import mean, sum as npsum
 
@@ -45,7 +47,17 @@ def __main__():
 
     # x = y = []
     
-    
+
+
+    #---------------- item d ----------------------------
+    # Generate 5 new letters from trained Autoencoder
+    for i in range(5):
+        random_latent_vector = np.array([np.random.uniform(low=0, high=1), np.random.uniform(low=-1, high=1)])
+        new_letter = autoencoder.decode( random_latent_vector)
+        #print(str(new_letter))
+        adapt_pattern(new_letter)
+        #print(str(new_letter))
+        plot_one_letter_patterns(new_letter.reshape(7, 5))
 
 
 

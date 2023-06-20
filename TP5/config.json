@@ -1,5 +1,5 @@
 {
-  "learning_rate": "0.00045",
+  "learning_rate": "0.0005",
   "betha": "1",
   "function": "tanh",
   "layers": [
