@@ -18,7 +18,7 @@ def __main__():
     data = []
     letters_patterns = []
     letters = ['`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~', 'DEL']
-    num_bytes_to_change = 0
+    num_bytes_to_change = 2
 
     for letter in font:
         aux = hexa_to_bin_array(letter)
@@ -33,23 +33,20 @@ def __main__():
         # ----------------- item a    -----------------------
 
     # Datos
-    # valores_x = ['25x20x15x10x2x10x15x20x25', '35x10x5x2x5x10x35', '35x10x2x10x35']
-    # valores_y = [0.3426486939323965, 1.2562263415389, 1.546197772768]
-
-    valores_x = ['0.8', '1']
-    valores_y = [0.25323952864768273 ,0.3426486939323965]
+    valores_x = ['25x20x15x10x5','25x10x5', '35x10']
+    valores_y = [0.7035402995344376, 0.9217653410581417, 1.3976009430095382]
 
     colors = ['green', 'red', 'red']
     # Crear el gráfico de barras
     plt.bar(valores_x, valores_y, color = colors)
 
     # Personalizar el gráfico
-    plt.title('Evaluacion de beta para 25x20x15x10')
-    plt.xlabel('Beta')
+    plt.title('Evaluacion de arquitecturas en cuanto a error con ruido 1')
+    plt.xlabel('Arquitecturas')
     plt.ylabel('Error obtenido')
 
     # Mostrar el gráfico
-    # plt.show()
+    plt.show()
 
 
 
@@ -88,13 +85,14 @@ def __main__():
 
     patterns = []
     for i in range(len(data[:10])):
-        patterns.append(autoencoder.complete_get_output(letters_patterns_mutated_to_train2[i])) 
+        patterns.append(autoencoder.complete_get_output(letters_patterns_mutated_to_train[i])) 
     plotprueba(patterns)
 
     # for pattern in range(0, len(patterns)):
     #     plotprueba(dividir_array(patterns[pattern]))
 
     patterns = np.array(patterns)
+    print(patterns)
     error = mean((npsum((data[:10] - patterns) ** 2, axis=1) / 2))
     print("Train error with mutated trained patterns: " + str(error))
 
