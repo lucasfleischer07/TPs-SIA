@@ -1,5 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from seaborn import heatmap
+import math
+import seaborn as sns
 
 def plot_letters_patterns_with_noise(letters_patterns_with_noise):
     num_letters = len(letters_patterns_with_noise)
@@ -83,5 +86,23 @@ def plot_points_latent_space(x, y, labels, title = ''):
         plt.text(x[i], y[i] + 0.04, labels[i], color='black', ha='center',
                 va='center', fontsize=10)
     plt.title(title)
+
+    plt.show()
+
+
+def graph_multi_heatmap(data, title='', cols=3, size=8, c_map="Blues"):
+    sns.set_color_codes("pastel")
+    rows = math.ceil((len(data)) / cols)
+    plt.clf()
+    plt.figure(layout='constrained')
+    fig, axes = plt.subplots(rows, cols, figsize=(size, 3 * rows))
+    fig.suptitle(title)
+    [axi.set_axis_off() for axi in axes.ravel()]
+    for i in range(len(data)):
+        row = math.floor(i / cols)
+        col = i % cols
+        sns.heatmap(ax=axes[row, col] if rows > 1 else axes[col], data=data[i], linewidths=.5, linecolor='black',
+                    cmap=c_map,
+                    yticklabels=False, xticklabels=False, cbar=False)
 
     plt.show()

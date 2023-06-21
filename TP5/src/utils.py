@@ -11,13 +11,13 @@ def hexa_to_bin_array(hexa_character):
     return bin_array
 
 
-# def add_noise(letters, num_of_bytes_to_change):
-#     letters = deepcopy(letters)
-#     for l in letters:
-#         indexs = np.random.choice(len(l), num_of_bytes_to_change, replace=False)
-#         r = np.random.uniform(low=-0.5, high=0.5, size=len(indexs))
-#         l[indexs] = (l[indexs].astype(float) + r).astype(int)
-#     return letters
+def add_noise(letters, num_of_bytes_to_change):
+    letters = deepcopy(letters)
+    for l in letters:
+        indexs = np.random.choice(len(l), num_of_bytes_to_change, replace=False)
+        r = np.random.uniform(low=-0.5, high=0.5, size=len(indexs))
+        l[indexs] = (l[indexs].astype(float) + r).astype(int)
+    return letters
 
 
 def mutate_pattern(pattern, bytes_to_change):
@@ -30,12 +30,29 @@ def mutate_pattern(pattern, bytes_to_change):
         mutated_pattern.append(mutated_sub_pattern)
     return mutated_pattern
 
+
+def mutate_pattern2(patterns, bytes_to_change):
+    patterns = deepcopy(patterns)
+    for p in patterns:
+        indexs = np.random.choice(len(p), bytes_to_change, replace=False)
+        r = np.random.uniform(low=-0.5, high=0.5, size=len(indexs))
+        p[indexs] += r
+    return patterns
+
+def resize_letter(x):
+    return np.array(np.split(x, 7))
+
 def adapt_pattern(pattern):
     for i in range(len(pattern)):
         if pattern[i] < 0:
             pattern[i] = 0
         else:
             pattern[i] = 1
+
+def adapt_pattern2(pattern):
+    adapted_pattern = np.where(pattern < 0, 0, 1)
+    return adapted_pattern
+
 
 
 def generate_new_letter(letter1,letter2,letter3,letter4):
