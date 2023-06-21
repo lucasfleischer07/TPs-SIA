@@ -8,6 +8,6 @@
     15,
     10
   ],
-  "max_iter": "200",
+  "max_iter": "1",
   "min_error": "0.01"
 }

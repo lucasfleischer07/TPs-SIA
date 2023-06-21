@@ -1,5 +1,7 @@
 from src.plots import plot_one_letter_patterns
+from src.plots import plot_letters_patterns
 from src.utils import adapt_pattern
+from src.utils import generate_new_letter
 import numpy as np
 from numpy import mean, sum as npsum
 import matplotlib.pyplot as plt
@@ -78,15 +80,33 @@ def __main__():
     
 
     #---------------- item d ----------------------------
-    # Generate 5 new letters from trained Autoencoder
+    # Generate 5 new letters from the data and test the error of the trained Autoencoder
+    
+    new_letters_patterns = []
     for i in range(5):
-        random_latent_vector = np.array([np.random.uniform(low=0, high=1), np.random.uniform(low=-1, high=1)])
-        new_letter = autoencoder.decode( random_latent_vector)
-        #print(str(new_letter))
-        adapt_pattern(new_letter)
-        #print(str(new_letter))
-        plot_one_letter_patterns(new_letter.reshape(7, 5))
+        new_letters_patterns.append(generate_new_letter(letters_patterns[i*4],letters_patterns[i*4+1],letters_patterns[i*4+2],letters_patterns[i*4+3]))
+    
+    new_letter_recostructed = []
+    for letter in new_letters_patterns:
+        new_letter_recostructed.append(autoencoder.complete_get_output(np.concatenate(letter)))
 
+    plot_letters_patterns(new_letters_patterns)
+
+    error_trained = np.mean(npsum((np.concatenate(new_letters_patterns) - np.transpose(new_letter_recostructed)) ** 2, axis=1) / 2)
+    print("Train error of new generated letters: " + str(error_trained))
+    
+    
+    
+    
+"""
+for i in range(5):
+    random_latent_vector = np.array([np.random.uniform(low=0, high=1), np.random.uniform(low=-1, high=1)])
+    new_letter = autoencoder.decode( random_latent_vector)
+    #print(str(new_letter))
+    adapt_pattern(new_letter)
+    #print(str(new_letter))
+    plot_one_letter_patterns(new_letter.reshape(7, 5))
+"""
 
 
 if __name__ == "__main__":

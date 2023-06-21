@@ -36,3 +36,19 @@ def adapt_pattern(pattern):
             pattern[i] = 0
         else:
             pattern[i] = 1
+
+
+def generate_new_letter(letter1,letter2,letter3,letter4):
+    new_letter = np.zeros((7, 5), dtype=int)
+    for row in range(0, 7):
+        random_number = np.random.uniform(low=-0, high=1)
+        for col in range(0, 5):
+            if random_number < 0.25:
+                new_letter[row][4-col] = letter1[row][4-col]
+            elif random_number >= 0.25 and random_number < 0.5:
+                new_letter[row][4-col] = letter2[row][4-col]
+            elif random_number >= 0.5 and random_number < 0.75:
+                new_letter[row][4-col] = letter3[row][4-col]
+            else:
+                new_letter[row][4-col] = letter4[row][4-col]
+    return new_letter
