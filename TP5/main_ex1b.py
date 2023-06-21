@@ -1,11 +1,13 @@
 import numpy as np
 from numpy import mean, sum as npsum
 
-from src.utils import hexa_to_bin_array, mutate_pattern, adapt_pattern2
+import matplotlib.pyplot as plt
+
+from src.utils import hexa_to_bin_array, mutate_pattern, adapt_pattern2, dividir_array
 from src.include.font import font
 from src.algorithms.Autoencoder import Autoencoder
 from src.JsonConfig import JsonConfig
-from src.plots import plot_letters_patterns_with_noise, plot_letters_patterns, graph_multi_heatmap
+from src.plots import plot_letters_patterns_with_noise, plot_letters_patterns, graph_multi_heatmap, plotprueba
 
 
 def __main__():
@@ -28,6 +30,28 @@ def __main__():
 
     autoencoder = Autoencoder(config, config.layers, len(data[0]))
 
+        # ----------------- item a    -----------------------
+
+    # Datos
+    # valores_x = ['25x20x15x10x2x10x15x20x25', '35x10x5x2x5x10x35', '35x10x2x10x35']
+    # valores_y = [0.3426486939323965, 1.2562263415389, 1.546197772768]
+
+    valores_x = ['0.8', '1']
+    valores_y = [0.25323952864768273 ,0.3426486939323965]
+
+    colors = ['green', 'red', 'red']
+    # Crear el gráfico de barras
+    plt.bar(valores_x, valores_y, color = colors)
+
+    # Personalizar el gráfico
+    plt.title('Evaluacion de beta para 25x20x15x10')
+    plt.xlabel('Beta')
+    plt.ylabel('Error obtenido')
+
+    # Mostrar el gráfico
+    plt.show()
+
+
 
 # ---------- aca muto la data con la que voy a entrenar --------
     letters_patterns_mutated_to_train = []
@@ -38,7 +62,7 @@ def __main__():
 
 # ----------------- entrno al autoencoder con la data que mute arriba --------
     plot_letters_patterns_with_noise(letters_patterns_mutated_to_train)
-    plot_letters_patterns_with_noise(data_to_train)
+    # plot_letters_patterns_with_noise(data_to_train)
     autoencoder.train(letters_patterns_mutated_to_train, data_to_train)
 
 
@@ -51,13 +75,26 @@ def __main__():
     plot_letters_patterns_with_noise(letters_patterns_mutated_to_train2)
 
 # -------------- veo que me devuelve el autoencoder
+    # patterns = []
+    # for i in range(len(data[:10])):
+    #     patterns.append(autoencoder.complete_get_output(letters_patterns_mutated_to_train2[i])) 
+    # graph_multi_heatmap(graphs, title='Letters', c_map="Greys", cols=6)
+    # patterns = adapt_pattern2(np.array(patterns))
+    # print(patterns)
+    # plot_letters_patterns_with_noise(patterns)
+    # error = mean((npsum((data[:10] - patterns) ** 2, axis=1) / 2))
+    # print("Train error with mutated trained patterns: " + str(error))
+
+
     patterns = []
     for i in range(len(data[:10])):
         patterns.append(autoencoder.complete_get_output(letters_patterns_mutated_to_train2[i])) 
-    # graph_multi_heatmap(patterns)
-    # patterns = adapt_pattern2(np.array(patterns))
-    print(patterns)
-    # plot_letters_patterns_with_noise(patterns)
+    plotprueba(patterns)
+
+    # for pattern in range(0, len(patterns)):
+    #     plotprueba(dividir_array(patterns[pattern]))
+
+    patterns = np.array(patterns)
     error = mean((npsum((data[:10] - patterns) ** 2, axis=1) / 2))
     print("Train error with mutated trained patterns: " + str(error))
 

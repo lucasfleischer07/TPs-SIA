@@ -53,7 +53,11 @@ def adapt_pattern2(pattern):
     adapted_pattern = np.where(pattern < 0, 0, 1)
     return adapted_pattern
 
-
+def dividir_array(array):
+    matriz = []
+    for i in range(0, len(array), 5):
+        matriz.append(array[i:i+5])
+    return matriz
 
 def generate_new_letter(letter1,letter2,letter3,letter4):
     new_letter = np.zeros((7, 5), dtype=int)

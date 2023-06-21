@@ -106,3 +106,32 @@ def graph_multi_heatmap(data, title='', cols=3, size=8, c_map="Blues"):
                     yticklabels=False, xticklabels=False, cbar=False)
 
     plt.show()
+
+
+# def plotprueba(array):
+#     plt.imshow(array, cmap='binary')
+#     plt.colorbar()
+#     plt.show()
+
+def plotprueba(array):
+    num_vectors = len(array)
+    rows = num_vectors // 6  # Número de filas necesarias para acomodar todos los gráficos
+    if num_vectors % 6 != 0:
+        rows += 1
+
+    fig, axes = plt.subplots(rows, 6, figsize=(12, 2 * rows))
+    fig.tight_layout(pad=2)  # Ajustar el espaciado entre subplots
+
+    for i, vector in enumerate(array):
+        row = i // 6
+        col = i % 6
+
+        # Reshape el vector interno en una matriz de 5 columnas y 7 filas
+        matrix = np.reshape(vector, (7, 5))
+
+        ax = axes[row, col]
+        ax.imshow(matrix, cmap='binary')
+        # ax.set_title(f'Gráfico {i+1}')
+        ax.axis('off')
+
+    plt.show()
