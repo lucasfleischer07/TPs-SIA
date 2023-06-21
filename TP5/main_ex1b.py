@@ -49,7 +49,7 @@ def __main__():
     plt.ylabel('Error obtenido')
 
     # Mostrar el gráfico
-    plt.show()
+    # plt.show()
 
 
 
