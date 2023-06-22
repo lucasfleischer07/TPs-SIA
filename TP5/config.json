@@ -9,6 +9,6 @@
     10,
     5
   ],
-  "max_iter": "10",
+  "max_iter": "50",
   "min_error": "0.01"
 }

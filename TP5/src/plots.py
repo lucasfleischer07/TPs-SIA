@@ -114,6 +114,7 @@ def graph_multi_heatmap(data, title='', cols=3, size=8, c_map="Blues"):
 #     plt.show()
 
 def plotprueba(array):
+
     num_vectors = len(array)
     rows = num_vectors // 6  # Número de filas necesarias para acomodar todos los gráficos
     if num_vectors % 6 != 0:
