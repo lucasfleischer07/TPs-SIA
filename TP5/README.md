@@ -1,14 +1,14 @@
-# TP5 SIA - Deep Learning
+# TP5 SIA - Autoencoders
 
 ## Introducción
 
 Trabajo práctico orientativo para la materia Sistemas de Inteligencia Artificial con el objetivo de: 
-1. Implementar un Autoencoder b ́asico para las im ́agenes binaria.
+1. Implementar un Autoencoder basico para las imagenes binaria.
 
 2. Elegir (o construir) un conjunto de datos nuevos (por ejemplo emojis) y utilizar el Autoencoder anterior para generar una nueva muestra que ustedes puedan juzgarque pertenece al conjunto de datos que le presentaron al autoencoder.
 
 - [Enunciado](docs/SIA_TP5.pdf)
-- [Presentacion](docs/SIA_TP4_Deep_Learning.pdf)
+- [Presentacion](docs/SIA_TP5_Autoencoders.pdf)
 
 
 ### Requisitos
@@ -20,7 +20,7 @@ Trabajo práctico orientativo para la materia Sistemas de Inteligencia Artificia
 
 ### Instalación
 
-Parado en la carpeta del TP4 ejecutar
+Parado en la carpeta del TP5 ejecutar
 
 ```sh
 pipenv install
